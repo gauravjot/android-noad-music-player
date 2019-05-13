@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--<item-->
+        <!--android:id="@+id/media_route_menu_item"-->
+        <!--android:title="@string/media_route_menu_title"-->
+        <!--app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"-->
+        <!--android:iconTint="@color/white"-->
+        <!--app:showAsAction="always" />-->
+
+    <item
+        android:id="@+id/action_searchBtn"
+        android:orderInCategory="104"
+        app:showAsAction="always"
+        android:icon="@drawable/app_search"
+        android:title="@string/search"/>
+
+    <item
+        android:id="@+id/sleep_timer"
+        app:showAsAction="never"
+        android:title="Set Sleep Timer"/>
+
+    <item
+        android:id="@+id/sync"
+        app:showAsAction="never"
+        android:title="Sync Music" />
+
+    <item
+        android:id="@+id/settings"
+        app:showAsAction="never"
+        android:title="Settings"/>
+</menu>

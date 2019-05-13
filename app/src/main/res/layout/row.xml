@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:background="?android:attr/selectableItemBackground" >
+
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_alignParentStart="true"
+        android:contentDescription="@string/hello_world"
+        android:descendantFocusability="blocksDescendants"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"
+        android:background="@drawable/ic_music_note_black_24dp" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="4dp"
+        android:layout_alignParentEnd="true"
+        android:padding="24dp"
+        android:tint="@color/textColorSubTitle"
+        android:contentDescription="@string/hello_world"
+        android:scaleType="centerCrop"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_dots_vertical_grey600_48dp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:id="@+id/relativeLayout"
+        android:layout_toStartOf="@+id/imageView1"
+        android:layout_toEndOf="@+id/image"
+        android:orientation="vertical"
+        android:paddingEnd="14dp"
+        android:paddingStart="14dp" >
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:singleLine="true"
+            android:text="@string/hello_world"
+            android:textStyle="bold"
+            android:textColor="@color/textColorTitle"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/text"
+            android:gravity="start"
+            android:maxLines="1"
+            android:layout_marginTop="1dp"
+            android:text="@string/hello_world"
+            android:textColor="@color/textColorSubTitle"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

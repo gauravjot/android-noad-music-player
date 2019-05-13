@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/actionBar"
+        android:minHeight="@dimen/abc_action_bar_default_height_material"
+        app:titleTextAppearance="@style/MyTheme.ActionBar.TitleTextStyle">
+
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/enabled"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:layout_gravity="right"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:checked="false"
+            android:paddingLeft="16dp"
+            app:trackTint="@color/whiteOpaque"
+            android:paddingRight="16dp"/>
+
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/flat">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bass Boost"
+                android:textColor="@color/textColorTitle"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="16sp"/>
+
+            <SeekBar
+                android:id="@+id/bass_boost"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:max="1000"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:progressDrawable="@drawable/seekbar_light_drawable"
+                />
+
+            <TextView
+                android:id="@+id/textVirtualizer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Virtualizer"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/textColorTitle" />
+
+            <SeekBar
+                android:id="@+id/virtualizer"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:max="1000"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:progress="0"
+                android:progressDrawable="@drawable/seekbar_light_drawable"
+                />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="Bands"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/textColorTitle" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:rotationX="180"
+                android:weightSum="5">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+                        android:layout_width="wrap_content"
+                        android:layout_height="200dp"
+                        android:layout_margin="12dp"
+                        android:layout_weight="1">
+
+                        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+                            android:id="@+id/slider_1"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:progressDrawable="@drawable/seekbar_light_drawable"
+                            android:splitTrack="false"
+                            app:seekBarRotation="CW90" /> <!-- Rotation: CW90 or CW270 -->
+                    </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="·" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+                        android:layout_width="wrap_content"
+                        android:layout_height="200dp"
+                        android:layout_margin="12dp"
+                        android:layout_weight="1">
+
+                        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+                            android:id="@+id/slider_2"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:progressDrawable="@drawable/seekbar_light_drawable"
+                            android:splitTrack="false"
+                            app:seekBarRotation="CW90" /> <!-- Rotation: CW90 or CW270 -->
+                    </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="·" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+                        android:layout_width="wrap_content"
+                        android:layout_height="200dp"
+                        android:layout_margin="12dp"
+                        android:layout_weight="1">
+
+                        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+                            android:id="@+id/slider_3"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:progressDrawable="@drawable/seekbar_light_drawable"
+                            android:splitTrack="false"
+                            app:seekBarRotation="CW90" /> <!-- Rotation: CW90 or CW270 -->
+                    </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="·" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+                        android:layout_width="wrap_content"
+                        android:layout_height="200dp"
+                        android:layout_margin="12dp"
+                        android:layout_weight="1">
+
+                        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+                            android:id="@+id/slider_4"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:progressDrawable="@drawable/seekbar_light_drawable"
+                            android:splitTrack="false"
+                            app:seekBarRotation="CW90" /> <!-- Rotation: CW90 or CW270 -->
+                    </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="·" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+                        android:layout_width="wrap_content"
+                        android:layout_height="200dp"
+                        android:layout_margin="12dp"
+                        android:layout_weight="1">
+
+                        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+                            android:id="@+id/slider_5"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:progressDrawable="@drawable/seekbar_light_drawable"
+                            android:splitTrack="false"
+                            app:seekBarRotation="CW90" /> <!-- Rotation: CW90 or CW270 -->
+                    </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/flat"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="@color/actionBar"
+        android:padding="0dp"
+        android:layout_margin="8dp"
+        android:text="Flat"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp" />
+</RelativeLayout>

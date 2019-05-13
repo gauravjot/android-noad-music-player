@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <style name="ThemeActionBar" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/MyHomeActionBar</item>
+        <item name="actionBarStyle">@style/MyHomeActionBar</item>
+        <item name="colorPrimaryDark">@color/statusBar</item>
+    </style>
+
+    <style name="ThemeActionBarBig" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/MyHomeActionBarBig</item>
+        <item name="actionBarStyle">@style/MyHomeActionBarBig</item>
+        <item name="colorPrimaryDark">@color/statusBar</item>
+    </style>
+
+    <style name="AppThemeToolbar.Overlay" parent="AppThemeToolbar">
+        <item name="colorPrimaryDark">@color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
+    <style name="ThemeToolBarTranslucent" parent="AppThemeToolbar">
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorPrimaryDark">@color/statusBar</item>
+        <item name="android:actionBarStyle">@style/ActionBarShadow</item>
+        <item name="actionBarStyle">@style/ActionBarShadow</item>
+    </style>
+</resources>

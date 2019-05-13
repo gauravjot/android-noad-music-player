@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:paddingLeft="16dp"
+    android:paddingStart="16dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <!--<de.hdodenhof.circleimageview.CircleImageView-->
+    <!--android:layout_width="42dp"-->
+    <!--android:layout_height="42dp"-->
+    <!--android:layout_marginLeft="16dp"-->
+    <!--android:layout_marginRight="16dp"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:id="@id/image"/>-->
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/imageView19">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Medium Text"
+            android:textColor="@color/textColorTitle"
+            android:textSize="16sp"
+            android:ellipsize="marquee"
+            android:id="@+id/textView13"
+            android:textStyle="bold"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:paddingTop="4dp"
+            android:maxLines="1"
+            android:textColor="@color/textColorSubTitle"
+            android:id="@+id/textView14"
+            android:layout_below="@+id/textView13"
+            android:layout_alignStart="@+id/textView13"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView19"
+        android:padding="12dp"
+        android:layout_marginEnd="4dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_dots_vertical_grey600_48dp"
+        android:layout_alignParentEnd="true"
+        android:tint="@color/textColorSubTitle"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true" />
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="1px"-->
+    <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+    <!--android:background="#cccccc"-->
+    <!--android:layout_marginRight="8dp"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_toRightOf="@id/image"-->
+    <!--android:layout_toEndOf="@+id/image"-->
+    <!--android:layout_alignRight="@+id/imageView19"-->
+    <!--android:layout_alignEnd="@+id/imageView19" />-->
+
+
+</RelativeLayout>

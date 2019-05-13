@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/actionBar"
+    tools:context="com.droidheat.musicplayer.SplashActivity">
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentTop="true" >-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textView2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:textColor="#99ffffff"-->
+            <!--android:textSize="16sp"-->
+            <!--android:text="@string/updating_songs"-->
+            <!--android:layout_marginBottom="16dp"/>-->
+
+        <!--<ProgressBar-->
+            <!--android:id="@+id/progressBar1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:indeterminate="true"-->
+            <!--android:layout_above="@id/textView2"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:indeterminateTint="@color/white"-->
+            <!--android:indeterminateTintMode="src_in"/>-->
+
+        <!--<ImageView-->
+            <!--android:layout_width="220dp"-->
+            <!--android:layout_height="220dp"-->
+            <!--android:id="@+id/imageView20"-->
+            <!--android:src="@drawable/whiteband"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_centerHorizontal="true" />-->
+
+    <!--</RelativeLayout>-->
+
+
+    <ProgressBar
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:progressBackgroundTint="@color/white"
+        android:id="@+id/progressBar"
+        android:indeterminate="true" />
+
+    <TextView
+        android:text="Syncing..."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progressBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:id="@+id/textView10" />
+</RelativeLayout>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.droidheat.musicplayer">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application
+        android:allowBackup="true"
+        android:fullBackupContent="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".HomeActivity"
+            android:clearTaskOnLaunch="true"
+            android:screenOrientation="portrait"
+            android:finishOnTaskLaunch="true"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppThemeToolbar"/>
+        <activity
+            android:name=".PlayActivity"
+            android:label="@string/title_activity_play"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeToolbar.Overlay">
+            <intent-filter>
+                <action android:name="com.garaya.musicplayer.action.GRAPHIC" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".MusicPlayback"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.garaya.musicplayer.action.CLOSE" />
+                <action android:name="com.garaya.musicplayer.action.PLAYPAUSE" />
+                <action android:name="com.garaya.musicplayer.action.PLAY" />
+                <action android:name="com.garaya.musicplayer.action.PLAYPUSH" />
+                <action android:name="com.garaya.musicplayer.action.PLAYFAKE" />
+                <action android:name="com.garaya.musicplayer.action.PLAYSHUFFLE" />
+                <action android:name="com.garaya.musicplayer.action.PAUSE" />
+                <action android:name="com.garaya.musicplayer.action.REPEAT" />
+                <action android:name="com.garaya.musicplayer.action.SHUFFLE" />
+                <action android:name="com.garaya.musicplayer.action.TRACKPREV" />
+                <action android:name="com.garaya.musicplayer.action.TRACKNEXT" />
+                <action android:name="android.intent.action.HEADSET_PLUG" />
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name="android.support.v4.media.session.MediaButtonReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".SearchActivity"
+            android:label="@string/title_activity_search"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeToolbar" />
+        <activity
+            android:name=".TimerActivity"
+            android:label="@string/title_activity_timer"
+            android:screenOrientation="portrait"
+            android:theme="@style/DialogTheme" />
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeToolbar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MUSIC_PLAYER" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.APP_MUSIC" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".MusicWidget"
+            android:label="Music Player">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widgetprovider4x1" />
+        </receiver>
+        <receiver
+            android:name=".MusicWidget2"
+            android:label="Music Player">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widgetprovider4x2" />
+        </receiver>
+        <receiver
+            android:name=".MusicWidgetv2"
+            android:label="Music Player">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widgetprovider4x1v2" />
+        </receiver>
+
+        <activity
+            android:name=".IntentPlayActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/DialogTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.BROWSABLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="file" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.BROWSABLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="content" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".EqualizerActivity"
+            android:label="Equalizer"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeToolbar" />
+        <activity
+            android:name=".MainActivity"
+            android:clearTaskOnLaunch="true"
+            android:finishOnTaskLaunch="true"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeToolbar" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/ThemeActionBar" />
+        <activity
+            android:name=".GlobalDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ThemeToolBarTranslucent" />
+    </application>
+
+</manifest>

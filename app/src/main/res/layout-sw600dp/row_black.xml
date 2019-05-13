@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="76dp"
+    android:layout_gravity="top"
+    android:background="@color/playerControlsBackground"
+    android:orientation="vertical"
+    android:id="@+id/relBody"
+    android:paddingStart="16dp">
+
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/ic_launcher_bw"
+        android:contentDescription="@string/hello_world"
+        android:descendantFocusability="blocksDescendants"
+        android:scaleType="centerCrop" />
+
+
+    <TextView
+        android:id="@+id/textTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
+        android:padding="16dp"
+        android:text="@string/nullTime"
+        android:textColor="#77ffffff" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@+id/image"
+        android:layout_toStartOf="@+id/textTime"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:maxLines="1"
+            android:paddingEnd="14dp"
+            android:text="@string/hello_world"
+            android:textStyle="bold"
+            android:textColor="#eeffffff"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/text"
+            android:maxLines="1"
+            android:paddingEnd="14dp"
+            android:layout_marginTop="3dp"
+            android:text="@string/no_song_available_"
+            android:textColor="#77ffffff"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

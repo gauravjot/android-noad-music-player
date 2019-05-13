@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Noad Black Player</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_timer">Set Sleep Time</string>
+    <string name="choose_play">Choose a track to play!</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_play">Music Player</string>
+    <string name="chooseDir">Choose Directory</string>
+    <string name="app_label">Music</string>
+    <string name="action_albums">Albums</string>
+    <string name="search_hint">Enter any word..</string>
+    <string name="image">Image</string>
+    <string name="nullTime">--:--</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="typeToSearch">Type to search music</string>
+    <string name="title_activity_timer">Music Player</string>
+    <string name="put_music_player_on_automatic_sleep_">Put Music Player on Automatic Sleep?</string>
+    <string name="music_player_will_automatically_stop_playback_after_your_given_time_please_insert_the_time_in_minutes_below_">Music Player will automatically stop playback after your given time.</string>
+    <string name="done">DONE</string>
+    <string name="cancel">DISMISS</string>
+    <string name="favourites">Favourites</string>
+    <string name="title_activity_favorite">FavoriteActivity</string>
+    <string name="title_activity_favourite">FavouriteActivity</string>
+    <string name="your_favourite_songs">YOUR FAVOURITE SONGS</string>
+    <string name="no_song_available_">Add Music to Play</string>
+    <string name="title_activity_song_option">SongOptionActivity</string>
+    <string name="add_to_favourites">Mark as Favourite</string>
+    <string name="choose_an_option">Choose an Option</string>
+    <string name="title_activity_mini_player">MiniPlayerActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_to_queue">Add to Queue</string>
+    <string name="queued_songs">Queued Songs</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="welcome_">Welcome</string>
+    <string name="shuffling_music">Shuffling Music</string>
+    <string name="shuffle">Shuffle</string>
+    <string name="or_tap_the_shuffle_at_top">Or Tap the Shuffle at top</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="_8">8</string>
+    <string name="_9">9</string>
+    <string name="_0">0</string>
+    <string name="_7">7</string>
+    <string name="_4">4</string>
+    <string name="_1">1</string>
+    <string name="x">X</string>
+    <string name="_id_textview4">\@+id/textView4</string>
+    <string name="min">min</string>
+    <string name="sleep_in">Sleep in</string>
+    <string name="play_some_music">Play Some Music</string>
+    <string name="title_activity_intent_play">IntentPlayActivity</string>
+    <string name="title_activity_album_grid">AlbumGridActivity</string>
+    <string name="title_activity_album_detail">AlbumDetailActivity</string>
+    <string name="title_activity_home">Noad Player</string>
+    <string-array name="planets">
+        <item>Play Queue</item>
+        <item>Play Random</item>
+        <item>All Songs</item>
+        <item>Albums</item>
+        <item>Artists</item>
+        <item>Favourites</item>
+    </string-array>
+    <string name="updating_songs">Updating Songs from Device</string>
+    <string name="play_music">PLAY MUSIC</string>
+    <string name="latest_added_to_library">LATEST ADDED TO LIBRARY</string>
+    <string name="all_songs_a_z">ALL SONGS A-Z</string>
+    <string name="queue">Queue</string>
+    <string name="_0_0">0/0</string>
+    <string name="title_activity_playlist">PlaylistActivity</string>
+    <string name="search">Search</string>
+    <string name="PLAYING">PLAYING</string>
+    <string name="app_id">unknown</string> <!-- 4F8B3483 -->
+    <string name="media_route_menu_title">Cast to Device</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+</resources>

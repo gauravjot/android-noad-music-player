@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="130dp">
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:background="#454545"
+        android:contentDescription="@string/app_label"
+        android:src="@drawable/audio_drawable" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/linearLayout"
+            android:id="@+id/relativeLayout">
+
+            <TextView
+                android:id="@+id/heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:paddingTop="5dp"
+                android:text="@string/app_label"
+                android:paddingLeft="10dp"
+                android:paddingRight="3dp"
+                android:layout_marginRight="30dp"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/app_label"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:tint="#000"
+                android:src="@drawable/ic_action_remove" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="@string/app_label"
+                android:maxLines="1"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_below="@+id/heading"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="@string/app_label"
+                android:maxLines="1"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_below="@+id/textView2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:weightSum="3"
+            android:id="@+id/linearLayout">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rotation="180"
+                android:padding="15dp"
+                android:clickable="true"
+                android:layout_weight="1"
+                android:contentDescription="@string/app_label"
+                android:src="@drawable/app_next" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:padding="8dp"
+                android:contentDescription="@string/app_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/app_play" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:padding="15dp"
+                android:clickable="true"
+                android:contentDescription="@string/app_label"
+                android:layout_height="wrap_content"
+                android:src="@drawable/app_next" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

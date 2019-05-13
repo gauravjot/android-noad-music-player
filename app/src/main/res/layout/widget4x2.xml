@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    android:background="@drawable/card_drawable">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_label"
+        android:scaleType="centerCrop"
+        android:src="@drawable/audio_drawable" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/widget_dark_gradient" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/_0"
+            android:padding="12dp"
+            android:rotation="180"
+            android:src="@drawable/app_next"
+            android:tint="@color/whiteOpaqueX2" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/_0"
+            android:padding="12dp"
+            android:src="@drawable/app_next"
+            android:tint="@color/whiteOpaqueX2" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:id="@+id/details"
+        android:layout_toStartOf="@+id/imageView7"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/texttime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:maxLines="1"
+            android:text="Artist"
+            android:textColor="#bbffffff"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textalbum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_below="@+id/texttime"
+            android:maxLines="1"
+            android:text="Album"
+            android:textColor="#bbffffff"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/heading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textalbum"
+            android:fontFamily="sans-serif-condensed"
+            android:singleLine="true"
+            android:text="@string/app_label"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="8dp"
+        android:padding="10dp"
+        android:layout_toStartOf="@+id/relpo"
+        android:layout_alignTop="@+id/details"
+        android:layout_alignBottom="@+id/details"
+        android:src="@drawable/app_repeat_inactive" />
+
+    <RelativeLayout
+        android:id="@+id/relpo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/details"
+        android:layout_alignBottom="@+id/details">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/thumb"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:padding="8dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/app_play"
+            android:tint="@android:color/white" />
+    </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:paddingTop="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="10dp"
+    android:layout_height="match_parent"
+    android:background="@color/dialogBackground">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Type Playlist Name"
+        android:textColor="@color/textColorTitle"
+        android:layout_marginBottom="16dp"
+        android:textSize="18sp"
+        android:ellipsize="marquee"
+        android:fontFamily="sans-serif-condensed"
+        android:id="@+id/textView9" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:maxLines="1"
+        android:inputType="textCapWords"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:layout_below="@+id/textView9"
+        android:textColor="@color/textColorTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CANCEL"
+        android:id="@+id/btnCancel"
+        android:background="?attr/selectableItemBackground"
+        android:textColor="@color/accentColor"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/editText"
+        android:layout_toLeftOf="@+id/btnCreate"
+        android:layout_toStartOf="@+id/btnCreate" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CREATE"
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/btnCreate"
+        android:textColor="@color/accentColor"
+        android:layout_gravity="right"
+        android:layout_below="@+id/editText"
+        android:layout_alignRight="@+id/editText"
+        android:layout_alignEnd="@+id/editText" />
+</RelativeLayout>

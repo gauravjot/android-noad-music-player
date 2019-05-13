@@ -1,0 +1,41 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/action_searchBtn"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="@string/search"
+        android:icon="@drawable/ic_search_white_24dp"/>
+
+    <item
+        android:id="@+id/play"
+        app:showAsAction="never"
+        android:title="Play"/>
+
+    <item
+        android:id="@+id/play_next"
+        app:showAsAction="never"
+        android:title="Play Next"/>
+
+    <item
+        android:id="@+id/shuffle"
+        app:showAsAction="never"
+        android:title="Shuffle"/>
+
+    <item android:id="@+id/add_to_playlist"
+        app:showAsAction="never"
+        android:title="Add to Playlist"/>
+
+    <item
+        android:id="@+id/add_to_queue"
+        app:showAsAction="never"
+        android:title="Add to Queue"/>
+
+    <item
+        android:id="@+id/repair_list"
+        app:showAsAction="never"
+        android:title="Sync this list"/>
+
+
+</menu>

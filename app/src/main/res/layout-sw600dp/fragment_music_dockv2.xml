@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="@color/statusBar">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?android:attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/albumArt"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:layout_alignParentBottom="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_music_notes_padded"/>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="56dp">
+
+            <Button
+                android:id="@+id/Xbutton1"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/relativeLayout1"
+                android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+            <LinearLayout
+                android:id="@+id/relativeLayout1"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true">
+
+
+                <ImageView
+                    android:id="@+id/XbtnPrev"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:padding="22dp"
+                    android:tint="@color/white"
+                    android:src="@drawable/app_next"
+                    android:rotation="180"/>
+
+                <ImageView
+                    android:id="@+id/XbtnPlay"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:padding="16dp"
+                    android:tint="@color/white"
+                    android:src="@drawable/app_play" />
+
+
+                <ImageView
+                    android:id="@+id/XbtnNext"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:padding="22dp"
+                    android:tint="@color/white"
+                    android:src="@drawable/app_next" />
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/relativeLayout1"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp">
+
+                <TextView
+                    android:id="@+id/XtextView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:fontFamily="sans-serif"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:text="@string/choose_play"
+                    android:textColor="@color/white"
+                    android:textScaleX="1.05"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/XtextView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/XtextView1"
+                    android:fontFamily="sans-serif"
+                    android:maxLines="1"
+                    android:paddingTop="3dp"
+                    android:text="@string/choose_play"
+                    android:textColor="@color/textColorSubTitle"
+                    android:textScaleX="1.05"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

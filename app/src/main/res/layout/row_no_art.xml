@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:id="@+id/click"
+        android:paddingRight="40dp"
+        android:paddingEnd="52dp"
+        android:background="?android:attr/selectableItemBackground">
+
+
+        <TextView
+            android:id="@+id/trackId"
+            android:layout_width="40dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:gravity="start|center"
+            android:textColor="@color/textColorTitle"
+            android:textSize="16sp"
+            android:text="1" />
+
+        <TextView
+            android:id="@+id/textTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:padding="10dp"
+            android:text="--:--"
+            android:textColor="@color/textColorSubTitle" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/trackId"
+            android:layout_toLeftOf="@+id/textTime"
+            android:layout_toStartOf="@+id/textTime"
+            android:layout_toRightOf="@+id/trackId"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:paddingRight="14dp"
+                android:paddingEnd="14dp"
+                android:maxLines="1"
+                android:textStyle="bold"
+                android:text="@string/hello_world"
+                android:textColor="@color/textColorTitle"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/text"
+                android:gravity="start"
+                android:paddingTop="4dp"
+                android:paddingRight="14dp"
+                android:paddingEnd="14dp"
+                android:maxLines="1"
+                android:text="No Song Found"
+                android:textColor="@color/textColorSubTitle"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="48dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="4dp"
+        android:layout_marginEnd="4dp"
+        android:contentDescription="@string/hello_world"
+        android:padding="12dp"
+        android:tint="@color/iconColor"
+        android:background="?attr/android:selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_dots_vertical_grey600_48dp" />
+
+
+</RelativeLayout>

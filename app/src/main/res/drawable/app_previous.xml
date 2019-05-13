@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="20dp"
+    android:height="20dp"
+    android:viewportWidth="42"
+    android:viewportHeight="42">
+
+    <path
+        android:fillColor="#000000"
+        android:strokeWidth="1"
+        android:pathData="M7.5 41C7.5 39.79 7.5 33.76 7.5 22.9C23.96 34.26 33.1 40.56 34.93 41.82C35.24
+42.03 35.64 42.06 35.96 41.89C36.29 41.71 36.5 41.37 36.5 41C36.5 37 36.5 5 36.5
+1C36.5 0.63 36.29 0.29 35.96 0.11C35.82 0.04 35.66 0 35.5 0C35.3 0 35.1 0.06
+34.93 0.18C33.1 1.44 23.96 7.74 7.5 19.09C7.5 8.24 7.5 2.21 7.5 1C7.5 0.45 7.05
+0 6.5 0C5.95 0 5.5 0.45 5.5 1C5.5 5 5.5 37 5.5 41C5.5 41.55 5.95 42 6.5 42C7.05
+42 7.5 41.55 7.5 41Z" />
+</vector>

@@ -1,0 +1,41 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/goto_album"
+        android:title="Go to Album"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/goto_artist"
+        android:title="Go to Artist"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/add_to_playlist"
+        android:title="Add to Playlist"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/info"
+        android:title="Song Info"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/save_as_playlist"
+        android:title="Save Current Playlist"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/equalizer"
+        android:title="Equalizer"
+        android:icon="@drawable/app_equalizer"
+        app:showAsAction="always"
+        />
+
+</menu>
