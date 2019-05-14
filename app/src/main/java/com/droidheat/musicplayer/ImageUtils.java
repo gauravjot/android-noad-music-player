@@ -2,13 +2,18 @@ package com.droidheat.musicplayer;
 
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.FileDescriptor;
 import java.util.List;
 import java.util.Objects;
 
@@ -87,5 +92,43 @@ class ImageUtils {
                         .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp))).into(imageView);
             }}
         catch (Exception ignored) {}
+    }
+
+    public Bitmap getAlbumArt(Long album_id) {
+        Bitmap albumArtBitMap = null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        try {
+
+            final Uri sArtworkUri = Uri
+                    .parse("content://media/external/audio/albumart");
+
+            Uri uri = ContentUris.withAppendedId(sArtworkUri, album_id);
+
+            ParcelFileDescriptor pfd = context.getContentResolver()
+                    .openFileDescriptor(uri, "r");
+
+            if (pfd != null) {
+                FileDescriptor fd = pfd.getFileDescriptor();
+                albumArtBitMap = BitmapFactory.decodeFileDescriptor(fd, null,
+                        options);
+            }
+        } catch (Error ee) {
+            ee.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (null != albumArtBitMap) {
+            return albumArtBitMap;
+        }
+        return getDefaultAlbumArtEfficiently();
+    }
+
+
+
+    private Bitmap getDefaultAlbumArtEfficiently() {
+
+        return BitmapFactory.decodeResource(context.getResources(),
+                R.drawable.ic_music_notes_padded);
     }
 }

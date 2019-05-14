@@ -14,49 +14,36 @@ public class MusicWidget extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
-		// TODO Auto-generated method stub
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		RemoteViews views;
-		try{
-			Intent intent = new Intent(context,HomeActivity.class);
-			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-			
-			views = new RemoteViews(context.getPackageName(),R.layout.widget4x1);
+		SharedPrefsUtils sharedPrefsUtils = new SharedPrefsUtils(context);
+		Intent intent = new Intent(context,HomeActivity.class);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
+		views = new RemoteViews(context.getPackageName(),R.layout.widget4x1);
 
 
-            Intent previousIntent = new Intent(context, MusicPlayback.class);
-            Intent playIntent = new Intent(context, MusicPlayback.class);
-            Intent nextIntent = new Intent(context, MusicPlayback.class);
+		Intent previousIntent = new Intent(context, MusicPlayback.class);
+		Intent playIntent = new Intent(context, MusicPlayback.class);
+		Intent nextIntent = new Intent(context, MusicPlayback.class);
+		previousIntent.setAction(MusicPlayback.ACTION_TRACKPREV);
 
-			if (MusicPlayback.mMediaSessionCompat.isActive()) {
-				previousIntent.setAction(MusicPlayback.ACTION_TRACKPREV);
+		playIntent.setAction(MusicPlayback.ACTION_PLAYPAUSE);
 
-				playIntent.setAction(MusicPlayback.ACTION_PLAYPAUSE);
+		nextIntent.setAction(MusicPlayback.ACTION_TRACKNEXT);
 
-				nextIntent.setAction(MusicPlayback.ACTION_TRACKNEXT);
-			}
-			else {
-				previousIntent.setClass(context,SplashActivity.class);
+		PendingIntent pPreviousIntent = PendingIntent.getService(context, 0,
+				previousIntent, 0);
+		PendingIntent pPlayIntent = PendingIntent.getService(context, 0,
+				playIntent, 0);
+		PendingIntent pNextIntent = PendingIntent.getService(context, 0,
+				nextIntent, 0);
 
-				playIntent.setClass(context, SplashActivity.class);
-
-				nextIntent.setClass(context, SplashActivity.class);
-			}
-
-            PendingIntent ppreviousIntent = PendingIntent.getService(context, 0,
-                    previousIntent, 0);
-            PendingIntent pplayIntent = PendingIntent.getService(context, 0,
-                    playIntent, 0);
-            PendingIntent pnextIntent = PendingIntent.getService(context, 0,
-                    nextIntent, 0);
-			
-			views.setOnClickPendingIntent(R.id.imageView3, pplayIntent);
-			views.setOnClickPendingIntent(R.id.imageView2, ppreviousIntent);
-			views.setOnClickPendingIntent(R.id.imageView4, pnextIntent);
-			views.setOnClickPendingIntent(R.id.imageView1, pendingIntent);
-			views.setOnClickPendingIntent(R.id.heading, pendingIntent);
-            views.setOnClickPendingIntent(R.id.textalbum, pendingIntent);
-            views.setOnClickPendingIntent(R.id.texttime, pendingIntent);
+		views.setOnClickPendingIntent(R.id.imageView3, pPlayIntent);
+		views.setOnClickPendingIntent(R.id.imageView2, pPreviousIntent);
+		views.setOnClickPendingIntent(R.id.imageView4, pNextIntent);
+		views.setOnClickPendingIntent(R.id.imageView1, pendingIntent);
+		views.setOnClickPendingIntent(R.id.relativeLayout,pendingIntent);
 
             try {
 				if (MusicPlayback.mMediaSessionCompat.isActive()) {
@@ -65,27 +52,21 @@ public class MusicWidget extends AppWidgetProvider {
 					} else {
 						views.setImageViewResource(R.id.imageView3, R.drawable.app_play);
 					}
+				} else {
+					views.setImageViewResource(R.id.imageView3, R.drawable.app_play);
 				}
             }
             catch (Exception ignored) {
 
             }
 
-			if (MusicPlayback.mMediaSessionCompat.getController().getMetadata().getBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART) != null) {
-                views.setImageViewBitmap(R.id.imageView1, MusicPlayback.mMediaSessionCompat.getController().getMetadata().getBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART));
-            }
-			views.setTextViewText(R.id.heading, MusicPlayback.mMediaSessionCompat.getController().getMetadata().getString(MediaMetadataCompat.METADATA_KEY_TITLE));
-			views.setTextViewText(R.id.textalbum, MusicPlayback.mMediaSessionCompat.getController().getMetadata().getString(MediaMetadataCompat.METADATA_KEY_ALBUM));
-			views.setTextViewText(R.id.texttime, MusicPlayback.mMediaSessionCompat.getController().getMetadata().getString(MediaMetadataCompat.METADATA_KEY_DURATION));
-		}
-		catch (Exception e) {
-			views = new RemoteViews(context.getPackageName(),R.layout.widgetblank);
-			Intent intent = new Intent(context,HomeActivity.class);
-			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-			
-			views.setOnClickPendingIntent(R.id.heading, pendingIntent);
-			
-		}
+		views.setImageViewBitmap(R.id.imageView1, (new ImageUtils(context)).getAlbumArt(
+				Long.parseLong(sharedPrefsUtils.readSharedPrefsString("albumid","0"))
+		));
+		views.setTextViewText(R.id.textTitle, sharedPrefsUtils.readSharedPrefsString("title","Unknown Title"));
+		views.setTextViewText(R.id.textAlbum, sharedPrefsUtils.readSharedPrefsString("album","Unknown Album"));
+		views.setTextViewText(R.id.textArtist, sharedPrefsUtils.readSharedPrefsString("artist","00:00"));
+
         try {
             for (int appWidgetId : appWidgetIds) {
                 appWidgetManager.updateAppWidget(appWidgetId, views);

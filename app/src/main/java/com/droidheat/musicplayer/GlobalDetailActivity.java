@@ -24,8 +24,8 @@ import java.util.Objects;
 public class GlobalDetailActivity extends AppCompatActivity {
 
     RecyclerViewAdapter adapter;
-    ArrayList<SongModel> albumSongs = new ArrayList<>();
-    String field = "albums", raw = "Coldplay - A Sky Full Of Stars";
+    ArrayList<SongModel> songsList = new ArrayList<>();
+    String field = "albums", raw = "A Sky Full Of Stars";
     String TAG = "GlobalActivityConsole";
     PerformBackgroundTasks performBackgroundTasks = null;
     SongsManager songsManager;
@@ -55,11 +55,15 @@ public class GlobalDetailActivity extends AppCompatActivity {
         songsManager = new SongsManager(this);
         setListData();
 
+        ((TextView) findViewById(R.id.listInfoTextView))
+                .setText("total tracks: " + songsList.size() +
+                ", playback time: " + getPlayBackTime(songsList) + " mins");
+
         FloatingActionButton floatingActionButton = findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                songsManager.play(0, albumSongs);
+                songsManager.play(0, songsList);
             }
         });
 
@@ -80,39 +84,55 @@ public class GlobalDetailActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         List<String> list = new ArrayList<>();
-        for (int i = 0; i < albumSongs.size(); i++) {
-            list.add(albumSongs.get(i).getAlbumID());
+        for (int i = 0; i < songsList.size(); i++) {
+            list.add(songsList.get(i).getAlbumID());
         }
         (new ImageUtils(this)).getImageByPicasso(list, header, 0, list.size() - 1);
-        adapter = new RecyclerViewAdapter(albumSongs, this, field);
+        adapter = new RecyclerViewAdapter(songsList, this, field);
         recyclerView.setAdapter(adapter);
-
     }
+
+    /*
+     * Gives output in minutes, getDuration() format is mm:ss
+     */
+    private int getPlayBackTime(ArrayList<SongModel> albumSongs) {
+        int pTime = 0;
+        for (int i =0; i < albumSongs.size(); i ++) {
+            String duration = albumSongs.get(i).getDuration();
+            pTime += Integer.parseInt(duration.split(":")[0]) * 60 +
+                    Integer.parseInt(duration.split(":")[1]);
+        }
+        return pTime / 60;
+    }
+
+    /*
+     * Grabbing data for RecyclerView
+     */
 
     public void setListData() {
         SongsManager songsManager = new SongsManager(this);
-        albumSongs.clear();
+        songsList.clear();
         switch (field) {
             case "albums":
-                albumSongs.addAll(songsManager.albumSongs(raw));
+                songsList.addAll(songsManager.albumSongs(raw));
                 ((TextView) findViewById(R.id.category)).setText("ALBUM");
                 break;
             case "mostplayed":
-                albumSongs.addAll(songsManager.mostPlayedSongs());
+                songsList.addAll(songsManager.mostPlayedSongs());
                 ((TextView) findViewById(R.id.category)).setText("AUTO-PLAYLIST");
                 if (performBackgroundTasks.getStatus() != AsyncTask.Status.RUNNING) performBackgroundTasks.execute();
                 break;
             case "favourites":
-                albumSongs.addAll(songsManager.favouriteSongs());
+                songsList.addAll(songsManager.favouriteSongs());
                 ((TextView) findViewById(R.id.category)).setText("AUTO-PLAYLIST");
                 if (performBackgroundTasks.getStatus() != AsyncTask.Status.RUNNING) performBackgroundTasks.execute();
                 break;
             case "artists":
-                albumSongs.addAll(songsManager.artistSongs(raw));
+                songsList.addAll(songsManager.artistSongs(raw));
                 ((TextView) findViewById(R.id.category)).setText("ARTIST");
                 break;
             default:
-                albumSongs.addAll(songsManager.playlistSongs(Integer.parseInt(field)));
+                songsList.addAll(songsManager.playlistSongs(Integer.parseInt(field)));
                 ((TextView) findViewById(R.id.category)).setText("PLAYLIST");
                 if (performBackgroundTasks.getStatus() != AsyncTask.Status.RUNNING) performBackgroundTasks.execute();
                 break;
@@ -136,21 +156,21 @@ public class GlobalDetailActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.play:
-                songsManager.play(0, albumSongs);
+                songsManager.play(0, songsList);
                 break;
             case R.id.play_next:
-                if (albumSongs.size() > 0) {
-                    songsManager.playNext(albumSongs);
+                if (songsList.size() > 0) {
+                    songsManager.playNext(songsList);
                     (new CommonUtils(this)).showTheToast("List added for playing next");
                 } else {
                     (new CommonUtils(this)).showTheToast("Error adding empty song list to queue");
                 }
                 break;
             case R.id.shuffle:
-                songsManager.shufflePlay(albumSongs);
+                songsManager.shufflePlay(songsList);
                 break;
             case R.id.add_to_queue:
-                songsManager.addToQueue(albumSongs);
+                songsManager.addToQueue(songsList);
                 break;
             case android.R.id.home:
                 if (performBackgroundTasks.getStatus() == AsyncTask.Status.RUNNING) {
@@ -166,7 +186,7 @@ public class GlobalDetailActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.add_to_playlist:
-                songsManager.addToPlaylist(albumSongs);
+                songsManager.addToPlaylist(songsList);
                 break;
         }
 
@@ -191,8 +211,6 @@ public class GlobalDetailActivity extends AppCompatActivity {
     }
 
     private class PerformBackgroundTasks extends AsyncTask<String, Integer, Long> {
-
-
 
         @Override
         protected Long doInBackground(String... params) {

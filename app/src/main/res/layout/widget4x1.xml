@@ -14,31 +14,21 @@
         android:contentDescription="@string/app_label"
         android:src="@drawable/app_play" />
 
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/audio_drawable"
-            android:orientation="vertical" >
+        android:layout_height="match_parent"
+        android:id="@+id/relativeLayout"
+        android:background="@drawable/audio_drawable"
+        android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/heading"
+                android:id="@+id/textTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginTop="5dp"
                 android:maxLines="1"
-                android:ellipsize="marquee"
                 android:text="@string/app_label"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/white"
@@ -46,28 +36,24 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/heading"
-                android:text="Album"
+                android:layout_below="@+id/textTitle"
+                android:text="@string/album"
                 android:maxLines="1"
                 android:textColor="@color/whiteOpaque"
-                android:id="@+id/textalbum"
-                android:layout_alignLeft="@+id/heading"
-                android:layout_alignStart="@+id/heading"
-                android:layout_toLeftOf="@+id/lin"
+                android:id="@+id/textAlbum"
+                android:layout_alignStart="@+id/textTitle"
                 android:layout_toStartOf="@+id/lin" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textalbum"
-                android:layout_toLeftOf="@+id/lin"
-                android:layout_alignLeft="@+id/heading"
-                android:layout_alignStart="@+id/heading"
+                android:layout_below="@+id/textAlbum"
+                android:layout_toStartOf="@+id/lin"
+                android:layout_alignStart="@+id/textTitle"
                 android:textColor="@color/whiteOpaque"
                 android:maxLines="1"
-                android:layout_marginTop="2dp"
-                android:text="Artist"
-                android:id="@+id/texttime" />
+                android:text="@string/artist"
+                android:id="@+id/textArtist" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -75,7 +61,7 @@
                 android:id="@+id/lin"
                 android:layout_marginBottom="2dp"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:weightSum="3">
 
                 <ImageView
@@ -107,8 +93,6 @@
                     android:src="@drawable/app_next" />
 
             </LinearLayout>
-
-        </RelativeLayout>
 
     </RelativeLayout>
 

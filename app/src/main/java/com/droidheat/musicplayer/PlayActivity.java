@@ -187,6 +187,12 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         btnNext.setOnClickListener(this);
         btnPrev.setOnClickListener(this);
         btnRepeat.setOnClickListener(this);
+        findViewById(R.id.addToPlayListImageView).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                songsManager.addToPlaylist(songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID",0)));
+            }
+        });
 //        btnShuffle.setOnClickListener(this);
 
         setGraphics();
@@ -276,6 +282,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
          * Setting TextViews
          */
         title.setText(sharedPrefsUtils.readSharedPrefsString("title","Title"));
+        title.setSelected(true);
         album.setText(sharedPrefsUtils.readSharedPrefsString("album","Album"));
 
         /*

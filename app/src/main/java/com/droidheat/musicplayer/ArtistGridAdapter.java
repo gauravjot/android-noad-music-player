@@ -121,11 +121,11 @@ class ArtistGridAdapter extends BaseAdapter {
         return gridView;
     }
 
-//    private void getAlbumCover(final List albumSongs, final ImageView imageView, final int i, final int max) {
+//    private void getAlbumCover(final List songsList, final ImageView imageView, final int i, final int max) {
 //        if (i < max) {
 //            Uri sArtworkUri = Uri
 //                    .parse("content://media/external/audio/albumart");
-//            Uri uri = ContentUris.withAppendedId(sArtworkUri, Long.parseLong(albumSongs.get(i).toString()));
+//            Uri uri = ContentUris.withAppendedId(sArtworkUri, Long.parseLong(songsList.get(i).toString()));
 //            Picasso.with(context).load(uri).placeholder(R.drawable.unknown_artist)
 //                    .into(imageView, new Callback() {
 //                        @Override
@@ -135,13 +135,13 @@ class ArtistGridAdapter extends BaseAdapter {
 //
 //                        @Override
 //                        public void onError() {
-//                            getAlbumCover(albumSongs, imageView, i + 1, max);
+//                            getAlbumCover(songsList, imageView, i + 1, max);
 //                        }
 //                    });
 //        } else if (i == max) {
 //            Uri sArtworkUri = Uri
 //                    .parse("content://media/external/audio/albumart");
-//            Uri uri = ContentUris.withAppendedId(sArtworkUri, Long.parseLong(albumSongs.get(i).toString()));
+//            Uri uri = ContentUris.withAppendedId(sArtworkUri, Long.parseLong(songsList.get(i).toString()));
 //            Picasso.with(context).load(uri)
 //                    .placeholder(R.drawable.unknown_artist).into(imageView);
 //        }

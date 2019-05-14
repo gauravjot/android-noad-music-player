@@ -84,7 +84,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
 
     private final String TAG = "PlaybackServiceConsole";
 
-    private int musicID = 0;
+    private int musicID = -1;
 
     private Equalizer eq = null;
     private BassBoost bassBoost;
@@ -131,6 +131,9 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                 }
             } catch (Exception e) {
                 Log.d(TAG,"Intent received by PlaybackService. No musicID found.");
+            }
+            if (musicID == -1) {
+                musicID = sharedPrefsUtils.readSharedPrefsInt("musicID",0);
             }
             try {
                 if (Objects.requireNonNull(intent.getExtras()).containsKey("isPlayFromLastLeft")) {
@@ -216,8 +219,10 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     private void doPushPlay() {
         mMediaPlayer.reset();
         String path2 = songsManager.queue().get(musicID).getPath();
-
         setGraphics();
+        if (successfullyRetrievedAudioFocus()) {
+            return;
+        }
         showPlayingNotification();
         setMediaPlayer(path2);
     }
@@ -302,6 +307,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         }
 
         Log.d(TAG,"Processing Play Request for musicID " + index);
+
 
         setGraphics();
         showPlayingNotification();
