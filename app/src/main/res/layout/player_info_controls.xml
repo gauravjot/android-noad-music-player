@@ -79,7 +79,7 @@
             android:layout_height="48dp"
             android:src="@drawable/app_add_playlist"
             android:tint="@color/white"
-            android:padding="6dp"
+            android:padding="10dp"
             android:id="@+id/addToPlayListImageView"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
@@ -208,8 +208,8 @@
                     android:gravity="center">
 
                     <com.droidheat.musicplayer.Icon
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="54dp"
+                        android:layout_height="54dp"
                         android:layout_alignEnd="@+id/play"
                         android:layout_alignStart="@+id/play"
                         android:background="@drawable/thumb" />
