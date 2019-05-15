@@ -114,9 +114,13 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         initMediaSession();
         initNoisyReceiver();
 
-        eq = new Equalizer(0, mMediaPlayer.getAudioSessionId());
-        bassBoost = new BassBoost(0, mMediaPlayer.getAudioSessionId());
-        virtualizer = new Virtualizer(0, mMediaPlayer.getAudioSessionId());
+        try {
+            eq = new Equalizer(0, mMediaPlayer.getAudioSessionId());
+            bassBoost = new BassBoost(0, mMediaPlayer.getAudioSessionId());
+            virtualizer = new Virtualizer(0, mMediaPlayer.getAudioSessionId());
+        } catch (Exception e) {
+            (new CommonUtils(this)).showTheToast("Unable to run Equalizer");
+        }
     }
 
     @Override
@@ -521,7 +525,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         builder.addAction(new NotificationCompat.Action(R.drawable.app_next,
                 "Next", MediaButtonReceiver.buildMediaButtonPendingIntent(this, PlaybackStateCompat.ACTION_SKIP_TO_NEXT)));
         builder.setStyle(new MediaStyle().setShowActionsInCompactView(0).setMediaSession(mMediaSessionCompat.getSessionToken()));
-        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setSmallIcon(R.drawable.ic_music_note_black_24dp);
         builder.setStyle(new MediaStyle()
                 .setShowActionsInCompactView(1,2).setMediaSession(getSessionToken()));
         builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), 0));
@@ -549,7 +553,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         builder.addAction(new NotificationCompat.Action(R.drawable.app_next,
                 "Next", MediaButtonReceiver.buildMediaButtonPendingIntent(this, PlaybackStateCompat.ACTION_SKIP_TO_NEXT)));
         builder.setStyle(new MediaStyle().setShowActionsInCompactView(0).setMediaSession(mMediaSessionCompat.getSessionToken()));
-        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setSmallIcon(R.drawable.ic_music_note_black_24dp);
         builder.setStyle(new MediaStyle()
                 .setShowActionsInCompactView(1,2).setMediaSession(getSessionToken()));
         builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), 0));
@@ -709,6 +713,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     }
 
     private void setEqualizer() {
+        try {
         boolean isEqInSettings = sharedPrefsUtils.readSharedPrefsBoolean("turnEqualizer", false);
         if (isEqInSettings) {
             eq.setEnabled(true);
@@ -718,6 +723,9 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
             eq.setEnabled(false);
             bassBoost.setEnabled(false);
             virtualizer.setEnabled(false);
+        } }
+        catch (Exception e) {
+            e.printStackTrace();
         }
         try {
         bassBoost.setStrength((short) sharedPrefsUtils.readSharedPrefsInt("basslevel", 0));}
@@ -726,9 +734,12 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         virtualizer.setStrength((short) sharedPrefsUtils.readSharedPrefsInt("vzlevel", 0));}
         catch (Exception ignored) {}
 
-        for (int i = 0; i < eq.getNumberOfBands(); i++) {
-            eq.setBandLevel((short) i, (short) sharedPrefsUtils.readSharedPrefsInt(i + "",0));
+        try {
+            for (int i = 0; i < eq.getNumberOfBands(); i++) {
+                eq.setBandLevel((short) i, (short) sharedPrefsUtils.readSharedPrefsInt(i + "",0));
+            }
         }
+        catch (Exception ignored) {}
     }
 
     void addVoteToTrack(String path) {

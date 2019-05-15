@@ -1,10 +1,8 @@
 package com.droidheat.musicplayer;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.audiofx.BassBoost;
-import android.media.audiofx.DynamicsProcessing;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.Virtualizer;
 import android.os.Bundle;
@@ -19,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -35,12 +32,16 @@ import android.widget.Toast;
 public class SettingsActivity extends PreferenceActivity {
 
     private AppCompatDelegate mDelegate;
+    SharedPrefsUtils sharedPrefsUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
+
+
+        sharedPrefsUtils = new SharedPrefsUtils(getApplicationContext());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -60,23 +61,25 @@ public class SettingsActivity extends PreferenceActivity {
                 @Override
                 public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                                       String key) {
-                    if (key.equals("speakerEqualizer") || key.equals("setTabs")) {
-                        Toast.makeText(getApplicationContext(),"Feature not yet available!",
-                                Toast.LENGTH_SHORT).show();
-                    } else if (key.equals("excludeShortSounds") || key.equals("excludeWhatsAppSounds")){
-                        SongsManager songsManager = new SongsManager(SettingsActivity.this);
-                        songsManager.sync();
-                    }
-                    else if (key.equals("turnEqualizer")) {
-                        if (MusicPlayback.mMediaPlayer != null && MusicPlayback.mMediaSessionCompat.isActive()) {
-                            SharedPrefsUtils sharedPrefsUtils = new SharedPrefsUtils(SettingsActivity.this);
-                            Equalizer eq = new Equalizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id",0));
-                            BassBoost bassBoost = new BassBoost(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id",0));
-                            Virtualizer virtualizer = new Virtualizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id",0));
-                            bassBoost.setEnabled(sharedPreferences.getBoolean("turnEqualizer",false));
-                            virtualizer.setEnabled(sharedPreferences.getBoolean("turnEqualizer",false));
-                            eq.setEnabled(sharedPreferences.getBoolean("turnEqualizer",false));
-                        }
+
+                    SongsManager songsManager = new SongsManager(SettingsActivity.this);
+                    switch (key) {
+                        case "excludeShortSounds":
+                            songsManager.sync();
+                            break;
+                        case "excludeWhatsAppSounds":
+                            songsManager.sync();
+                            break;
+                        case "turnEqualizer":
+                            if (MusicPlayback.mMediaPlayer != null && MusicPlayback.mMediaSessionCompat.isActive()) {
+                                Equalizer eq = new Equalizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
+                                BassBoost bassBoost = new BassBoost(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
+                                Virtualizer virtualizer = new Virtualizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
+                                bassBoost.setEnabled(sharedPreferences.getBoolean("turnEqualizer", false));
+                                virtualizer.setEnabled(sharedPreferences.getBoolean("turnEqualizer", false));
+                                eq.setEnabled(sharedPreferences.getBoolean("turnEqualizer", false));
+                            }
+                            break;
                     }
                 }
             };

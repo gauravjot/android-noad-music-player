@@ -9,6 +9,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
@@ -126,6 +130,13 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         imgFav = findViewById(R.id.imageFav);
         frag = findViewById(R.id.fragment);
         songsManager = new SongsManager(this);
+
+            LayerDrawable progressBarDrawable = (LayerDrawable) seek_bar.getProgressDrawable();
+            Drawable progressDrawable = progressBarDrawable.getDrawable(1);
+
+            progressDrawable.setColorFilter(ContextCompat.getColor(this, Color.parseColor(
+                    sharedPrefsUtils.readSharedPrefsString("accentColor", "#FB395C")
+            )), PorterDuff.Mode.SRC_IN);
 
         imageResIds = new Integer[songsManager.queue().size()];
 

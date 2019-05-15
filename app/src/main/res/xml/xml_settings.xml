@@ -2,13 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.jenzz.materialpreference.PreferenceCategory android:title="General">
-
-        <com.jenzz.materialpreference.CheckBoxPreference
-            android:id="@+id/headsetCheckBox"
-            android:key="playOnHeadset"
-            android:summary="Start playing music when headset connected"
-            android:title="Headset" />
+    <com.jenzz.materialpreference.PreferenceCategory
+        android:title="General">
 
         <com.jenzz.materialpreference.SwitchPreference
             android:id="@+id/ExcludeCheckBox"
@@ -22,12 +17,6 @@
             android:summary="Exclude WhatsApp folder music files"
             android:title="Exclude WhatsApp Sounds" />
 
-        <com.jenzz.materialpreference.Preference
-            android:id="@+id/setTabs"
-            android:enabled="false"
-            android:key="setTabs"
-            android:summary="Arrange tabs such as songs, albums and artists in your library"
-            android:title="Arrange Library tabs" />
     </com.jenzz.materialpreference.PreferenceCategory>
 
     <com.jenzz.materialpreference.PreferenceCategory android:title="Equalizer">
@@ -36,13 +25,6 @@
             android:key="turnEqualizer"
             android:summary="Enable equalizer for songs"
             android:title="Equalizer" />
-
-        <com.jenzz.materialpreference.CheckBoxPreference
-            android:id="@+id/equalizerWithSpeakers"
-            android:enabled="false"
-            android:key="speakerEqualizer"
-            android:summary="Keep Equalizer enabled even without headset."
-            android:title="Equalizer on Speakers" />
 
     </com.jenzz.materialpreference.PreferenceCategory>
 

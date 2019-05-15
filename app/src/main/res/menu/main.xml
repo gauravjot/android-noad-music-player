@@ -20,10 +20,15 @@
         app:showAsAction="never"
         android:title="Set Sleep Timer"/>
 
+
     <item
         android:id="@+id/sync"
         app:showAsAction="never"
         android:title="Sync Music" />
+
+    <item android:id="@+id/changeTheme"
+        app:showAsAction="never"
+        android:title="Change Theme"/>
 
     <item
         android:id="@+id/settings"

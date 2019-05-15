@@ -1,5 +1,6 @@
 package com.droidheat.musicplayer;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -12,6 +13,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -100,15 +103,55 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_searchBtn) {
-            Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.sleep_timer) {
-            startActivity(new Intent(this, TimerActivity.class));
-        } else if (id == R.id.sync) {
-            startActivity(new Intent(this, SplashActivity.class).putExtra("sync", true));
-        } else if (id == R.id.settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
+        switch (id) {
+            case R.id.action_searchBtn:
+                Intent intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.sleep_timer:
+                startActivity(new Intent(this, TimerActivity.class));
+                break;
+            case R.id.sync:
+                startActivity(new Intent(this, SplashActivity.class).putExtra("sync", true));
+                break;
+            case R.id.settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.changeTheme:
+                final SharedPrefsUtils sharedPrefsUtils = new SharedPrefsUtils(this);
+                final Dialog dialog = new Dialog(this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.choose_accent_color);
+                dialog.findViewById(R.id.orange).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sharedPrefsUtils.writeSharedPrefs("accentColor","#F44336");
+                        dialog.cancel();
+                    }
+                });
+                dialog.findViewById(R.id.cyan).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sharedPrefsUtils.writeSharedPrefs("accentColor","#03A9F4");
+                        dialog.cancel();
+                    }
+                });
+                dialog.findViewById(R.id.green).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sharedPrefsUtils.writeSharedPrefs("accentColor","#4CAF50");
+                        dialog.cancel();
+                    }
+                });
+                dialog.findViewById(R.id.yellow).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sharedPrefsUtils.writeSharedPrefs("accentColor","#FF9800");
+                        dialog.cancel();
+                    }
+                });
+                dialog.show();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
