@@ -94,7 +94,7 @@ class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
         if (songPath.equals(sharedPrefsUtils.readSharedPrefsString("raw_path",null))
                 && position == sharedPrefsUtils.readSharedPrefsInt("musicID",0)) {
-            holder.rel.setBackgroundColor(res.getColor(R.color.accentColor));
+            holder.rel.setBackgroundColor(res.getColor((new CommonUtils(activity)).accentColor(new SharedPrefsUtils(activity))));
             holder.text1.setText("Playing");
         } else {
             holder.rel.setBackgroundColor(res.getColor(R.color.playerControlsBackground));

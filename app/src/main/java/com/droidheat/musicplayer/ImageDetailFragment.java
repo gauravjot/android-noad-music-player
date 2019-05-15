@@ -33,9 +33,7 @@ public class ImageDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // image_detail_fragment.xml contains just an ImageView
-        final View v = inflater.inflate(R.layout.custom_album_art, container, false);
+                             Bundle savedInstanceState) {        final View v = inflater.inflate(R.layout.custom_album_art, container, false);
         mImageView = v.findViewById(R.id.imageView);
         return v;
     }

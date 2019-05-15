@@ -100,11 +100,11 @@
                     android:layout_height="48dp"
                     android:layout_margin="16dp"
                     android:clickable="true"
-                    android:src="@drawable/ic_play_arrow_black_24dp"
+                    android:src="@drawable/app_play"
+                    app:maxImageSize="24dp"
                     android:tint="@android:color/white"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    app:layout_anchorGravity="bottom|right|end" />
+                    android:layout_alignParentEnd="true" />
 
             </RelativeLayout>
 

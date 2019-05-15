@@ -13,7 +13,7 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_centerVertical="true"
-        android:background="@drawable/ic_launcher_bw"
+        android:background="@drawable/ic_music_notes_padded"
         android:contentDescription="@string/hello_world"
         android:descendantFocusability="blocksDescendants"
         android:scaleType="centerCrop" />

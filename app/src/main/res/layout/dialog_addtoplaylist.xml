@@ -34,7 +34,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_margin="12dp"
-                android:src="@drawable/ic_playlist_add_black_48dp"
+                android:src="@drawable/app_add_playlist"
                 android:tint="@android:color/white"
                 android:background="?attr/selectableItemBackground"
                 android:layout_alignParentEnd="true"

@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
+import android.graphics.Outline;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -36,6 +36,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewOutlineProvider;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -56,33 +57,32 @@ import java.util.concurrent.TimeUnit;
 
 public class PlayActivity extends AppCompatActivity implements OnClickListener, QueueFragment.MyFragmentCallbackOne {
 
-    ImageView btnPlay;
-    ImageView btnNext;
-    ImageView btnPrev, imgFav;
-    TextView title, album, leftTime, rightTime;
-    ImageView btnRepeat;
-    ViewPager albumArt;
-    SeekBar seek_bar;
-    Handler seekHandler = new Handler();
-    Context mContext;
-    Runnable run = new Runnable() {
+    private ImageView btnPlay;
+    private ImageView btnNext;
+    private ImageView btnPrev, imgFav;
+    private TextView title, album, leftTime, rightTime;
+    private ImageView btnRepeat;
+    private ViewPager albumArt;
+    private SeekBar seek_bar;
+    private Handler seekHandler = new Handler();
+    private Context mContext;
+    private Runnable run = new Runnable() {
         @Override
         public void run() {
             seekUpdation();
         }
     };
-    boolean isFragment = false;
-    View frag;
-    boolean isFavourite;
-    int favChange = 0;
+    private boolean isFragment = false;
+    private View frag;
+    private boolean isFavourite;
 
-    boolean playButton = false;
-    SongsManager songsManager;
+    private boolean playButton = false;
+    private SongsManager songsManager;
 
-    Integer[] imageResIds;
-    ImagePagerAdapter mAdapter;
+    private Integer[] imageResIds;
+    private ImagePagerAdapter mAdapter;
 
-    String TAG = "PlayActivityConsole";
+    private String TAG = "PlayActivityConsole";
 
     private MediaBrowserCompat mMediaBrowser;
     private PlaybackStateCompat mLastPlaybackState;
@@ -99,6 +99,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     private ScheduledFuture<?> mScheduleFuture;
     private final Handler mHandler = new Handler();
 
+    int accentColor;
+
     SharedPrefsUtils sharedPrefsUtils;
 
 
@@ -108,15 +110,24 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_layout_v2);
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(MusicPlayback.PLAYACTION_GRAPHIC);
-        registerReceiver(receiver, filter);
-
-        sharedPrefsUtils = new SharedPrefsUtils(this);
-
         mContext = this;
+        sharedPrefsUtils = new SharedPrefsUtils(this);
+        songsManager = new SongsManager(this);
 
-        // Getting Elements
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle("");
+        }
+
+        mMediaBrowser = new MediaBrowserCompat(this,
+                new ComponentName(this, MusicPlayback.class), mConnectionCallback, null);
+
+        /*
+         * Getting View Elements
+         */
         title = findViewById(R.id.title);
         album = findViewById(R.id.album);
         btnPlay = findViewById(R.id.play);
@@ -129,24 +140,40 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         btnRepeat = findViewById(R.id.repeat);
         imgFav = findViewById(R.id.imageFav);
         frag = findViewById(R.id.fragment);
-        songsManager = new SongsManager(this);
 
-            LayerDrawable progressBarDrawable = (LayerDrawable) seek_bar.getProgressDrawable();
-            Drawable progressDrawable = progressBarDrawable.getDrawable(1);
+        /*
+         * This receiver registers for event when song is changed so we can update UI
+         */
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MusicPlayback.PLAYACTION_GRAPHIC);
+        registerReceiver(receiver, filter);
 
-            progressDrawable.setColorFilter(ContextCompat.getColor(this, Color.parseColor(
-                    sharedPrefsUtils.readSharedPrefsString("accentColor", "#FB395C")
-            )), PorterDuff.Mode.SRC_IN);
 
+        /*
+         * Getting and Setting accent color chosen by user
+         */
+        accentColor = (new CommonUtils(this).accentColor(sharedPrefsUtils));
+
+        (findViewById(R.id.play_bg)).setBackgroundResource(accentColor);
+        (findViewById(R.id.play_activity_bg)).setBackgroundResource(accentColor);
+
+
+        (findViewById(R.id.play_bg)).setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                outline.setRoundRect(0, 0, view.getWidth(), Math.round(view.getHeight()), 200F);
+            }
+        });
+        (findViewById(R.id.play_bg)).setClipToOutline(true);
+        LayerDrawable progressBarDrawable = (LayerDrawable) seek_bar.getProgressDrawable();
+        Drawable progressDrawable = progressBarDrawable.getDrawable(1);
+        progressDrawable.setColorFilter(ContextCompat.getColor(this, accentColor),
+                    PorterDuff.Mode.SRC_IN);
+
+        /*
+         * Album Art Viewpager
+         */
         imageResIds = new Integer[songsManager.queue().size()];
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle("");
-        }
 
         for (int i = 0; i < songsManager.queue().size(); i++) {
             imageResIds[i] = Integer.parseInt(songsManager.queue().get(i).getAlbumID());
@@ -180,20 +207,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
             }
         });
 
-//        if (sharedpreferences.getBoolean("shuffle", false)) {
-//            btnShuffle.setColorFilter(ContextCompat.getColor(this, R.color.actionBar));
-//            MusicPlayback.isShuffle = true;
-//        }
-        if (sharedPrefsUtils.readSharedPrefsBoolean("repeat", true)) {
-            btnRepeat.setColorFilter(ContextCompat.getColor(this, R.color.actionBar));
-        }
-
-        if (!getResources().getBoolean(R.bool.isLandscape)) {
-            isFragment = false;
-            frag.setVisibility(View.GONE);
-        }
-
-        // Setting Buttons
+        /*
+         * Setting Buttons
+         */
         btnPlay.setOnClickListener(this);
         btnNext.setOnClickListener(this);
         btnPrev.setOnClickListener(this);
@@ -204,10 +220,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                 songsManager.addToPlaylist(songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID",0)));
             }
         });
-//        btnShuffle.setOnClickListener(this);
-
-        setGraphics();
-
         imgFav.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,8 +227,16 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
             }
         });
 
-        mMediaBrowser = new MediaBrowserCompat(this,
-                new ComponentName(this, MusicPlayback.class), mConnectionCallback, null);
+        /*
+         * Setting UI Graphics
+         */
+        setGraphics();
+
+        /*
+         * Hiding Songs Queue
+         */
+        isFragment = false;
+        frag.setVisibility(View.GONE);
     }
 
     @Override
@@ -249,27 +269,23 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
     public void setGraphics() {
-
-        favChange = 0;
-
         if (getIndex(sharedPrefsUtils.readSharedPrefsString("raw_path", null)) != -1) {
-            imgFav.setColorFilter(ContextCompat.getColor(this, R.color.accentColor));
+            imgFav.setColorFilter(ContextCompat.getColor(this, accentColor));
             isFavourite = true;
         } else {
             imgFav.setColorFilter(null);
             isFavourite = false;
         }
         if (sharedPrefsUtils.readSharedPrefsBoolean("repeat",false)) {
-            btnRepeat.setColorFilter(ContextCompat.getColor(this, R.color.accentColor));
+            btnRepeat.setColorFilter(ContextCompat.getColor(this, accentColor));
         }
         else {
             btnRepeat.setColorFilter(null);
             sharedPrefsUtils.writeSharedPrefs("repeat",false);
         }
 
-        /* ******************
+        /*
          * Setting ImageViews
          */
         if (albumArt.getCurrentItem() != sharedPrefsUtils.readSharedPrefsInt("musicID",0)) {
@@ -289,7 +305,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         }
 
 
-        /* ******************
+        /*
          * Setting TextViews
          */
         title.setText(sharedPrefsUtils.readSharedPrefsString("title","Title"));
@@ -297,20 +313,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         album.setText(sharedPrefsUtils.readSharedPrefsString("album","Album"));
 
         /*
-         * Queue Fragment Scroll
-         */
-//        final Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                // Do something after 5s = 5000ms
-//                QueueFragment queueFragment = (QueueFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-//                queueFragment.adapter.notifyDataSetChanged();
-//            }
-//        }, 300);
-
-        /* ******************
-         * Seek Bar Graphics
+         * Seek Bar
          */
         String totalDuration = songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID",0)).getDuration();
         rightTime.setText(totalDuration);
@@ -376,46 +379,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         }
     };
 
-//    public void playColors() {
-//        Thread background = new Thread(new Runnable() {
-//            public void run() {
-//                int a;
-//                try {
-//                    ImageColor img = new ImageColor(
-//                            Bitmap.createScaledBitmap(MusicPlayback.FinalArt, 150, 150, false));
-//                    a = img.getColour();
-//                } catch (Exception e) {
-//                    a = getDominantColor(Bitmap.createScaledBitmap(MusicPlayback.FinalArt, 150, 150, false));
-//                }
-//                float[] hsb = new float[3];
-//                Color.colorToHSV(a, hsb);
-//
-//                float brightness = hsb[2];
-//
-//                if (brightness < 0.5) {
-//                    hsb[2] = hsb[2] + (hsb[2] * 10 / 100);
-//                } else {
-//                    hsb[2] = hsb[2] - (hsb[2] * 40 / 100);
-//                }
-//
-//                final int z = Color.HSVToColor(hsb);
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                            Window window = getWindow();
-//                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//                            window.setStatusBarColor(z);
-//                        }
-//                    }
-//                });
-//
-//            }
-//        });
-//        background.start();
-//    }
-
-
     private void doItMyFav() {
 
         FavouriteList db = new FavouriteList(PlayActivity.this);
@@ -426,7 +389,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                 SongModel hashMap = songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID",0));
                 if (songsManager.addToFavouriteSongs(hashMap)) {
 
-                    imgFav.setColorFilter(ContextCompat.getColor(this, R.color.accentColor));
+                    imgFav.setColorFilter(ContextCompat.getColor(this, accentColor));
                     isFavourite = true;
                     (new CommonUtils(this)).showTheToast("Favourite Added!");
                 } else {
@@ -451,9 +414,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                 (new CommonUtils(this)).showTheToast("Unable to Remove Favourite!");
             }
         }
-        favChange += 1;
         db.close();
-
     }
 
 
@@ -476,7 +437,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                 (new CommonUtils(this)).showTheToast("Repeat Off");
                 sharedPrefsUtils.writeSharedPrefs("repeat",false);
             } else {
-                btnRepeat.setColorFilter(ContextCompat.getColor(this, R.color.accentColor));
+                btnRepeat.setColorFilter(ContextCompat.getColor(this, accentColor));
                 (new CommonUtils(this)).showTheToast("Repeat On");
                 sharedPrefsUtils.writeSharedPrefs("repeat",true);
             }

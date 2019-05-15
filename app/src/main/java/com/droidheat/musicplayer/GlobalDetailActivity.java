@@ -1,6 +1,7 @@
 package com.droidheat.musicplayer;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -38,6 +39,13 @@ public class GlobalDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.anim_toolbar);
         setSupportActionBar(toolbar);
 
+        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+
+        int accentColor = (new CommonUtils(this)).accentColor(new SharedPrefsUtils(this));
+
+        ((TextView) findViewById(R.id.category)).setTextColor(ContextCompat.getColor(this,accentColor));
+        floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this,accentColor)));
+
         performBackgroundTasks = new PerformBackgroundTasks();
 
 
@@ -59,7 +67,6 @@ public class GlobalDetailActivity extends AppCompatActivity {
                 .setText("total tracks: " + songsList.size() +
                 ", playback time: " + getPlayBackTime(songsList) + " mins");
 
-        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

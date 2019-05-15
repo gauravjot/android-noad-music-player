@@ -15,4 +15,24 @@ class CommonUtils {
     void showTheToast(String string) {
         Toast.makeText(context, string, Toast.LENGTH_SHORT).show();
     }
+
+    int accentColor(SharedPrefsUtils sharedPrefsUtils) {
+        switch (sharedPrefsUtils.readSharedPrefsString("accentColor", "pink")) {
+            case "green":
+                return R.color.green;
+            case "orange":
+                return R.color.orange;
+            case "pink":
+                return R.color.pink;
+            case "cyan":
+                return R.color.cyan;
+            case "yellow":
+                return R.color.yellow;
+            case "purple":
+                return R.color.purple;
+            default:
+                return R.color.pink;
+
+        }
+    }
 }

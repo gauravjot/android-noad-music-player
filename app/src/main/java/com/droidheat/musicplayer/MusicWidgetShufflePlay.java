@@ -60,9 +60,9 @@ public class MusicWidgetShufflePlay extends AppWidgetProvider {
 
             try {
                 if (MusicPlayback.mMediaSessionCompat.getController().getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING) {
-                    views.setImageViewResource(R.id.imageView3, R.drawable.ic_pause_black_48dp);
+                    views.setImageViewResource(R.id.imageView3, R.drawable.app_pause);
                 } else {
-                    views.setImageViewResource(R.id.imageView3, R.drawable.ic_play_arrow_black_24dp);
+                    views.setImageViewResource(R.id.imageView3, R.drawable.app_play);
                 }
             }
             catch (Exception ignored) {

@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:minWidth="300dp"
     android:background="@color/dialogBackground">
 
     <TextView
@@ -34,6 +35,32 @@
             android:padding="16dp"
             android:layout_marginStart="8dp"
             android:id="@+id/cyan"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:weightSum="2">
+        <Button
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="#7856B6"
+            android:padding="16dp"
+            android:id="@+id/purple"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@color/accentColor"
+            android:padding="16dp"
+            android:layout_marginStart="8dp"
+            android:id="@+id/pink"
             android:layout_weight="1"/>
     </LinearLayout>
 

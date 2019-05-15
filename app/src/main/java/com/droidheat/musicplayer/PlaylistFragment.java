@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,8 @@ public class PlaylistFragment extends Fragment {
         TextView textView2 = Header2.findViewById(R.id.heading);
         textView2.setText("Created Playlists");
         Button addPlaylist = Header2.findViewById(R.id.button);
+        addPlaylist.setTextColor(ContextCompat.getColor(context,
+                (new CommonUtils(context)).accentColor(new SharedPrefsUtils(context))));
         addPlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

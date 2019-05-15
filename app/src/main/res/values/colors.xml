@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="unselected_text">#999</color>
+    <color name="ic_launcher_background">#00ffffff</color>
+
+    <color name="orange">#FF5722</color>
+    <color name="cyan">#03A9F4</color>
+    <color name="pink">#FB395C</color>
+    <color name="green">#4CAF50</color>
+    <color name="yellow">#FF9800</color>
+    <color name="purple">#7856B6</color>
 </resources>
