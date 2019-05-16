@@ -389,7 +389,9 @@ public class SongsManager {
     }
 
     void addToQueue(ArrayList<SongModel> arrayList) {
-        queue.addAll(arrayList);
+        ArrayList<SongModel> arrayList1 = new ArrayList<>(arrayList);
+        Collections.reverse(arrayList1);
+        queue.addAll(arrayList1);
     }
 
     void playNext(SongModel song) {

@@ -3,10 +3,11 @@
     <color name="unselected_text">#999</color>
     <color name="ic_launcher_background">#00ffffff</color>
 
-    <color name="orange">#FF5722</color>
+    <color name="orange">#ff7043</color>
     <color name="cyan">#03A9F4</color>
     <color name="pink">#FB395C</color>
-    <color name="green">#4CAF50</color>
-    <color name="yellow">#FF9800</color>
-    <color name="purple">#7856B6</color>
+    <color name="green">#9ccc65</color>
+    <color name="yellow">#ffca28</color>
+    <color name="purple">#ba68c8</color>
+    <color name="red">#ef5350</color>
 </resources>
