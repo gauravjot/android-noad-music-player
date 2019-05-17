@@ -58,6 +58,10 @@ public class QueueFragment extends Fragment implements QueueCustomAdapter.MyFrag
 
     }
 
+    public void notifyFragmentQueueUpdate() {
+        adapter.notifyDataSetChanged();
+    }
+
     interface MyFragmentCallbackOne {
         void viewPagerRefreshOne();
     }

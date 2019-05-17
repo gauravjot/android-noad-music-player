@@ -4,12 +4,15 @@ package com.droidheat.musicplayer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Outline;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,7 +37,9 @@ class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     @SuppressWarnings("rawtypes")
     QueueCustomAdapter(Activity a, ArrayList<SongModel> d, Resources resLocal) {
 
-        /********** Take passed values **********/
+        /*
+        * Take passed values
+        */
         activity = a;
         res = resLocal;
         songsManager = new SongsManager(a);
@@ -69,7 +74,9 @@ class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     @SuppressLint("SimpleDateFormat")
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
 
-        /***** Get each Model object from ArrayList ********/
+        /*
+        * Get each Model object from ArrayList
+        */
         SongModel tempValues = getItem(position);
         final String duration, artist, songName, title, finalTitle, songPath;
         String finalTitle1;
@@ -87,6 +94,14 @@ class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
         (new ImageUtils(activity)).getImageByPicasso(tempValues.getAlbumID(), holder.image);
 
+        holder.image.setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                outline.setRoundRect(0, 0, view.getWidth(), Math.round(view.getHeight()), 20F);
+            }
+        });
+        holder.image.setClipToOutline(true);
+
         holder.text.setText(finalTitle);
         holder.text1.setText(artist);
 
@@ -94,8 +109,7 @@ class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
         if (songPath.equals(sharedPrefsUtils.readSharedPrefsString("raw_path",null))
                 && position == sharedPrefsUtils.readSharedPrefsInt("musicID",0)) {
-            holder.rel.setBackgroundColor(res.getColor((new CommonUtils(activity)).accentColor(new SharedPrefsUtils(activity))));
-            holder.text1.setText("Playing");
+            holder.text.setTextColor(ContextCompat.getColor(activity,(new CommonUtils(activity)).accentColor(new SharedPrefsUtils(activity))));
         } else {
             holder.rel.setBackgroundColor(res.getColor(R.color.playerControlsBackground));
         }

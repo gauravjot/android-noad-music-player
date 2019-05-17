@@ -386,16 +386,18 @@ public class SongsManager {
 
     void addToQueue(SongModel song) {
         queue.add(song);
+        (new CommonUtils(context)).showTheToast("Added to current queue!");
     }
 
     void addToQueue(ArrayList<SongModel> arrayList) {
         ArrayList<SongModel> arrayList1 = new ArrayList<>(arrayList);
-        Collections.reverse(arrayList1);
         queue.addAll(arrayList1);
+        (new CommonUtils(context)).showTheToast("Added to current queue!");
     }
 
     void playNext(SongModel song) {
         queue.add(sharedPrefsUtils.readSharedPrefsInt("musicID",0) + 1, song);
+        (new CommonUtils(context)).showTheToast("Playing next: " + song.getTitle());
     }
 
     boolean replaceQueue(final ArrayList<SongModel> list) {
@@ -509,6 +511,7 @@ public class SongsManager {
         for (int i = arrayList.size() - 1; i >= 0; i--) {
             playNext(arrayList.get(i));
         }
+        (new CommonUtils(context)).showTheToast("Playing this list next!");
     }
 
     void addToPlaylist(final ArrayList<SongModel> arrayList) {
@@ -660,6 +663,7 @@ public class SongsManager {
             Collections.shuffle(arrayList);
             arrayList.add(0,songModel);
             play(0, arrayList);
+            (new CommonUtils(context)).showTheToast("Shuffling");
         }
     }
 
@@ -667,6 +671,7 @@ public class SongsManager {
         ArrayList<SongModel> data = new ArrayList<>(array);
         Collections.shuffle(data);
         play(0, data);
+        (new CommonUtils(context)).showTheToast("Shuffling");
     }
 
     void useAsRingtone() {

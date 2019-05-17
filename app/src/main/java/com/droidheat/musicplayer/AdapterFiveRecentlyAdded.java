@@ -159,7 +159,7 @@ class AdapterFiveRecentlyAdded extends BaseAdapter implements OnClickListener {
                             songsManager.addToPlaylist(data.get(position));
                             return true;
                         case R.id.shuffle_play_musicUtils:
-                            songsManager.shufflePlay(position, data);
+                            songsManager.shufflePlay(position, songsManager.newSongs());
                             return true;
                         case R.id.goto_album_musicUtils:
                             Intent intent = new Intent(activity, GlobalDetailActivity.class);

@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/ic_music_notes_padded"
+            android:scaleType="centerCrop"
             android:id="@+id/imageView1"/>
 
         <TextView
@@ -44,7 +45,7 @@
             android:layout_height="36dp"
             android:src="@drawable/ic_artists_black_24dp"
             android:tint="@color/whiteOpaque"
-            android:padding="4dp"
+            android:padding="5dp"
             android:layout_marginStart="12dp"
             android:layout_alignBottom="@+id/imageView1"
             android:id="@+id/imageView2"/>
@@ -79,6 +80,7 @@
                 <com.droidheat.musicplayer.Icon
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/ic_music_notes_padded"
                     android:id="@+id/imageView3"/>
 
@@ -101,7 +103,7 @@
                     android:layout_height="36dp"
                     android:src="@drawable/app_playlist"
                     android:tint="@color/whiteOpaque"
-                    android:padding="4dp"
+                    android:padding="6dp"
                     android:layout_marginStart="4dp"
                     android:layout_alignBottom="@+id/imageView3"
                     android:id="@+id/imageView5"/>
@@ -129,6 +131,7 @@
                     android:layout_width="match_parent"
                     android:src="@drawable/ic_music_notes_padded"
                     android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     android:id="@+id/imageView4"/>
 
                 <TextView
@@ -150,7 +153,7 @@
                     android:layout_height="36dp"
                     android:src="@drawable/app_playlist"
                     android:tint="@color/whiteOpaque"
-                    android:padding="4dp"
+                    android:padding="6dp"
                     android:layout_marginStart="4dp"
                     android:layout_alignBottom="@+id/imageView4"
                     android:id="@+id/imageView6"/>

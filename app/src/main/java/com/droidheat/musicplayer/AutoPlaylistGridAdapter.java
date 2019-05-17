@@ -108,8 +108,10 @@ class AutoPlaylistGridAdapter extends BaseAdapter {
                             return true;
                         case R.id.add_to_playlist_musicUtils:
                             songsManager.addToPlaylist(finalList);
+                            return true;
                         case R.id.shuffle_play_musicUtils:
                             songsManager.shufflePlay(finalList);
+                            return true;
                         default:
                             return false;
                     }

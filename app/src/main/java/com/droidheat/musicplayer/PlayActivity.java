@@ -372,10 +372,20 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         return -1;
     }
 
+    /*
+     * This receives a call from MusicPlayback when current track has been changed by another
+     * We will just change Graphical UI for current track
+     * and call a QueueFragment method and ask it to update as well
+     */
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             setGraphics();
+            QueueFragment queueFragment = (QueueFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+            if (queueFragment != null) {
+                queueFragment.notifyFragmentQueueUpdate();
+            }
         }
     };
 
