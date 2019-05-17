@@ -36,17 +36,14 @@
             android:name=".MusicPlayback"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.garaya.musicplayer.action.CLOSE" />
-                <action android:name="com.garaya.musicplayer.action.PLAYPAUSE" />
-                <action android:name="com.garaya.musicplayer.action.PLAY" />
-                <action android:name="com.garaya.musicplayer.action.PLAYPUSH" />
-                <action android:name="com.garaya.musicplayer.action.PLAYFAKE" />
-                <action android:name="com.garaya.musicplayer.action.PLAYSHUFFLE" />
-                <action android:name="com.garaya.musicplayer.action.PAUSE" />
-                <action android:name="com.garaya.musicplayer.action.REPEAT" />
-                <action android:name="com.garaya.musicplayer.action.SHUFFLE" />
-                <action android:name="com.garaya.musicplayer.action.TRACKPREV" />
-                <action android:name="com.garaya.musicplayer.action.TRACKNEXT" />
+                <action android:name="com.droidheat.musicplayer.action.CLOSE" />
+                <action android:name="com.droidheat.musicplayer.action.PLAY_PAUSE" />
+                <action android:name="com.droidheat.musicplayer.action.PLAY" />
+                <action android:name="com.droidheat.musicplayer.action.PLAY_PUSH" />
+                <action android:name="com.droidheat.musicplayer.action.PAUSE" />
+                <action android:name="com.droidheat.musicplayer.action.REPEAT" />
+                <action android:name="com.droidheat.musicplayer.action.TRACK_PREV" />
+                <action android:name="com.droidheat.musicplayer.action.TRACK_NEXT" />
                 <action android:name="android.intent.action.HEADSET_PLUG" />
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
                 <action android:name="android.media.AUDIO_BECOMING_NOISY" />

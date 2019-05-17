@@ -11,6 +11,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.text.SpannableString;
 import android.util.Log;
@@ -464,7 +465,7 @@ public class SongsManager {
                 replaceQueue(array);
                 Intent intent = new Intent(MusicPlayback.ACTION_PLAY);
                 intent.putExtra("musicID", id);
-                context.startService(createExplicitFromImplicitIntent(intent));
+                ContextCompat.startForegroundService(context,createExplicitFromImplicitIntent(intent));
 
             } else {
                 Toast.makeText(context,
@@ -493,7 +494,7 @@ public class SongsManager {
                         Intent intent = new Intent(MusicPlayback.ACTION_PLAY);
                         intent.putExtra("musicID", sharedPrefsUtils.readSharedPrefsInt("musicID", 0));
                         intent.putExtra("isPlayFromLastLeft", true);
-                        context.startService(createExplicitFromImplicitIntent(intent));
+                        ContextCompat.startForegroundService(context,createExplicitFromImplicitIntent(intent));
 
                     } else {
                         Toast.makeText(context,

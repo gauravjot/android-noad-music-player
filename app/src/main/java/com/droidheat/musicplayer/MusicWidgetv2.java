@@ -28,9 +28,9 @@ public class MusicWidgetv2 extends AppWidgetProvider {
             Intent playIntent = new Intent(context, MusicPlayback.class);
             Intent nextIntent = new Intent(context, MusicPlayback.class);
 
-            previousIntent.setAction(MusicPlayback.ACTION_TRACKPREV);
-            playIntent.setAction(MusicPlayback.ACTION_PLAYPAUSE);
-            nextIntent.setAction(MusicPlayback.ACTION_TRACKNEXT);
+            previousIntent.setAction(MusicPlayback.ACTION_TRACK_PREV);
+            playIntent.setAction(MusicPlayback.ACTION_PLAY_PAUSE);
+            nextIntent.setAction(MusicPlayback.ACTION_TRACK_NEXT);
 
             PendingIntent ppreviousIntent = PendingIntent.getService(context, 0,
                     previousIntent, 0);

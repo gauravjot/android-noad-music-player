@@ -145,7 +145,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
          * This receiver registers for event when song is changed so we can update UI
          */
         IntentFilter filter = new IntentFilter();
-        filter.addAction(MusicPlayback.PLAYACTION_GRAPHIC);
+        filter.addAction(MusicPlayback.PLAY_ACTIVITY_GRAPHICS);
         registerReceiver(receiver, filter);
 
 
@@ -194,7 +194,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
             @Override
             public void onPageSelected(int position) {
                 if (sharedPrefsUtils.readSharedPrefsInt("musicID",0) != position) {
-                    Intent intent = new Intent(MusicPlayback.ACTION_PLAYPUSH);
+                    Intent intent = new Intent(MusicPlayback.ACTION_PLAY_PUSH);
                     intent.putExtra("musicID", position);
                     Log.d(TAG, "PlayPushing musicID " + position);
                     startService(createExplicitFromImplicitIntent(PlayActivity.this, intent));
@@ -433,14 +433,14 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         super.onResume();
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(MusicPlayback.PLAYACTION_GRAPHIC);
+        filter.addAction(MusicPlayback.PLAY_ACTIVITY_GRAPHICS);
         registerReceiver(receiver, filter);
     }
 
     @Override
     public void onClick(View target) {
         if (target == btnPlay) {
-            startService(createExplicitFromImplicitIntent(this, new Intent(MusicPlayback.ACTION_PLAYPAUSE)));
+            startService(createExplicitFromImplicitIntent(this, new Intent(MusicPlayback.ACTION_PLAY_PAUSE)));
         } else if (target == btnRepeat) {
             if (sharedPrefsUtils.readSharedPrefsBoolean("repeat",false)) {
                 btnRepeat.clearColorFilter();
@@ -770,7 +770,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
 
     public void onItemClick(int mPosition) {
         if (mPosition != sharedPrefsUtils.readSharedPrefsInt("musicID",0)) {
-            Intent intent = new Intent(MusicPlayback.ACTION_PLAYPUSH);
+            Intent intent = new Intent(MusicPlayback.ACTION_PLAY_PUSH);
             intent.putExtra("musicID", mPosition);
             startService(createExplicitFromImplicitIntent(this, intent));
         }

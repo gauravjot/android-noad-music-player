@@ -29,11 +29,11 @@ public class MusicWidgetShufflePlay extends AppWidgetProvider {
             Intent nextIntent = new Intent(context, MusicPlayback.class);
 
 			if (MusicPlayback.mMediaSessionCompat.isActive()) {
-				previousIntent.setAction(MusicPlayback.ACTION_TRACKPREV);
+				previousIntent.setAction(MusicPlayback.ACTION_TRACK_PREV);
 
-				playIntent.setAction(MusicPlayback.ACTION_PLAYPAUSE);
+				playIntent.setAction(MusicPlayback.ACTION_PLAY_PAUSE);
 
-				nextIntent.setAction(MusicPlayback.ACTION_TRACKNEXT);
+				nextIntent.setAction(MusicPlayback.ACTION_TRACK_NEXT);
 			}
 			else {
 				previousIntent.setClass(context,SplashActivity.class);

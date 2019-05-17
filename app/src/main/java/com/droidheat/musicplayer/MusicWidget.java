@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.widget.RemoteViews;
 
@@ -26,11 +25,11 @@ public class MusicWidget extends AppWidgetProvider {
 		Intent previousIntent = new Intent(context, MusicPlayback.class);
 		Intent playIntent = new Intent(context, MusicPlayback.class);
 		Intent nextIntent = new Intent(context, MusicPlayback.class);
-		previousIntent.setAction(MusicPlayback.ACTION_TRACKPREV);
+		previousIntent.setAction(MusicPlayback.ACTION_TRACK_PREV);
 
-		playIntent.setAction(MusicPlayback.ACTION_PLAYPAUSE);
+		playIntent.setAction(MusicPlayback.ACTION_PLAY_PAUSE);
 
-		nextIntent.setAction(MusicPlayback.ACTION_TRACKNEXT);
+		nextIntent.setAction(MusicPlayback.ACTION_TRACK_NEXT);
 
 		PendingIntent pPreviousIntent = PendingIntent.getService(context, 0,
 				previousIntent, 0);

@@ -88,7 +88,7 @@ public class MusicDockFragment extends Fragment {
                 try {
                     if (MusicPlayback.mMediaSessionCompat.isActive()) {
                         Objects.requireNonNull(getActivity()).startService(
-                                songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_PLAYPAUSE)));
+                                songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_PLAY_PAUSE)));
                     } else {
                         songsManager.playFromLastLeft();
                     }
@@ -104,7 +104,7 @@ public class MusicDockFragment extends Fragment {
                 public void onClick(View v) {
                     if (!songsManager.queue().isEmpty()) {
                         Objects.requireNonNull(getActivity()).startService(
-                                songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_TRACKNEXT)));
+                                songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_TRACK_NEXT)));
                     }
                 }
             });
@@ -113,7 +113,7 @@ public class MusicDockFragment extends Fragment {
                 public void onClick(View v) {
                     if (!songsManager.queue().isEmpty()) {
                         Objects.requireNonNull(getActivity()).startService(
-                                songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_TRACKPREV)));
+                                songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_TRACK_PREV)));
                     }
                 }
             });
