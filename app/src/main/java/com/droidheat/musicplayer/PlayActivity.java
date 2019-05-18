@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.ColorStateList;
 import android.graphics.Outline;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -38,6 +39,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewOutlineProvider;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -65,7 +68,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     private ViewPager albumArt;
     private SeekBar seek_bar;
     private Handler seekHandler = new Handler();
-    private Context mContext;
     private Runnable run = new Runnable() {
         @Override
         public void run() {
@@ -110,7 +112,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_layout_v2);
 
-        mContext = this;
         sharedPrefsUtils = new SharedPrefsUtils(this);
         songsManager = new SongsManager(this);
 
@@ -161,7 +162,11 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         (findViewById(R.id.play_bg)).setOutlineProvider(new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
-                outline.setRoundRect(0, 0, view.getWidth(), Math.round(view.getHeight()), 200F);
+                if (view.getHeight() < 120) {
+                    outline.setRoundRect(0, 0, view.getWidth(), Math.round(view.getHeight()), 50F);
+                } else {
+                    outline.setRoundRect(0, 0, view.getWidth(), Math.round(view.getHeight()), 100F);
+                }
             }
         });
         (findViewById(R.id.play_bg)).setClipToOutline(true);
@@ -197,7 +202,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                     Intent intent = new Intent(MusicPlayback.ACTION_PLAY_PUSH);
                     intent.putExtra("musicID", position);
                     Log.d(TAG, "PlayPushing musicID " + position);
-                    startService(createExplicitFromImplicitIntent(PlayActivity.this, intent));
+                    ContextCompat.startForegroundService(PlayActivity.this,createExplicitFromImplicitIntent(PlayActivity.this, intent));
                 }
             }
 
@@ -440,7 +445,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void onClick(View target) {
         if (target == btnPlay) {
-            startService(createExplicitFromImplicitIntent(this, new Intent(MusicPlayback.ACTION_PLAY_PAUSE)));
+            ContextCompat.startForegroundService(this,createExplicitFromImplicitIntent(this, new Intent(MusicPlayback.ACTION_PLAY_PAUSE)));
         } else if (target == btnRepeat) {
             if (sharedPrefsUtils.readSharedPrefsBoolean("repeat",false)) {
                 btnRepeat.clearColorFilter();
@@ -451,7 +456,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                 (new CommonUtils(this)).showTheToast("Repeat On");
                 sharedPrefsUtils.writeSharedPrefs("repeat",true);
             }
-            startService(createExplicitFromImplicitIntent(this, new Intent(MusicPlayback.ACTION_REPEAT)));
+            ContextCompat.startForegroundService(this,createExplicitFromImplicitIntent(this, new Intent(MusicPlayback.ACTION_REPEAT)));
         }  else if (target == btnNext)
             if (sharedPrefsUtils.readSharedPrefsInt("musicID",0) < songsManager.queue().size()) {
                 albumArt.setCurrentItem(sharedPrefsUtils.readSharedPrefsInt("musicID",0) + 1);
@@ -598,6 +603,20 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                 break;
             default:
                 Log.d(TAG, "Unhandled state " + state.getState());
+            case PlaybackStateCompat.STATE_CONNECTING:
+                break;
+            case PlaybackStateCompat.STATE_ERROR:
+                break;
+            case PlaybackStateCompat.STATE_FAST_FORWARDING:
+                break;
+            case PlaybackStateCompat.STATE_REWINDING:
+                break;
+            case PlaybackStateCompat.STATE_SKIPPING_TO_NEXT:
+                break;
+            case PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS:
+                break;
+            case PlaybackStateCompat.STATE_SKIPPING_TO_QUEUE_ITEM:
+                break;
         }
     }
 
@@ -772,7 +791,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         if (mPosition != sharedPrefsUtils.readSharedPrefsInt("musicID",0)) {
             Intent intent = new Intent(MusicPlayback.ACTION_PLAY_PUSH);
             intent.putExtra("musicID", mPosition);
-            startService(createExplicitFromImplicitIntent(this, intent));
+            ContextCompat.startForegroundService(this,createExplicitFromImplicitIntent(this, intent));
         }
     }
 
@@ -815,8 +834,15 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
 
             final EditText input = alertDialog.findViewById(R.id.editText);
             input.requestFocus();
+            input.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this,(new CommonUtils(this)).accentColor(sharedPrefsUtils))));
 
-            alertDialog.findViewById(R.id.btnCreate).setOnClickListener(new View.OnClickListener() {
+            Button btnCreate = alertDialog.findViewById(R.id.btnCreate);
+            btnCreate.setTextColor(ContextCompat.getColor(this,(new CommonUtils(this)).accentColor(sharedPrefsUtils)));
+
+            Button btnCancel = alertDialog.findViewById(R.id.btnCancel);
+            btnCancel.setTextColor(ContextCompat.getColor(this,(new CommonUtils(this)).accentColor(sharedPrefsUtils)));
+
+            btnCreate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String name = input.getText().toString();
@@ -846,7 +872,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                 }
             });
 
-            alertDialog.findViewById(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {
+            btnCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     alertDialog.cancel();

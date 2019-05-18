@@ -2,7 +2,6 @@ package com.droidheat.musicplayer;
 
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -42,6 +41,16 @@ class ImageUtils {
         try {
             Picasso.get().load(getSongUri(Long.parseLong(albumID)))
                     .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
+                    .resize(400,400)
+                    .onlyScaleDown()
+                    .into(imageView);}
+        catch (Exception ignored) {}
+    }
+
+    void getFullImageByPicasso(String albumID, ImageView imageView) {
+        try {
+            Picasso.get().load(getSongUri(Long.parseLong(albumID)))
+                    .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
                     .into(imageView);}
         catch (Exception ignored) {}
     }
@@ -50,6 +59,8 @@ class ImageUtils {
         try {
             if (i < max) Picasso.get().load(getSongUri(Long.parseLong(albumSongs.get(i).toString())))
                     .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
+                    .resize(400,400)
+                    .onlyScaleDown()
                     .into(imageView, new Callback() {
                         @Override
                         public void onSuccess() {
@@ -75,6 +86,8 @@ class ImageUtils {
             if (i < max) {
                 Picasso.get().load(getSongUri(Long.parseLong(albumSongs.get(i).toString())))
                         .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
+                        .resize(400,400)
+                        .onlyScaleDown()
                         .into(imageView, new Callback() {
                             @Override
                             public void onSuccess() {
@@ -94,7 +107,7 @@ class ImageUtils {
         catch (Exception ignored) {}
     }
 
-    public Bitmap getAlbumArt(Long album_id) {
+    Bitmap getAlbumArt(Long album_id) {
         Bitmap albumArtBitMap = null;
         BitmapFactory.Options options = new BitmapFactory.Options();
         try {

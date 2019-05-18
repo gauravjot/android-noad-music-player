@@ -127,6 +127,8 @@ public class HomeActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         sharedPrefsUtils.writeSharedPrefs("accentColor","orange");
                         dialog.cancel();
+                        finish();
+                        startActivity(getIntent());
                     }
                 });
                 dialog.findViewById(R.id.cyan).setOnClickListener(new View.OnClickListener() {
@@ -134,6 +136,8 @@ public class HomeActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         sharedPrefsUtils.writeSharedPrefs("accentColor","cyan");
                         dialog.cancel();
+                        finish();
+                        startActivity(getIntent());
                     }
                 });
                 dialog.findViewById(R.id.green).setOnClickListener(new View.OnClickListener() {
@@ -141,6 +145,8 @@ public class HomeActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         sharedPrefsUtils.writeSharedPrefs("accentColor","green");
                         dialog.cancel();
+                        finish();
+                        startActivity(getIntent());
                     }
                 });
                 dialog.findViewById(R.id.yellow).setOnClickListener(new View.OnClickListener() {
@@ -148,6 +154,8 @@ public class HomeActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         sharedPrefsUtils.writeSharedPrefs("accentColor","yellow");
                         dialog.cancel();
+                        finish();
+                        startActivity(getIntent());
                     }
                 });
                 dialog.findViewById(R.id.pink).setOnClickListener(new View.OnClickListener() {
@@ -155,6 +163,8 @@ public class HomeActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         sharedPrefsUtils.writeSharedPrefs("accentColor","pink");
                         dialog.cancel();
+                        finish();
+                        startActivity(getIntent());
                     }
                 });
                 dialog.findViewById(R.id.purple).setOnClickListener(new View.OnClickListener() {
@@ -162,6 +172,26 @@ public class HomeActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         sharedPrefsUtils.writeSharedPrefs("accentColor","purple");
                         dialog.cancel();
+                        finish();
+                        startActivity(getIntent());
+                    }
+                });
+                dialog.findViewById(R.id.grey).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sharedPrefsUtils.writeSharedPrefs("accentColor","grey");
+                        dialog.cancel();
+                        finish();
+                        startActivity(getIntent());
+                    }
+                });
+                dialog.findViewById(R.id.red).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sharedPrefsUtils.writeSharedPrefs("accentColor","red");
+                        dialog.cancel();
+                        finish();
+                        startActivity(getIntent());
                     }
                 });
                 dialog.show();

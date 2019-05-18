@@ -107,8 +107,7 @@
     <color name="actionBar">#121212</color> <!--  #2196F3 -->
     <color name="actionBarSuperTrans">#22121212</color> <!-- #f1f1f1 -->
     <color name="actionBarTrans">#44121212</color> <!--  #442196F3 -->
-    <color name="accentColor">#FB395C</color> <!--  #03A9F4 -->
-    <color name="accentColorAlpha">#44FB395C</color> <!--  #617FDE -->
+    <color name="accentColor">#FFFFFF</color> <!--  #03A9F4 -->
     <color name="imageColorAlpha">#66000000</color> <!--  #66617FDE -->
     <color name="statusBar">#121212</color> <!--  #2a2c31 -->
     <color name="statusBarTrans">#cc121212</color> <!-- #552a2c31 -->
@@ -118,10 +117,6 @@
     <color name="progressBarBackground">#44ffffff</color>
     <color name="tabIndicatorColor">@color/accentColor</color>
     <color name="navigationBar">#121212</color>
-
-    <color name="gradient_1">#FC6E7A</color>
-    <color name="gradient_2">#FC0A85</color>
-    <color name="gradient_mid">#FB447A</color>
 
     <color name="textColorTitle">#ffffff</color>
     <color name="textColorSubTitle">#7E7E7C</color>

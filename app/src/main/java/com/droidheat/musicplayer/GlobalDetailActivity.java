@@ -1,5 +1,6 @@
 package com.droidheat.musicplayer;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.AsyncTask;
@@ -31,6 +32,7 @@ public class GlobalDetailActivity extends AppCompatActivity {
     PerformBackgroundTasks performBackgroundTasks = null;
     SongsManager songsManager;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +119,6 @@ public class GlobalDetailActivity extends AppCompatActivity {
      */
 
     public void setListData() {
-        SongsManager songsManager = new SongsManager(this);
         songsList.clear();
         switch (field) {
             case "albums":
@@ -137,6 +138,10 @@ public class GlobalDetailActivity extends AppCompatActivity {
             case "artists":
                 songsList.addAll(songsManager.artistSongs(raw));
                 ((TextView) findViewById(R.id.category)).setText("ARTIST");
+                break;
+            case "recent":
+                songsList.addAll(songsManager.newSongs());
+                ((TextView) findViewById(R.id.category)).setText("RECENTLY ADDED");
                 break;
             default:
                 songsList.addAll(songsManager.playlistSongs(Integer.parseInt(field)));

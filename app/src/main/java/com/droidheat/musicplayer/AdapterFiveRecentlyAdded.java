@@ -35,7 +35,7 @@ class AdapterFiveRecentlyAdded extends BaseAdapter implements OnClickListener {
     private ArrayList<SongModel> getData() {
         ArrayList<SongModel> newSongs = songsManager.newSongs();
         ArrayList<SongModel> list = new ArrayList<>();
-        int items = 15;
+        int items = 25;
         if (newSongs.size()> items) {
             for (int i = 0; i < items; i++) {
                 list.add(newSongs.get(i));

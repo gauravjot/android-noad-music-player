@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -12,6 +13,7 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,11 @@ public class SplashActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+        ProgressBar spinner = findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(
+                ContextCompat.getColor(this, (new CommonUtils(this).accentColor(new SharedPrefsUtils(this)))),
+                PorterDuff.Mode.MULTIPLY);
 
         if ((getIntent().getBooleanExtra("sync", false))) {
             SongsManager songsManager = new SongsManager(this);

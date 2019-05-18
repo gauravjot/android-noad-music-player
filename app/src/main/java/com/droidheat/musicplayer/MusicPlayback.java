@@ -72,7 +72,6 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     public static final String ACTION_CLOSE = "com.droidheat.musicplayer.action.CLOSE";
     public static final String ACTION_PLAY = "com.droidheat.musicplayer.action.PLAY";
     public static final String ACTION_PLAY_PAUSE = "com.droidheat.musicplayer.action.PLAY_PAUSE";
-    public static final String ACTION_PAUSE = "com.droidheat.musicplayer.action.PAUSE";
     public static final String ACTION_TRACK_PREV = "com.droidheat.musicplayer.action.TRACK_PREV";
     public static final String ACTION_TRACK_NEXT = "com.droidheat.musicplayer.action.TRACK_NEXT";
     public static final String ACTION_REPEAT = "com.droidheat.musicplayer.action.REPEAT";
@@ -83,7 +82,6 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     /******* ---------------------------------------------------------------
      Private
      ----------------------------------------------------------------*******/
-
 
     private final String TAG = "PlaybackServiceConsole";
 
@@ -113,27 +111,11 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         /*
          * Retrieve Queue from sharedPrefs
          */
-        Type type = new TypeToken<ArrayList<SongModel>>() {
-        }.getType();
-        queue = new Gson().fromJson(sharedPrefsUtils.readSharedPrefsString("key",null), type);
-        if (queue.isEmpty()) {
-            /*
-             * Should never be true but in case of a crash we will just put allSongs() in queue.
-             * We will also try to retrieve queue from SongsManager first to try reading queue
-             * before we alter it to default allSongs()
-             */
-            Log.d(TAG,"onCreate(): Unable to retrieve queue from sharedPrefs");
-            SongsManager songsManager = new SongsManager(this);
-            if (songsManager.queue().isEmpty()) {
-                Log.d(TAG,"onCreate(): Successfully retrieved queue from sharedPrefs on SongsManager attempt");
-                songsManager.replaceQueue(songsManager.allSongs());
-                queue = new ArrayList<>(songsManager.queue());
-            } else {
-                Log.d(TAG,"onCreate(): Switching to allSongs()");
-                queue = new ArrayList<>(songsManager.queue());
-            }
-        }
+        retrieveQueue();
 
+        /*
+         Initialize
+         */
         initMediaPlayer();
         initMediaSession();
         initNoisyReceiver();
@@ -141,8 +123,8 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         /*
          * Calling startForeground() under 5 seconds to avoid ANR
          */
+        showPausedNotification();
         try {
-            showPausedNotification();
             Log.d(TAG,"onCreate(): Showing Paused Notification");
         } catch (Exception e) {
             Log.d(TAG, "onCreate(): Failed to show Paused Notification, ANR might occur");
@@ -153,7 +135,6 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
-
             /*
              * Checking for musicID in intent
              */
@@ -185,19 +166,19 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
             }
 
             /*
+             * Retrieving Queue
+             */
+            retrieveQueue();
+
+            /*
              * Analyze and Acting on the intent received by Service
              * Every request to Service should be with one of the intents in our switch
              */
-
             String action = intent.getAction();
             assert action != null;
             switch (action) {
                 case ACTION_PLAY: {
                     processPlayRequest(musicID);
-                    break;
-                }
-                case ACTION_PAUSE: {
-                    processPauseRequest();
                     break;
                 }
                 case ACTION_PLAY_PUSH: {
@@ -233,6 +214,23 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     }
 
     /*
+     * Getting Queue
+     * We will retrieve queue from SongsManager
+     * and check if queue is not null, if null we alter it to default allSongs()
+     */
+    private void retrieveQueue() {
+            SongsManager songsManager = new SongsManager(this);
+            if (songsManager.queue().isEmpty()) {
+                Log.d(TAG,"onStartCommand(): Successfully retrieved queue from sharedPrefs on SongsManager attempt");
+                songsManager.replaceQueue(songsManager.allSongs());
+                queue = new ArrayList<>(songsManager.queue());
+            } else {
+                Log.d(TAG,"onStartCommand(): Switching to allSongs()");
+                queue = new ArrayList<>(songsManager.queue());
+            }
+    }
+
+    /*
      * saveData() writes current song parameters to sharedPrefs which can be retrieved in
      * other activities or fragments as well as when we start app next time
      * musicID: is id of current item in queue
@@ -256,18 +254,20 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
 
     private void doPushPlay() {
         mMediaPlayer.reset();
-        String path2 = queue.get(musicID).getPath();
         setGraphics();
         if (successfullyRetrievedAudioFocus()) {
+            showPausedNotification();
             return;
         }
         showPlayingNotification();
-        setMediaPlayer(path2);
+        setMediaPlayer(queue.get(musicID).getPath());
     }
 
     private void processNextRequest() {
         isPlayFromLastLeft = false;
+        setGraphics();
         if (successfullyRetrievedAudioFocus()) {
+            showPausedNotification();
             return;
         }
 
@@ -278,22 +278,22 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         }
 
         Log.d(TAG,"Skipping to Next track.");
-        setGraphics();
         showPlayingNotification();
         setMediaPlayer((new SongsManager(MusicPlayback.this).queue().get(musicID).getPath()));
     }
 
     private void processPrevRequest() {
         isPlayFromLastLeft = false;
-        if (successfullyRetrievedAudioFocus()) {
-            return;
-        }
 
         if (mMediaPlayer.getCurrentPosition() < 5000) {
             if (musicID > 0) {
                 musicID--;
                 Log.d(TAG,"Skipping to Previous track.");
                 setGraphics();
+                if (successfullyRetrievedAudioFocus()) {
+                    showPausedNotification();
+                    return;
+                }
                 showPlayingNotification();
                 setMediaPlayer((new SongsManager(MusicPlayback.this).queue().get(musicID).getPath()));
             } else {
@@ -333,12 +333,13 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     }
 
     private void processPlayRequest(int index) {
+        setGraphics();
         if (successfullyRetrievedAudioFocus()) {
+            showPausedNotification();
             return;
         }
         Log.d(TAG,"Processing Play Request for musicID " + index);
 
-        setGraphics();
         showPlayingNotification();
         setMediaPlayer((new SongsManager(MusicPlayback.this).queue().get(index).getPath()));
     }
@@ -356,7 +357,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     }
 
     private void setGraphics() {
-        SongModel song = (new SongsManager(MusicPlayback.this)).queue().get(musicID);
+        SongModel song = queue.get(musicID);
         MediaMetadataCompat mMediaMetadataCompat = new MediaMetadataCompat.Builder()
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, song.getTitle())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, song.getAlbum())
@@ -681,6 +682,15 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         mPlaybackStateBuilder = new PlaybackStateCompat.Builder();
 
         setSessionToken(mMediaSessionCompat.getSessionToken());
+
+        SongModel song = queue.get(sharedPrefsUtils.readSharedPrefsInt("musicID",0));
+        MediaMetadataCompat mMediaMetadataCompat = new MediaMetadataCompat.Builder()
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, song.getTitle())
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, song.getAlbum())
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, song.getArtist())
+                .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, grabAlbumArt(song.getAlbumID()))
+                .build();
+        mMediaSessionCompat.setMetadata(mMediaMetadataCompat);
     }
 
     private void initNoisyReceiver() {
@@ -738,6 +748,10 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         assert audioManager != null;
         int result = audioManager.requestAudioFocus(this,
                 AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+
+        if (result != AudioManager.AUDIOFOCUS_GAIN) {
+            Log.d(TAG, "Failed to gain AudioFocus");
+        }
 
         return result != AudioManager.AUDIOFOCUS_GAIN;
     }

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -243,7 +245,7 @@ public class SongsManager {
         ArrayList<SongModel> list = new ArrayList<>(mainList);
         Collections.reverse(list);
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getArtist().equals(artist)) {
+            if (list.get(i).getArtist().contains(artist)) {
                 songs.add(list.get(i));
             }
         }
@@ -392,8 +394,12 @@ public class SongsManager {
 
     void addToQueue(ArrayList<SongModel> arrayList) {
         ArrayList<SongModel> arrayList1 = new ArrayList<>(arrayList);
-        queue.addAll(arrayList1);
-        (new CommonUtils(context)).showTheToast("Added to current queue!");
+        if (arrayList1.size() > 0) {
+            queue.addAll(arrayList1);
+            (new CommonUtils(context)).showTheToast("Added to current queue!");
+        } else {
+            (new CommonUtils(context)).showTheToast("Nothing to add");
+        }
     }
 
     void playNext(SongModel song) {
@@ -554,10 +560,13 @@ public class SongsManager {
                 alertDialog.setContentView(R.layout.dialog_add_playlist);
 
                 final EditText input = alertDialog.findViewById(R.id.editText);
+                input.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context,(new CommonUtils(context)).accentColor(sharedPrefsUtils))));
                 InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
 
-                alertDialog.findViewById(R.id.btnCreate).setOnClickListener(new View.OnClickListener() {
+                Button btnCreate = alertDialog.findViewById(R.id.btnCreate);
+                btnCreate.setTextColor(ContextCompat.getColor(context,(new CommonUtils(context)).accentColor(sharedPrefsUtils)));
+                btnCreate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String name = input.getText().toString();
@@ -571,7 +580,9 @@ public class SongsManager {
                     }
                 });
 
-                alertDialog.findViewById(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {
+                Button btnCancel = alertDialog.findViewById(R.id.btnCancel);
+                btnCancel.setTextColor(ContextCompat.getColor(context,(new CommonUtils(context)).accentColor(sharedPrefsUtils)));
+                btnCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         alertDialog.cancel();
@@ -625,10 +636,13 @@ public class SongsManager {
                 alertDialog.setContentView(R.layout.dialog_add_playlist);
 
                 final EditText input = alertDialog.findViewById(R.id.editText);
+                input.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context,(new CommonUtils(context)).accentColor(sharedPrefsUtils))));
                 InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
 
-                alertDialog.findViewById(R.id.btnCreate).setOnClickListener(new View.OnClickListener() {
+                Button btnCreate = alertDialog.findViewById(R.id.btnCreate);
+                btnCreate.setTextColor(ContextCompat.getColor(context,(new CommonUtils(context)).accentColor(sharedPrefsUtils)));
+                btnCreate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String name = input.getText().toString();
@@ -642,7 +656,9 @@ public class SongsManager {
                     }
                 });
 
-                alertDialog.findViewById(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {
+                Button btnCancel = alertDialog.findViewById(R.id.btnCancel);
+                btnCancel.setTextColor(ContextCompat.getColor(context,(new CommonUtils(context)).accentColor(sharedPrefsUtils)));
+                btnCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         alertDialog.cancel();
@@ -670,9 +686,13 @@ public class SongsManager {
 
     void shufflePlay(ArrayList<SongModel> array) {
         ArrayList<SongModel> data = new ArrayList<>(array);
-        Collections.shuffle(data);
-        play(0, data);
-        (new CommonUtils(context)).showTheToast("Shuffling");
+        if (data.size() > 0) {
+            Collections.shuffle(data);
+            play(0, data);
+            (new CommonUtils(context)).showTheToast("Shuffling");
+        } else {
+            (new CommonUtils(context)).showTheToast("Nothing to shuffle");
+        }
     }
 
     void useAsRingtone() {

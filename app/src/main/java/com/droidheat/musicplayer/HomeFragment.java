@@ -1,13 +1,16 @@
 package com.droidheat.musicplayer;
 
+import android.content.Intent;
 import android.graphics.Outline;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -53,9 +56,23 @@ public class HomeFragment extends Fragment {
         mergeAdapter.addView(one_big_two_small_view());
 
         // Recently Added
-        View heading1 = View.inflate(getActivity(),R.layout.heading,null);
+        View heading1 = View.inflate(getActivity(),R.layout.heading_with_button,null);
         TextView textView1 = heading1.findViewById(R.id.heading);
         textView1.setText("Recently Added To Library");
+        Button button = heading1.findViewById(R.id.button);
+        button.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), GlobalDetailActivity.class);
+                    intent.putExtra("name", "Recently Added");
+                    intent.putExtra("field", "recent");
+                startActivity(intent);
+            }
+        });
+
+        button.setTextColor(ContextCompat.getColor(getActivity(),
+                (new CommonUtils(getActivity())).accentColor(new SharedPrefsUtils(getActivity()))));
+        button.setText("View All");
         mergeAdapter.addView(heading1);
 
         View recent_list = View.inflate(getActivity(),R.layout.scroll_disabled_list_view, null);

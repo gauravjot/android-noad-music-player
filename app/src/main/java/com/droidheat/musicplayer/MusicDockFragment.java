@@ -103,7 +103,7 @@ public class MusicDockFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (!songsManager.queue().isEmpty()) {
-                        Objects.requireNonNull(getActivity()).startService(
+                        ContextCompat.startForegroundService(Objects.requireNonNull(getActivity()),
                                 songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_TRACK_NEXT)));
                     }
                 }
@@ -112,7 +112,7 @@ public class MusicDockFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (!songsManager.queue().isEmpty()) {
-                        Objects.requireNonNull(getActivity()).startService(
+                        ContextCompat.startForegroundService(Objects.requireNonNull(getActivity()),
                                 songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_TRACK_PREV)));
                     }
                 }

@@ -85,9 +85,9 @@ class AutoPlaylistGridAdapter extends BaseAdapter {
             int[] j = new int[5];
             j[0] = R.id.play_musicUtils;
             j[1] = R.id.play_next_musicUtils;
-            j[2] = R.id.add_to_queue_musicUtils;
-            j[3] = R.id.add_to_playlist_musicUtils;
-            j[4] = R.id.shuffle_play_musicUtils;
+            j[2] = R.id.shuffle_play_musicUtils;
+            j[3] = R.id.add_to_queue_musicUtils;
+            j[4] = R.id.add_to_playlist_musicUtils;
             songsManager.generateMenu(pop, j);
             final ArrayList<SongModel> finalList = list;
             pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

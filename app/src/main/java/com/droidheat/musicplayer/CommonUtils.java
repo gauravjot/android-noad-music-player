@@ -30,6 +30,10 @@ class CommonUtils {
                 return R.color.yellow;
             case "purple":
                 return R.color.purple;
+            case "red":
+                return R.color.red;
+            case "grey":
+                return R.color.grey;
             default:
                 return R.color.pink;
 

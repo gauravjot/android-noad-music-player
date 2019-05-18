@@ -16,12 +16,13 @@
         android:textSize="20sp"
         android:fontFamily="sans-serif-light"
         android:textColor="@color/white"
+        android:layout_toLeftOf="@+id/button"
         />
 
     <Button
         android:text="ADD"
         android:textStyle="bold"
-        android:layout_width="48dp"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:id="@+id/button"
         android:textColor="@color/accentColor"

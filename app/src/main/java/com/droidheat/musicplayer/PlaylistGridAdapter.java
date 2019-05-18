@@ -83,11 +83,12 @@ class PlaylistGridAdapter extends BaseAdapter {
 
 
             final PopupMenu pop = new PopupMenu(context, holder.btn);
-            int[] j = new int[4];
+            int[] j = new int[5];
             j[0] = R.id.play_musicUtils;
             j[1] = R.id.play_next_musicUtils;
-            j[2] = R.id.add_to_queue_musicUtils;
-            j[3] = R.id.remove_musicUtils;
+            j[2] = R.id.shuffle_play_musicUtils;
+            j[3] = R.id.add_to_queue_musicUtils;
+            j[4] = R.id.remove_musicUtils;
             songsManager.generateMenu(pop, j);
             final ArrayList<SongModel> albumSongs;
             albumSongs = songsManager.playlistSongs(Integer.parseInt(
@@ -113,6 +114,9 @@ class PlaylistGridAdapter extends BaseAdapter {
                             return true;
                         case R.id.add_to_queue_musicUtils:
                             songsManager.addToQueue(albumSongs);
+                            return true;
+                        case R.id.shuffle_play_musicUtils:
+                            songsManager.shufflePlay(albumSongs);
                             return true;
                         default:
                             return false;

@@ -12,6 +12,7 @@ import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -297,7 +298,7 @@ public class TimerActivity extends AppCompatActivity {
         fT = timeButton;
 
         if (Integer.parseInt(timeButton) == 0) {
-            if (Integer.toString(i) != "0") {
+            if (!Integer.toString(i).equals("0")) {
                 timeButton = Integer.toString(i);
             } else {
                 timeButton = null;
@@ -311,12 +312,11 @@ public class TimerActivity extends AppCompatActivity {
                 timeButton = fT;
                 (new CommonUtils(TimerActivity.this)).showTheToast("Cannot exceed more than 360 minutes or 6 hours");
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
         if (Integer.parseInt(timeButton) != 0 && timeButton != null) {
             displayTime.setText(timeButton);
-        } else {
         }
     }
 
@@ -328,11 +328,11 @@ public class TimerActivity extends AppCompatActivity {
                 Time = null;
                 try {
                     (new CommonUtils(TimerActivity.this)).showTheToast("Music Player on Sleep");
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
                 mNotifyMgr.cancel(1297601);
                 Intent intent = new Intent(MusicPlayback.ACTION_CLOSE);
-                startService(createExplicitFromImplicitIntent(TimerActivity.this, intent));
+                ContextCompat.startForegroundService(TimerActivity.this,createExplicitFromImplicitIntent(TimerActivity.this, intent));
                 finish();
             }
         }

@@ -44,7 +44,7 @@ public class ImageDetailFragment extends Fragment {
         Runnable run = new Runnable() {
             @Override
             public void run() {
-                (new ImageUtils(getContext())).getImageByPicasso(((new SongsManager(getActivity())).queue()).get(mImageNum).getAlbumID(), mImageView);
+                (new ImageUtils(getContext())).getFullImageByPicasso(((new SongsManager(getActivity())).queue()).get(mImageNum).getAlbumID(), mImageView);
             }
         };
         run.run();

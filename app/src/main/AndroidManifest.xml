@@ -40,7 +40,6 @@
                 <action android:name="com.droidheat.musicplayer.action.PLAY_PAUSE" />
                 <action android:name="com.droidheat.musicplayer.action.PLAY" />
                 <action android:name="com.droidheat.musicplayer.action.PLAY_PUSH" />
-                <action android:name="com.droidheat.musicplayer.action.PAUSE" />
                 <action android:name="com.droidheat.musicplayer.action.REPEAT" />
                 <action android:name="com.droidheat.musicplayer.action.TRACK_PREV" />
                 <action android:name="com.droidheat.musicplayer.action.TRACK_NEXT" />
@@ -145,13 +144,6 @@
         <activity
             android:name=".EqualizerActivity"
             android:label="Equalizer"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeToolbar" />
-        <activity
-            android:name=".MainActivity"
-            android:clearTaskOnLaunch="true"
-            android:finishOnTaskLaunch="true"
-            android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeToolbar" />
         <activity

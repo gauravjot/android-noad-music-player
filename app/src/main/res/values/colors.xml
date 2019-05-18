@@ -9,5 +9,6 @@
     <color name="green">#9ccc65</color>
     <color name="yellow">#ffca28</color>
     <color name="purple">#ba68c8</color>
-    <color name="red">#ef5350</color>
+    <color name="red">#CC3C3C</color>
+    <color name="grey">#607d8b</color>
 </resources>
