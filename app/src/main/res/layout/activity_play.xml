@@ -73,7 +73,7 @@
             android:layout_alignParentTop="true"
             android:background="@color/transparent" />
 
-        <include layout="@layout/player_info_controls"
+        <include layout="@layout/play_info_controls"
             android:id="@+id/lowerOne"
             android:fitsSystemWindows="true"
             />

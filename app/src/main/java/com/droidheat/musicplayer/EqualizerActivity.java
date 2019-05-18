@@ -9,22 +9,26 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.support.v7.widget.SwitchCompat;
+import android.widget.Spinner;
 import android.widget.Switch;
 
 
 public class EqualizerActivity extends AppCompatActivity
         implements SeekBar.OnSeekBarChangeListener,
-        View.OnClickListener {
+        View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     final int MAX_SLIDERS = 5; // Must match the XML layout
     SeekBar bass_boost = null;
-    SeekBar virtualzer = null;
+    SeekBar virtualizerSeekBar = null;
     SwitchCompat enabled = null;
     Button flat = null;
     int min_level = 0;
@@ -36,13 +40,30 @@ public class EqualizerActivity extends AppCompatActivity
     Equalizer eq;
     BassBoost bassBoost;
     Virtualizer virtualizer;
+    int currentEqProfile = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.equalizer);
+        setContentView(R.layout.activity_equalizer);
 
         sharedPrefsUtils = new SharedPrefsUtils(this);
+        currentEqProfile = sharedPrefsUtils.readSharedPrefsInt("currentEqProfile",0);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp);
+            assert upArrow != null;
+            upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
+            getSupportActionBar().setHomeAsUpIndicator(upArrow);
+            getSupportActionBar().setTitle("Equalizer");
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
 
         eq = new Equalizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id",0));
         bassBoost = new BassBoost(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id",0));
@@ -61,38 +82,24 @@ public class EqualizerActivity extends AppCompatActivity
                 if (b) {
                     for (int i = 0; i < 5; i++) {
                         eq.setBandLevel((short) i, (short) sharedPrefsUtils
-                                .readSharedPrefsInt(i + "",0));
+                                .readSharedPrefsInt("profile" + currentEqProfile + "Band" + i,0));
                     }
                     bassBoost.setStrength((short) sharedPrefsUtils.
-                            readSharedPrefsInt("basslevel",0));
+                            readSharedPrefsInt("bassLevel" + currentEqProfile,0));
                     virtualizer.setStrength((short) sharedPrefsUtils.
-                            readSharedPrefsInt("vzlevel",0));
+                            readSharedPrefsInt("vzLevel" + currentEqProfile,0));
                 }
 
             }
         });
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
-        setSupportActionBar(toolbar);
-
-        if (getSupportActionBar() != null) {
-            Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp);
-            assert upArrow != null;
-            upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
-            getSupportActionBar().setHomeAsUpIndicator(upArrow);
-            getSupportActionBar().setTitle("Equalizer");
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
         flat = findViewById(R.id.flat);
         flat.setOnClickListener(this);
 
         bass_boost = findViewById(R.id.bass_boost);
-        virtualzer = findViewById(R.id.virtualizer);
+        virtualizerSeekBar = findViewById(R.id.virtualizer);
         bass_boost.setOnSeekBarChangeListener(this);
-        virtualzer.setOnSeekBarChangeListener(this);
+        virtualizerSeekBar.setOnSeekBarChangeListener(this);
 
         sliders[0] = findViewById(R.id.slider_1);
         sliders[1] = findViewById(R.id.slider_2);
@@ -114,7 +121,17 @@ public class EqualizerActivity extends AppCompatActivity
         } catch (Exception ignored) {
         }
 
-        updateUI();
+        String[] strings = {"Profile 1", "Profile 2", "Profile 3", "Profile 4", "Profile 5"};
+        Spinner spinner = findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>
+                (this, android.R.layout.simple_spinner_item,
+                        strings);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(currentEqProfile);
+        spinner.setOnItemSelectedListener(this);
+
+        //updateUI();
     }
 
 
@@ -126,13 +143,13 @@ public class EqualizerActivity extends AppCompatActivity
                 bassBoost.setEnabled(level > 0);
                 bassBoost.setStrength((short) level);// Already in the right range 0-1000
             }
-            sharedPrefsUtils.writeSharedPrefs("basslevel", level);
-        } else if (seekBar == virtualzer) {
+            sharedPrefsUtils.writeSharedPrefs("bassLevel" + currentEqProfile, level);
+        } else if (seekBar == virtualizerSeekBar) {
             if (eq.getEnabled()) {
                 virtualizer.setEnabled(level > 0);
                 virtualizer.setStrength((short) level);
             }
-            sharedPrefsUtils.writeSharedPrefs("vzlevel", level);
+            sharedPrefsUtils.writeSharedPrefs("vzLevel" + currentEqProfile, level);
         } else {
             int new_level = min_level + (max_level - min_level) * level / 100;
             for (int i = 0; i < num_sliders; i++) {
@@ -140,7 +157,7 @@ public class EqualizerActivity extends AppCompatActivity
                     if (eq.getEnabled()) {
                         eq.setBandLevel((short) i, (short) new_level);
                     }
-                    sharedPrefsUtils.writeSharedPrefs(i + "", new_level);
+                    sharedPrefsUtils.writeSharedPrefs("profile"+ currentEqProfile + "Band" + i, new_level);
                     break;
                 }
             }
@@ -158,18 +175,18 @@ public class EqualizerActivity extends AppCompatActivity
 
     public void updateSliders() {
         for (int i = 0; i < num_sliders; i++) {
-            int level = (short) sharedPrefsUtils.readSharedPrefsInt(i + "",0);
+            int level = (short) sharedPrefsUtils.readSharedPrefsInt("profile"+ currentEqProfile + "Band" + i,0);
             int pos = 100 * level / (max_level - min_level) + 50;
             sliders[i].setProgress(pos);
         }
     }
 
     public void updateBassBoost() {
-        bass_boost.setProgress((short) sharedPrefsUtils.readSharedPrefsInt("basslevel",0));
+        bass_boost.setProgress((short) sharedPrefsUtils.readSharedPrefsInt("bassLevel" + currentEqProfile,0));
     }
 
     public void updateVirtualizer() {
-        virtualzer.setProgress((short) sharedPrefsUtils.readSharedPrefsInt("vzlevel",0));
+        virtualizerSeekBar.setProgress((short) sharedPrefsUtils.readSharedPrefsInt("vzLevel" + currentEqProfile,0));
     }
 
     @Override
@@ -194,10 +211,10 @@ public class EqualizerActivity extends AppCompatActivity
             virtualizer.setStrength((short) 0);
             for (int i = 0; i < num_sliders; i++) {
                 eq.setBandLevel((short) i, (short) 0);
-                sharedPrefsUtils.writeSharedPrefs(i + "", 0);
+                sharedPrefsUtils.writeSharedPrefs("profile"+ currentEqProfile + "Band" + i, 0);
             }
-            sharedPrefsUtils.writeSharedPrefs("basslevel", 0);
-            sharedPrefsUtils.writeSharedPrefs("vzlevel", 0);
+            sharedPrefsUtils.writeSharedPrefs("bassLevel" + currentEqProfile, 0);
+            sharedPrefsUtils.writeSharedPrefs("vzLevel" + currentEqProfile, 0);
         }
         updateUI();
     }
@@ -206,6 +223,24 @@ public class EqualizerActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         finish();
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        /*
+         * Spinner Profile Selection
+         */
+        if (currentEqProfile != position) {
+            sharedPrefsUtils.writeSharedPrefs("currentEqProfile", position);
+            currentEqProfile = position;
+        }
+        Log.d("Equalizer",currentEqProfile + "profile");
+        updateUI();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
 

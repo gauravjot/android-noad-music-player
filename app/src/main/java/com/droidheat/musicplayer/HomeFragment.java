@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment {
     }
 
     private View one_big_two_small_view() {
-        View one_big_two_small_view = View.inflate(getActivity(),R.layout.two_small_one_big_thumb,null);
+        View one_big_two_small_view = View.inflate(getActivity(),R.layout.home_two_small_one_big_thumb,null);
 
         ImageView imageView1 = one_big_two_small_view.findViewById(R.id.imageView1);
         TextView textView1 = one_big_two_small_view.findViewById(R.id.textView1);

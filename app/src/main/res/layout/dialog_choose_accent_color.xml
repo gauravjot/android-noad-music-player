@@ -57,7 +57,7 @@
         <Button
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@color/accentColor"
+            android:background="@color/pink"
             android:padding="16dp"
             android:layout_marginStart="8dp"
             android:id="@+id/pink"

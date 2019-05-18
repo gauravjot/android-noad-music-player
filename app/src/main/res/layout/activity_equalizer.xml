@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.Toolbar
@@ -28,10 +29,24 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:id="@+id/relativeLayout"
+        android:layout_below="@+id/toolbar">
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_margin="16dp"/>
+    </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/relativeLayout"
+        android:background="@color/background"
         android:layout_above="@+id/flat">
 
         <LinearLayout
@@ -239,7 +254,7 @@
         android:id="@+id/flat"
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:background="@color/actionBar"
+        android:background="@color/dialogBackground"
         android:padding="0dp"
         android:layout_margin="8dp"
         android:text="Flat"

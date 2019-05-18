@@ -4,9 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
@@ -121,7 +118,7 @@ public class HomeActivity extends AppCompatActivity {
                 final SharedPrefsUtils sharedPrefsUtils = new SharedPrefsUtils(this);
                 final Dialog dialog = new Dialog(this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.choose_accent_color);
+                dialog.setContentView(R.layout.dialog_choose_accent_color);
                 dialog.findViewById(R.id.orange).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

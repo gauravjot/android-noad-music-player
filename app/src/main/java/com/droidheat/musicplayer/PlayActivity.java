@@ -39,7 +39,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewOutlineProvider;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -110,7 +109,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.player_layout_v2);
+        setContentView(R.layout.activity_play);
 
         sharedPrefsUtils = new SharedPrefsUtils(this);
         songsManager = new SongsManager(this);
@@ -398,7 +397,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
 
         FavouriteList db = new FavouriteList(PlayActivity.this);
         db.open();
-        SongsManager songsManager = new SongsManager(this);
         if (!isFavourite) {
             if (getIndex(sharedPrefsUtils.readSharedPrefsString("raw_path", null)) == -1) {
                 SongModel hashMap = songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID",0));
@@ -818,15 +816,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         } else if (id == R.id.add_to_playlist) {
             songsManager.addToPlaylist(songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID",0)));
         } else if (id == R.id.equalizer) {
-            try {
-                if (MusicPlayback.mMediaSessionCompat.isActive()) {
-                    startActivity(new Intent(PlayActivity.this, EqualizerActivity.class));
-                } else {
-                    (new CommonUtils(this)).showTheToast("Play song to equalize effects.");
-                }
-            } catch (Exception e) {
-                (new CommonUtils(this)).showTheToast("Play song to equalize effects.");
-            }
+            startActivity(new Intent(PlayActivity.this, EqualizerActivity.class));
         } else if (id == R.id.save_as_playlist) {
             final Dialog alertDialog = new Dialog(this);
             alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

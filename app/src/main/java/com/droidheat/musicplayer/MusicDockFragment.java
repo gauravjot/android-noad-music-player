@@ -28,7 +28,6 @@ public class MusicDockFragment extends Fragment {
     Handler seekHandler = new Handler();
     int currentTitleArtist;
     SongsManager songsManager;
-    //EqualizerView equalizer;
 
 
     @Override
@@ -42,8 +41,6 @@ public class MusicDockFragment extends Fragment {
         artist = view.findViewById(R.id.XtextView2);
         btnPlay = view.findViewById(R.id.XbtnPlay);
         albumArt = view.findViewById(R.id.albumArt);
-        //equalizer = (EqualizerView) view.findViewById(R.id.equalizer);
-        //equalizer.stopBars();
         final Button btnPlayActivity = view.findViewById(R.id.Xbutton1);
         title.setSelected(true);
 
@@ -70,15 +67,15 @@ public class MusicDockFragment extends Fragment {
             if (MusicPlayback.mMediaSessionCompat.isActive()) {
                 if (MusicPlayback.mMediaSessionCompat.getController().getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING) {
                     btnPlay.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.app_pause));
-                    //equalizer.animateBars();
+
                 } else {
                     btnPlay.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.app_play));
-                    //equalizer.stopBars();
+
                 }
             }
         } catch (Exception e) {
             btnPlay.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.app_play));
-            //equalizer.stopBars();
+
         }
 
         btnPlay.setOnClickListener(new View.OnClickListener() {
