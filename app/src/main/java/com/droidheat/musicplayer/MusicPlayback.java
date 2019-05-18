@@ -265,16 +265,16 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
 
     private void processNextRequest() {
         isPlayFromLastLeft = false;
-        setGraphics();
-        if (successfullyRetrievedAudioFocus()) {
-            showPausedNotification();
-            return;
-        }
 
         if (musicID +1 != queue.size()) {
             musicID++;
         } else {
             musicID = 0;
+        }
+        setGraphics();
+        if (successfullyRetrievedAudioFocus()) {
+            showPausedNotification();
+            return;
         }
 
         Log.d(TAG,"Skipping to Next track.");
