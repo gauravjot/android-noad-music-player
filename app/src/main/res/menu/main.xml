@@ -30,6 +30,10 @@
         app:showAsAction="never"
         android:title="Change Theme"/>
 
+    <item android:id="@+id/equalizer"
+        app:showAsAction="never"
+        android:title="Equalizer"/>
+
     <item
         android:id="@+id/settings"
         app:showAsAction="never"

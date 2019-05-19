@@ -242,5 +242,16 @@ public class EqualizerActivity extends AppCompatActivity
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        eq.release();
+        bassBoost.release();
+        virtualizer.release();
+        eq = null;
+        bassBoost = null;
+        virtualizer = null;
+    }
 }
 

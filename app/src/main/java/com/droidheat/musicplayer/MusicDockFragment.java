@@ -84,7 +84,7 @@ public class MusicDockFragment extends Fragment {
             public void onClick(View v) {
                 try {
                     if (MusicPlayback.mMediaSessionCompat.isActive()) {
-                        Objects.requireNonNull(getActivity()).startService(
+                        ContextCompat.startForegroundService(Objects.requireNonNull(getActivity()),
                                 songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_PLAY_PAUSE)));
                     } else {
                         songsManager.playFromLastLeft();

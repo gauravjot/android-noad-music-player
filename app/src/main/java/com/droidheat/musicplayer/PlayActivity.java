@@ -441,7 +441,16 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void onClick(View target) {
         if (target == btnPlay) {
-            ContextCompat.startForegroundService(this,createExplicitFromImplicitIntent(this, new Intent(MusicPlayback.ACTION_PLAY_PAUSE)));
+            try {
+                if (MusicPlayback.mMediaSessionCompat.isActive()) {
+                    ContextCompat.startForegroundService(this,
+                            songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_PLAY_PAUSE)));
+                } else {
+                    songsManager.playFromLastLeft();
+                }
+            } catch (Exception e) {
+                songsManager.playFromLastLeft();
+            }
         } else if (target == btnRepeat) {
             if (sharedPrefsUtils.readSharedPrefsBoolean("repeat",false)) {
                 btnRepeat.clearColorFilter();
@@ -659,8 +668,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
 
             }
         } catch (Exception e) {
+            String[] duration = sharedPrefsUtils.readSharedPrefsString("duration","1").split(":");
             btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_play));
-            seek_bar.setMax(sharedPrefsUtils.readSharedPrefsInt("duration",1));
+            seek_bar.setMax(Integer.parseInt(duration[0]) * 60 * 1000 + Integer.parseInt(duration[1]) + 1000);
             seek_bar.setProgress(sharedPrefsUtils.readSharedPrefsInt("song_position",1));
         }
         seekHandler.postDelayed(run, 990);

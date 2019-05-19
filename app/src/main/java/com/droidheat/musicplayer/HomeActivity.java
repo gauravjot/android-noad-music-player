@@ -114,6 +114,9 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
+            case R.id.equalizer:
+                startActivity(new Intent(this, EqualizerActivity.class));
+                break;
             case R.id.changeTheme:
                 final SharedPrefsUtils sharedPrefsUtils = new SharedPrefsUtils(this);
                 final Dialog dialog = new Dialog(this);
