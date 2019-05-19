@@ -1,6 +1,5 @@
 package com.droidheat.musicplayer;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -50,7 +49,6 @@ import com.xgc1986.parallaxPagerTransformer.ParallaxPagerTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -70,7 +68,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     private Runnable run = new Runnable() {
         @Override
         public void run() {
-            seekUpdation();
+            seekBarUpdate();
         }
     };
     private boolean isFragment = false;
@@ -321,7 +319,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
          */
         String totalDuration = songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID",0)).getDuration();
         rightTime.setText(totalDuration);
-        seekUpdation();
+        seekBarUpdate();
 
         seek_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -635,37 +633,35 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         seek_bar.setProgress((int) currentPosition);
     }
 
-    @SuppressLint("SimpleDateFormat")
-    private void seekUpdation() {
+    private void seekBarUpdate() {
         try {
-            if (MusicPlayback.mMediaSessionCompat.isActive()) {
+            if (MusicPlayback.mMediaPlayer.isPlaying()) {
                 seek_bar.setMax(MusicPlayback.mMediaPlayer.getDuration());
-                if (MusicPlayback.mMediaSessionCompat.getController().getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING) {
-                    int currentLocation = MusicPlayback.mMediaPlayer.getCurrentPosition();
-                    seek_bar.setProgress(currentLocation);
-                    if (!playButton) {
-                        btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_pause));
-                    }
-                    leftTime.setText(String.format(Locale.getDefault(), "%02d:%02d",
-                            TimeUnit.MILLISECONDS.toMinutes(currentLocation),
-                            TimeUnit.MILLISECONDS.toSeconds(currentLocation) -
-                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(currentLocation))
-                    ));
-                    playButton = true;
-                } else {
-                    if (seek_bar.getProgress() == 0) {
-                        seek_bar.setProgress(MusicPlayback.mMediaPlayer.getCurrentPosition());
-                    }
-                    if (playButton) {
-                        btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_play));
-                    }
-                    playButton = false;
+                int currentLocation = MusicPlayback.mMediaPlayer.getCurrentPosition();
+                seek_bar.setProgress(currentLocation);
+                if (!playButton) {
+                    btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_pause));
                 }
+//                    leftTime.setText(String.format(Locale.getDefault(), "%02d:%02d",
+//                            TimeUnit.MILLISECONDS.toMinutes(currentLocation),
+//                            TimeUnit.MILLISECONDS.toSeconds(currentLocation) -
+//                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(currentLocation))
+//                    ));
+                    playButton = true;
+            } else {
+                if (seek_bar.getProgress() == 0) {
+                    seek_bar.setProgress(MusicPlayback.mMediaPlayer.getCurrentPosition());
+                }
+                if (playButton) {
+                    btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_play));
+                }
+                playButton = false;
+
             }
         } catch (Exception e) {
             btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_play));
-            seek_bar.setMax(1);
-            seek_bar.setProgress(1);
+            seek_bar.setMax(sharedPrefsUtils.readSharedPrefsInt("duration",1));
+            seek_bar.setProgress(sharedPrefsUtils.readSharedPrefsInt("song_position",1));
         }
         seekHandler.postDelayed(run, 990);
     }

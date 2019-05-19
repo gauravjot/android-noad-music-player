@@ -93,8 +93,8 @@
         android:layout_marginEnd="4dp"
         android:contentDescription="@string/hello_world"
         android:padding="12dp"
-        android:tint="@color/iconColor"
-        android:background="?attr/android:selectableItemBackgroundBorderless"
+        android:tint="@color/textColorSubTitle"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_dots_vertical_grey600_48dp" />
 
 

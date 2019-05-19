@@ -104,25 +104,17 @@
     <!--<color name="textColorSubTitle">#88ffffff</color>-->
     <!--<color name="iconColor">#99ffffff</color>-->
 
-    <color name="actionBar">#121212</color> <!--  #2196F3 -->
-    <color name="actionBarSuperTrans">#22121212</color> <!-- #f1f1f1 -->
-    <color name="actionBarTrans">#44121212</color> <!--  #442196F3 -->
+    <color name="actionBar">#000000</color> <!--  #2196F3 -->
     <color name="accentColor">#FFFFFF</color> <!--  #03A9F4 -->
     <color name="imageColorAlpha">#66000000</color> <!--  #66617FDE -->
-    <color name="statusBar">#121212</color> <!--  #2a2c31 -->
-    <color name="statusBarTrans">#cc121212</color> <!-- #552a2c31 -->
-    <color name="background">#121212</color> <!--  #3A4049 -->
+    <color name="statusBar">#000000</color> <!--  #2a2c31 -->
+    <color name="background">#000000</color> <!--  #3A4049 -->
     <color name="dialogBackground">#252525</color> <!--  #2C333D -->
-    <color name="dialogBackgroundAlpha">#99252525</color> <!--  #552C333D -->
     <color name="progressBarBackground">#44ffffff</color>
-    <color name="tabIndicatorColor">@color/accentColor</color>
-    <color name="navigationBar">#121212</color>
+    <color name="navigationBar">#000000</color>
 
     <color name="textColorTitle">#ffffff</color>
     <color name="textColorSubTitle">#7E7E7C</color>
-    <color name="iconColor">#ccffffff</color>
-    <color name="darkIconColor">#121212</color>
-    <color name="musicDockBackground">@color/accentColor</color>
     <color name="playerControlsBackground">@color/statusBar</color>
 
     <style name="AppTheme.NoActionBar">

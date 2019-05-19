@@ -84,14 +84,12 @@
         android:id="@+id/imageView1"
         android:layout_width="36dp"
         android:layout_height="60dp"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="4dp"
         android:layout_marginEnd="4dp"
         android:contentDescription="@string/hello_world"
         android:padding="6dp"
-        android:tint="@color/iconColor"
+        android:tint="@color/textColorSubTitle"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_dots_vertical_grey600_48dp" />
 

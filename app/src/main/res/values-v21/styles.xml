@@ -19,6 +19,7 @@
     <style name="ThemeActionBar" parent="AppTheme">
         <item name="android:actionBarStyle">@style/MyHomeActionBar</item>
         <item name="actionBarStyle">@style/MyHomeActionBar</item>
+        <item name="android:windowBackground">@color/background</item>
     </style>
 
     <style name="ThemeActionBarBig" parent="AppTheme">

@@ -256,7 +256,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
 
         Log.d(TAG,"Skipping to Next track.");
         showPlayingNotification();
-        setMediaPlayer((new SongsManager(MusicPlayback.this).queue().get(musicID).getPath()));
+        setMediaPlayer(songsManager.queue().get(musicID).getPath());
     }
 
     private void processPrevRequest() {
@@ -272,7 +272,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                     return;
                 }
                 showPlayingNotification();
-                setMediaPlayer((new SongsManager(MusicPlayback.this).queue().get(musicID).getPath()));
+                setMediaPlayer(songsManager.queue().get(musicID).getPath());
             } else {
                 mMediaPlayer.seekTo(0);
             }
@@ -318,7 +318,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         Log.d(TAG,"Processing Play Request for musicID " + index);
 
         showPlayingNotification();
-        setMediaPlayer((new SongsManager(MusicPlayback.this).queue().get(index).getPath()));
+        setMediaPlayer(songsManager.queue().get(index).getPath());
     }
 
     private void processPlayPause() {
