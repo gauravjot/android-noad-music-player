@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
 
-    <in.srain.cube.views.GridViewWithHeaderAndFooter
+    <GridView
         android:id="@+id/gridView1"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"

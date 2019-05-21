@@ -60,7 +60,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     private ImageView btnPlay;
     private ImageView btnNext;
     private ImageView btnPrev, imgFav;
-    private TextView title, album, leftTime, rightTime;
+    private TextView title, album, rightTime;
     private ImageView btnRepeat;
     private ViewPager albumArt;
     private SeekBar seek_bar;
@@ -133,7 +133,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         btnPrev = findViewById(R.id.prev);
         albumArt = findViewById(R.id.albumArt);
         rightTime = findViewById(R.id.rightTime);
-        leftTime = findViewById(R.id.leftTime);
         seek_bar = findViewById(R.id.seekBar1);
         btnRepeat = findViewById(R.id.repeat);
         imgFav = findViewById(R.id.imageFav);
