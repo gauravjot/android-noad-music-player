@@ -81,7 +81,7 @@ public class GlobalDetailActivity extends AppCompatActivity {
         } else {
             CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
             collapsingToolbar.setTitle(" ");
-            collapsingToolbar.setContentScrimColor(ContextCompat.getColor(this, R.color.actionBar));
+            collapsingToolbar.setContentScrimColor(ContextCompat.getColor(this, R.color.primaryColor));
         }
 
         ImageView header = findViewById(R.id.header);

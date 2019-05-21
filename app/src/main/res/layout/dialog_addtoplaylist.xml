@@ -48,7 +48,7 @@
                 android:id="@+id/listView"
                 android:dividerHeight="0dp"
                 android:divider="@null"
-                android:background="@color/statusBar"
+                android:background="@color/primaryDark"
                 android:layout_below="@+id/albumArt"/>
 
         </RelativeLayout>

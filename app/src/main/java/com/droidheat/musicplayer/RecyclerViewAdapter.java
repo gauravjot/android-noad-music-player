@@ -64,32 +64,6 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         SongModel tempValues = data.get(position);
 
-        //TODO: Fix syncing of playlist songs
-//        if (isInteger(listOrigin)) {
-//            // So we have a manual playlist to work with
-//            if (!songsManager.allSongs().contains(tempValues)) {
-//                Log.d("PlaylistConsole","Song is not present - " + tempValues.getTitle());
-//                // confirmed that the entry is not present in current songs list so we need to replace it
-//                for (int k = 0; k < songsManager.allSongs().size(); k++) {
-//                    SongModel hash = songsManager.allSongs().get(k);
-//                    if ((hash.getTitle() + hash.getDuration())
-//                            .equals(tempValues.getTitle() + tempValues.getDuration())) {
-//                        //Song is present just moved so we just update the new path
-//                        data.remove(position);
-//                        data.add(position, hash);
-//                        songsManager.updatePlaylistSongs(Integer.parseInt(listOrigin),data);
-//                        // updated the path
-//                    } else if (hash.getPath().equals(tempValues.getPath())) {
-//                        // Tags are changed but file is still at same location
-//                        data.remove(position);
-//                        data.add(position, hash);
-//                        tempValues = data.get(position);
-//                        songsManager.updatePlaylistSongs(Integer.parseInt(listOrigin),data);
-//                    }
-//                }
-//            }
-//        }
-
         String duration = tempValues.getDuration();
         String artist = tempValues.getArtist();
         String songName = tempValues.getFileName();

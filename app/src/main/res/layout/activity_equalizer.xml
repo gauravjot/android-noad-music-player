@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/actionBar"
+        android:background="@color/primaryColor"
         android:minHeight="@dimen/abc_action_bar_default_height_material"
         app:titleTextAppearance="@style/MyTheme.ActionBar.TitleTextStyle">
 

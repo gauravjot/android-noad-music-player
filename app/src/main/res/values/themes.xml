@@ -17,8 +17,8 @@
     </style>
 
     <style name="Widget.ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/actionBar</item>
-        <item name="background">@color/actionBar</item>
+        <item name="android:background">@color/primaryColor</item>
+        <item name="background">@color/primaryColor</item>
     </style>
 
     <style name="Widget.ActionBar.Transparent">
@@ -26,8 +26,8 @@
     </style>
 
     <style name="ActionBarShadow" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/actionBar</item>
-        <item name="background">@color/actionBar</item>
+        <item name="android:background">@color/primaryColor</item>
+        <item name="background">@color/primaryColor</item>
         <item name="android:subtitleTextStyle">@style/TextAppearance.AppCompat.Widget.ActionMode.Title</item>
         <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
         <item name="subtitleTextStyle">@style/TextAppearance.AppCompat.Widget.ActionMode.Title</item>
@@ -35,8 +35,8 @@
     </style>
 
     <style name="MyHomeActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/actionBar</item>
-        <item name="background">@color/actionBar</item>
+        <item name="android:background">@color/primaryColor</item>
+        <item name="background">@color/primaryColor</item>
         <item name="android:displayOptions">showHome|homeAsUp|showTitle</item>
         <item name="displayOptions">showHome|homeAsUp|showTitle</item>
         <item name="android:icon">@android:color/transparent</item>

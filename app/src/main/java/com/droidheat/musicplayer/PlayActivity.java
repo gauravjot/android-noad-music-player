@@ -64,21 +64,10 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     private ImageView btnRepeat;
     private ViewPager albumArt;
     private SeekBar seek_bar;
-    private Handler seekHandler = new Handler();
-    private Runnable run = new Runnable() {
-        @Override
-        public void run() {
-            seekBarUpdate();
-        }
-    };
-    private boolean isFragment = false;
-    private View frag;
+    private View queueFragment;
     private boolean isFavourite;
-
-    private boolean playButton = false;
     private SongsManager songsManager;
 
-    private Integer[] imageResIds;
     private ImagePagerAdapter mAdapter;
 
     private String TAG = "PlayActivityConsole";
@@ -136,7 +125,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         seek_bar = findViewById(R.id.seekBar1);
         btnRepeat = findViewById(R.id.repeat);
         imgFav = findViewById(R.id.imageFav);
-        frag = findViewById(R.id.fragment);
+        queueFragment = findViewById(R.id.fragment);
 
         /*
          * This receiver registers for event when song is changed so we can update UI
@@ -174,13 +163,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         /*
          * Album Art Viewpager
          */
-        imageResIds = new Integer[songsManager.queue().size()];
 
-        for (int i = 0; i < songsManager.queue().size(); i++) {
-            imageResIds[i] = Integer.parseInt(songsManager.queue().get(i).getAlbumID());
-        }
-
-        mAdapter = new ImagePagerAdapter(getSupportFragmentManager(), imageResIds.length);
+        mAdapter = new ImagePagerAdapter(getSupportFragmentManager(), songsManager.queue().size());
         albumArt.setPageTransformer(false, new ParallaxPagerTransformer(R.id.imageView));
         albumArt.setAdapter(mAdapter);
         albumArt.setCurrentItem(sharedPrefsUtils.readSharedPrefsInt("musicID",0));
@@ -236,16 +220,11 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         /*
          * Hiding Songs Queue
          */
-        isFragment = false;
-        frag.setVisibility(View.GONE);
+        queueFragment.setVisibility(View.GONE);
     }
 
     @Override
     public void viewPagerRefreshOne() {
-        imageResIds = new Integer[songsManager.queue().size()];
-        for (int i = 0; i < songsManager.queue().size(); i++) {
-            imageResIds[i] = Integer.parseInt(songsManager.queue().get(i).getAlbumID());
-        }
         albumArt.setAdapter(mAdapter);
         albumArt.setCurrentItem(sharedPrefsUtils.readSharedPrefsInt("musicID",0));
     }
@@ -318,30 +297,25 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
          */
         String totalDuration = songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID",0)).getDuration();
         rightTime.setText(totalDuration);
-        seekBarUpdate();
+        //seekBarUpdate();
 
         seek_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-                if (arg2) {
-                    try {
-                        MusicPlayback.mMediaPlayer.seekTo(arg1);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                stopSeekbarUpdate();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                MediaControllerCompat.getMediaController(PlayActivity.this).getTransportControls().seekTo(seekBar.getProgress());
+                scheduleSeekbarUpdate();
             }
         });
-
-        //playColors();
 
     }
 
@@ -376,7 +350,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     /*
      * This receives a call from MusicPlayback when current track has been changed by another
      * We will just change Graphical UI for current track
-     * and call a QueueFragment method and ask it to update as well
+     * and call a queueFragment method and ask it to update as well
      */
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -441,7 +415,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     public void onClick(View target) {
         if (target == btnPlay) {
             try {
-                if (MusicPlayback.mMediaSessionCompat.isActive()) {
+                if (mLastPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING) {
                     ContextCompat.startForegroundService(this,
                             songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_PLAY_PAUSE)));
                 } else {
@@ -478,7 +452,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     private final MediaControllerCompat.Callback mCallback = new MediaControllerCompat.Callback() {
         @Override
         public void onPlaybackStateChanged(@NonNull PlaybackStateCompat state) {
-            Log.d(TAG, "onPlaybackstate changed" + state);
+            Log.d(TAG, "onPlayBackStateChanged" + state);
             updatePlaybackState(state);
         }
 
@@ -554,6 +528,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         super.onStart();
         if (mMediaBrowser != null) {
             mMediaBrowser.connect();
+            Log.d(TAG, "connecting to MediaSession");
         }
     }
 
@@ -562,6 +537,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         super.onStop();
         if (mMediaBrowser != null) {
             mMediaBrowser.disconnect();
+            Log.d(TAG, "disconnecting from MediaSession");
         }
         if (MediaControllerCompat.getMediaController(this) != null) {
             MediaControllerCompat.getMediaController(this).unregisterCallback(mCallback);
@@ -580,8 +556,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         if (metadata == null) {
             return;
         }
-        Log.d(TAG, "updateDuration called ");
         int duration = (int) metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION);
+        Log.d(TAG, "updateDuration called " + duration);
         seek_bar.setMax(duration);
     }
 
@@ -594,13 +570,16 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         switch (state.getState()) {
             case PlaybackStateCompat.STATE_PLAYING:
                 scheduleSeekbarUpdate();
+                btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_pause));
                 break;
             case PlaybackStateCompat.STATE_PAUSED:
                 stopSeekbarUpdate();
+                btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_play));
                 break;
             case PlaybackStateCompat.STATE_NONE:
             case PlaybackStateCompat.STATE_STOPPED:
                 stopSeekbarUpdate();
+                btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_play));
                 break;
             case PlaybackStateCompat.STATE_BUFFERING:
                 stopSeekbarUpdate();
@@ -638,41 +617,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                     mLastPlaybackState.getLastPositionUpdateTime();
             currentPosition += (int) timeDelta * mLastPlaybackState.getPlaybackSpeed();
         }
+        Log.d(TAG,"position: " + currentPosition);
         seek_bar.setProgress((int) currentPosition);
-    }
-
-    private void seekBarUpdate() {
-        try {
-            if (MusicPlayback.mMediaPlayer.isPlaying()) {
-                seek_bar.setMax(MusicPlayback.mMediaPlayer.getDuration());
-                int currentLocation = MusicPlayback.mMediaPlayer.getCurrentPosition();
-                seek_bar.setProgress(currentLocation);
-                if (!playButton) {
-                    btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_pause));
-                }
-//                    leftTime.setText(String.format(Locale.getDefault(), "%02d:%02d",
-//                            TimeUnit.MILLISECONDS.toMinutes(currentLocation),
-//                            TimeUnit.MILLISECONDS.toSeconds(currentLocation) -
-//                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(currentLocation))
-//                    ));
-                    playButton = true;
-            } else {
-                if (seek_bar.getProgress() == 0) {
-                    seek_bar.setProgress(MusicPlayback.mMediaPlayer.getCurrentPosition());
-                }
-                if (playButton) {
-                    btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_play));
-                }
-                playButton = false;
-
-            }
-        } catch (Exception e) {
-            String[] duration = sharedPrefsUtils.readSharedPrefsString("duration","1").split(":");
-            btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_play));
-            seek_bar.setMax(Integer.parseInt(duration[0]) * 60 * 1000 + Integer.parseInt(duration[1]) + 1000);
-            seek_bar.setProgress(sharedPrefsUtils.readSharedPrefsInt("song_position",1));
-        }
-        seekHandler.postDelayed(run, 990);
     }
 
     public Intent createExplicitFromImplicitIntent(Context context, Intent implicitIntent) {
@@ -700,76 +646,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         return explicitIntent;
     }
 
-    /*
-     * Pending Work here
-     */
-
-
-//    @SuppressLint("UseSparseArrays")
-//    public int getDominantColor(Bitmap bitmap) {
-//
-//        if (bitmap == null)
-//            throw new NullPointerException();
-//
-//        int width = bitmap.getWidth();
-//        int height = bitmap.getHeight();
-//        int size = width * height;
-//        int pixels[] = new int[size];
-//
-//        Bitmap bitmap2 = bitmap.copy(Bitmap.Config.ARGB_4444, false);
-//
-//        bitmap2.getPixels(pixels, 0, width, 0, 0, width, height);
-//
-//        final List<HashMap<Integer, Integer>> colorMap = new ArrayList<>();
-//        colorMap.add(new HashMap<Integer, Integer>());
-//        colorMap.add(new HashMap<Integer, Integer>());
-//        colorMap.add(new HashMap<Integer, Integer>());
-//
-//        int color;
-//        int r;
-//        int g;
-//        int b;
-//        Integer rC, gC, bC;
-//        for (int pixel : pixels) {
-//            color = pixel;
-//
-//            r = Color.red(color);
-//            g = Color.green(color);
-//            b = Color.blue(color);
-//
-//            rC = colorMap.get(0).get(r);
-//            if (rC == null)
-//                rC = 0;
-//            colorMap.get(0).put(r, ++rC);
-//
-//            gC = colorMap.get(1).get(g);
-//            if (gC == null)
-//                gC = 0;
-//            colorMap.get(1).put(g, ++gC);
-//
-//            bC = colorMap.get(2).get(b);
-//            if (bC == null)
-//                bC = 0;
-//            colorMap.get(2).put(b, ++bC);
-//        }
-//
-//        int[] rgb = new int[3];
-//        for (int i = 0; i < 3; i++) {
-//            int max = 0;
-//            int val = 0;
-//            for (Map.Entry<Integer, Integer> entry : colorMap.get(i).entrySet()) {
-//                if (entry.getValue() > max) {
-//                    max = entry.getValue();
-//                    val = entry.getKey();
-//                }
-//            }
-//            rgb[i] = val;
-//        }
-//
-//        return Color.rgb(rgb[0], rgb[1], rgb[2]);
-//    }
-
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
@@ -781,11 +657,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     private void backPressed() {
-
-//            if (favChange % 2 == 1) {
-////                Intent homepage = new Intent(this, MainActivity.class);
-////                startActivity(homepage);
-//            }
         finish();
 
     }
@@ -811,12 +682,11 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
             finish();
         } else if (id == R.id.action_queueBtn) {
             if (!getResources().getBoolean(R.bool.isLandscape)) {
-                if (isFragment) {
-                    frag.setVisibility(View.GONE);
+                if (queueFragment.getVisibility() == View.VISIBLE) {
+                    queueFragment.setVisibility(View.GONE);
                 } else {
-                    frag.setVisibility(View.VISIBLE);
+                    queueFragment.setVisibility(View.VISIBLE);
                 }
-                isFragment = !isFragment;
             }
         } else if (id == R.id.add_to_playlist) {
             songsManager.addToPlaylist(songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID",0)));
@@ -856,7 +726,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                                 for (int i = 0; i < data.size(); i++) {
                                     db.addRow(playlistID, data.get(i));
                                 }
-                                //TODO:MainActivity.shouldNotifyDataChanged = true;
                                 db.close();
                             }
                         });
@@ -892,6 +761,5 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 }

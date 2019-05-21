@@ -34,7 +34,7 @@ public class MusicDockFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_music_dockv2, container,
+        View view = inflater.inflate(R.layout.fragment_music_dock, container,
                 false);
 
         title = view.findViewById(R.id.XtextView1);

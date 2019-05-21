@@ -71,19 +71,17 @@ class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
      * *** Depends upon data size called for each row , Create each ListView row ****
      */
     @Override
-    @SuppressLint("SimpleDateFormat")
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
 
         /*
         * Get each Model object from ArrayList
         */
         SongModel tempValues = getItem(position);
-        final String duration, artist, songName, title, finalTitle, songPath;
+        final String duration, artist, songName, title, finalTitle;
         String finalTitle1;
         duration = tempValues.getDuration();
         artist = tempValues.getArtist();
         songName = tempValues.getFileName();
-        songPath = tempValues.getPath();
         title = tempValues.getTitle();
 
         finalTitle1 = songName;

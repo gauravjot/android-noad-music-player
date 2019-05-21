@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="unselected_text">#999</color>
     <color name="ic_launcher_background">#00ffffff</color>
+
+    <!-- Standardized Colors -->
+
+    <color name="blackOpaque">#22000000</color>
+    <color name="whiteOpaque">#bcFFFFFF</color>
+    <color name="whiteOpaqueX2">#aaFFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="black">#000</color>
+    <color name="blackSubtitle">#77000000</color>
+
+    <!-- Accent Colors -->
 
     <color name="orange">#ff7043</color>
     <color name="cyan">#03A9F4</color>
@@ -11,4 +22,20 @@
     <color name="purple">#ba68c8</color>
     <color name="red">#CC3C3C</color>
     <color name="grey">#607d8b</color>
+
+    <!-- App Theme -->
+
+    <color name="primaryColor">#000000</color>
+    <color name="primaryDark">#000000</color>
+    <color name="accentColor">#FFFFFF</color>
+    <color name="imageColorAlpha">#66000000</color>
+    <color name="background">#000000</color>
+    <color name="dialogBackground">#252525</color>
+    <color name="progressBarBackground">#44ffffff</color>
+    <color name="navigationBar">#000000</color>
+
+    <color name="textColorTitle">#ffffff</color>
+    <color name="textColorSubTitle">#999</color>
+    <color name="unselected_text">#999</color>
+    <color name="playerControlsBackground">@color/primaryDark</color>
 </resources>

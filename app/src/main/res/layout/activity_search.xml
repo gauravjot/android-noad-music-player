@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
-        android:background="@color/actionBar">
+        android:background="@color/primaryColor">
 
         <EditText
             android:layout_width="match_parent"

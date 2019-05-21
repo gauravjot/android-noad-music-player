@@ -3,8 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/actionBar</item>
-        <item name="colorPrimaryDark">@color/statusBar</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/accentColor</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white</item>
@@ -15,14 +15,13 @@
 
     <style name="AppThemeToolbar" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/actionBar</item>
-        <item name="colorPrimaryDark">@color/statusBar</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="dialogTheme">@style/Theme.AppCompat.Dialog</item>
         <item name="colorAccent">@color/accentColor</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white</item>
         <item name="android:windowBackground">@color/background</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:actionBarStyle">@style/MyHomeActionBar</item>
         <item name="actionBarStyle">@style/MyHomeActionBar</item>
@@ -32,6 +31,9 @@
     <style name="AppThemeToolbar.Overlay" parent="AppThemeToolbar">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="windowActionBarOverlay">true</item>
+        <item name="colorPrimaryDark">@color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
 
@@ -41,7 +43,7 @@
     </style>
 
     <style name="ThemeNoActionBar" parent="AppTheme">
-        <item name="android:background">@color/actionBar</item>
+        <item name="android:background">@color/primaryColor</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="actionBarStyle">@style/MyHomeActionBar</item>
@@ -50,11 +52,18 @@
     <style name="ThemeActionBar" parent="AppTheme">
         <item name="android:actionBarStyle">@style/MyHomeActionBar</item>
         <item name="actionBarStyle">@style/MyHomeActionBar</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:navigationBarColor">@color/navigationBar</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
     </style>
 
     <style name="ThemeToolBarTranslucent" parent="AppThemeToolbar">
         <item name="android:actionBarStyle">@style/ActionBarShadow</item>
         <item name="actionBarStyle">@style/ActionBarShadow</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
     </style>
 
     <!-- This one is the Play Activity Theme -->
@@ -62,6 +71,7 @@
         <item name="android:actionBarStyle">@style/MyHomeActionBarBig</item>
         <item name="actionBarStyle">@style/MyHomeActionBarBig</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
     </style>
 
     <style name="ThemeActionBarTrans" parent="AppTheme">
@@ -79,44 +89,6 @@
         <item name="android:shadowRadius">15</item>
     </style>
 
-    <color name="blackOpaque">#22000000</color>
-    <color name="whiteOpaque">#bcFFFFFF</color>
-    <color name="whiteOpaqueX2">#aaFFFFFF</color>
-    <color name="white">#FFFFFF</color>
-    <color name="transparent">#00000000</color>
-
-    <color name="black">#000</color>
-    <color name="blackSubtitle">#77000000</color>
-
-    <!-- Red Accent Black Theme -->
-    <!--<color name="actionBar">#212121</color> &lt;!&ndash;  #42474e &ndash;&gt;-->
-    <!--<color name="actionBarSuperTrans">#f1f1f1</color> &lt;!&ndash; #f1f1f1 &ndash;&gt;-->
-    <!--<color name="actionBarTrans">#44212121</color> &lt;!&ndash;  #4442474e &ndash;&gt;-->
-    <!--<color name="accentColor">#FF5252</color> &lt;!&ndash;  #617FDE &ndash;&gt;-->
-    <!--<color name="imageColorAlpha">#44FF5252</color> &lt;!&ndash;  #66617FDE &ndash;&gt;-->
-    <!--<color name="statusBar">#151515</color> &lt;!&ndash;  #2a2c31 &ndash;&gt;-->
-    <!--<color name="statusBarTrans">#55000000</color> &lt;!&ndash; #552a2c31 &ndash;&gt;-->
-    <!--<color name="background">#303030</color> &lt;!&ndash;  #3A4049 &ndash;&gt;-->
-    <!--<color name="dialogBackground">#424242</color> &lt;!&ndash;  #2C333D &ndash;&gt;-->
-    <!--<color name="dialogBackgroundAlpha">#424242</color> &lt;!&ndash;  #552C333D &ndash;&gt;-->
-
-    <!--<color name="textColorTitle">#ffffff</color>-->
-    <!--<color name="textColorSubTitle">#88ffffff</color>-->
-    <!--<color name="iconColor">#99ffffff</color>-->
-
-    <color name="actionBar">#000000</color> <!--  #2196F3 -->
-    <color name="accentColor">#FFFFFF</color> <!--  #03A9F4 -->
-    <color name="imageColorAlpha">#66000000</color> <!--  #66617FDE -->
-    <color name="statusBar">#000000</color> <!--  #2a2c31 -->
-    <color name="background">#000000</color> <!--  #3A4049 -->
-    <color name="dialogBackground">#252525</color> <!--  #2C333D -->
-    <color name="progressBarBackground">#44ffffff</color>
-    <color name="navigationBar">#000000</color>
-
-    <color name="textColorTitle">#ffffff</color>
-    <color name="textColorSubTitle">#7E7E7C</color>
-    <color name="playerControlsBackground">@color/statusBar</color>
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -125,5 +97,9 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="CustomFont" parent="android:Widget.TextView">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
 
 </resources>

@@ -71,14 +71,14 @@ public class SettingsActivity extends PreferenceActivity {
                             songsManager.sync();
                             break;
                         case "turnEqualizer":
-                            if (MusicPlayback.mMediaPlayer != null && MusicPlayback.mMediaSessionCompat.isActive()) {
+                            try {
                                 Equalizer eq = new Equalizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
                                 BassBoost bassBoost = new BassBoost(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
                                 Virtualizer virtualizer = new Virtualizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
                                 bassBoost.setEnabled(sharedPreferences.getBoolean("turnEqualizer", false));
                                 virtualizer.setEnabled(sharedPreferences.getBoolean("turnEqualizer", false));
                                 eq.setEnabled(sharedPreferences.getBoolean("turnEqualizer", false));
-                            }
+                            } catch (Exception ignored) {}
                             break;
                     }
                 }
