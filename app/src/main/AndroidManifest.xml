@@ -20,14 +20,15 @@
             android:name=".HomeActivity"
             android:clearTaskOnLaunch="true"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:finishOnTaskLaunch="true"
-            android:label="@string/title_activity_home"
+            android:label="@string/app_name"
             android:theme="@style/AppThemeToolbar"/>
         <activity
             android:name=".PlayActivity"
             android:label="@string/title_activity_play"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeToolbar.Overlay">
+            android:theme="@string/app_name">
             <intent-filter>
                 <action android:name="com.garaya.musicplayer.action.GRAPHIC" />
             </intent-filter>
@@ -65,7 +66,7 @@
             android:theme="@style/AppThemeToolbar" />
         <activity
             android:name=".TimerActivity"
-            android:label="@string/title_activity_timer"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/DialogTheme" />
         <activity
