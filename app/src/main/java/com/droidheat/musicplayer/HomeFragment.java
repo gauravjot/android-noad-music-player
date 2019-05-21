@@ -104,7 +104,7 @@ public class HomeFragment extends Fragment {
         for (int i = 0; i < arrayList.size(); i++) {
             list.add(arrayList.get(i).getAlbumID());
         }
-        (new ImageUtils(getActivity())).getImageByPicasso(
+        (new ImageUtils(getActivity())).getFullImageByPicasso(
                 list,
                 imageView1,0,list.size()-1
         );

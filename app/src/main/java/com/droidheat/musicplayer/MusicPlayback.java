@@ -117,7 +117,9 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         /*
          * Calling startForeground() under 5 seconds to avoid ANR
          */
+        musicID = sharedPrefsUtils.readSharedPrefsInt("musicID", 0);
         showPausedNotification();
+
         try {
             Log.d(TAG, "onCreate(): Showing Paused Notification");
         } catch (Exception e) {
@@ -139,9 +141,6 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                 }
             } catch (Exception e) {
                 Log.d(TAG, "Intent received by PlaybackService. No musicID found.");
-            }
-            if (musicID == -1) {
-                musicID = sharedPrefsUtils.readSharedPrefsInt("musicID", 0);
             }
 
             /*
@@ -202,8 +201,8 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                 }
                 default: {
                 }
-                MediaButtonReceiver.handleIntent(mMediaSessionCompat, intent);
             }
+            MediaButtonReceiver.handleIntent(mMediaSessionCompat, intent);
         }
         return START_NOT_STICKY;
     }
@@ -316,6 +315,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     }
 
     private void processPlayPause() {
+        Log.d(TAG,"Play/Pausing");
         if (mPlaybackStateBuilder.build().getState() == PlaybackStateCompat.STATE_PLAYING) {
             processPauseRequest();
         } else if (mPlaybackStateBuilder.build().getState() == PlaybackStateCompat.STATE_PAUSED) {
@@ -417,7 +417,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         @Override
         public void onPause() {
             super.onPause();
-            processPlayPause();
+            processPauseRequest();
         }
 
         @Override
@@ -458,9 +458,10 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     };
 
     private void setMediaPlaybackState(int state) {
-        mPlaybackStateBuilder.setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE | PlaybackStateCompat.ACTION_PLAY |
-                PlaybackStateCompat.ACTION_SKIP_TO_NEXT | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
-                | PlaybackStateCompat.ACTION_STOP | PlaybackStateCompat.ACTION_SEEK_TO);
+        mPlaybackStateBuilder.setActions(PlaybackStateCompat.ACTION_PLAY
+                | PlaybackStateCompat.ACTION_PAUSE | PlaybackStateCompat.ACTION_SKIP_TO_NEXT
+                | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS | PlaybackStateCompat.ACTION_STOP
+                | PlaybackStateCompat.ACTION_SEEK_TO);
 
         mPlaybackStateBuilder.setState(state, mMediaPlayer.getCurrentPosition(), 1.0f, SystemClock.elapsedRealtime());
         if (mPlaybackStateBuilder.build().getState() == PlaybackStateCompat.STATE_PLAYING) {
@@ -523,7 +524,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         builder.addAction(new NotificationCompat.Action(R.drawable.app_previous,
                 "Previous", MediaButtonReceiver.buildMediaButtonPendingIntent(this, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)));
         builder.addAction(new NotificationCompat.Action(R.drawable.app_pause,
-                "Play", MediaButtonReceiver.buildMediaButtonPendingIntent(this, PlaybackStateCompat.ACTION_PLAY_PAUSE)));
+                "Play", MediaButtonReceiver.buildMediaButtonPendingIntent(this, PlaybackStateCompat.ACTION_PAUSE)));
         builder.addAction(new NotificationCompat.Action(R.drawable.app_next,
                 "Next", MediaButtonReceiver.buildMediaButtonPendingIntent(this, PlaybackStateCompat.ACTION_SKIP_TO_NEXT)));
         builder.setStyle(new MediaStyle().setShowActionsInCompactView(0).setMediaSession(mMediaSessionCompat.getSessionToken()));
@@ -551,7 +552,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         builder.addAction(new NotificationCompat.Action(R.drawable.app_previous,
                 "Previous", MediaButtonReceiver.buildMediaButtonPendingIntent(this, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)));
         builder.addAction(new NotificationCompat.Action(R.drawable.app_play,
-                "Play", MediaButtonReceiver.buildMediaButtonPendingIntent(this, PlaybackStateCompat.ACTION_PLAY_PAUSE)));
+                "Play", MediaButtonReceiver.buildMediaButtonPendingIntent(this, PlaybackStateCompat.ACTION_PLAY)));
         builder.addAction(new NotificationCompat.Action(R.drawable.app_next,
                 "Next", MediaButtonReceiver.buildMediaButtonPendingIntent(this, PlaybackStateCompat.ACTION_SKIP_TO_NEXT)));
         builder.setStyle(new MediaStyle().setShowActionsInCompactView(0).setMediaSession(mMediaSessionCompat.getSessionToken()));

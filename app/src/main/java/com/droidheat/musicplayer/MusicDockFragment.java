@@ -1,14 +1,19 @@
 package com.droidheat.musicplayer;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Outline;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaControllerCompat;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +22,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Objects;
+import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+@SuppressWarnings("ConstantConditions")
 public class MusicDockFragment extends Fragment {
 
-    TextView title;
-    TextView artist;
-    ImageView btnPlay;
-    ImageView albumArt;
-    Handler seekHandler = new Handler();
-    int currentTitleArtist;
-    SongsManager songsManager;
+    private TextView title;
+    private TextView artist;
+    private ImageView btnPlay;
+    private ImageView albumArt;
+    private MediaBrowserCompat mMediaBrowser;
 
+    private final ScheduledExecutorService mExecutorService =
+            Executors.newSingleThreadScheduledExecutor();
+    private SongsManager songsManager;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -53,7 +64,6 @@ public class MusicDockFragment extends Fragment {
         albumArt.setClipToOutline(true);
 
         songsManager = new SongsManager(getActivity());
-        final SharedPrefsUtils sharedPrefsUtils = new SharedPrefsUtils(getContext());
 
         btnPlayActivity.setOnClickListener(new View.OnClickListener() {
 
@@ -62,21 +72,6 @@ public class MusicDockFragment extends Fragment {
                 touchDock();
             }
         });
-
-        try {
-            if (MusicPlayback.mMediaSessionCompat.isActive()) {
-                if (MusicPlayback.mMediaSessionCompat.getController().getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING) {
-                    btnPlay.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.app_pause));
-
-                } else {
-                    btnPlay.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.app_play));
-
-                }
-            }
-        } catch (Exception e) {
-            btnPlay.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.app_play));
-
-        }
 
         btnPlay.setOnClickListener(new View.OnClickListener() {
 
@@ -116,37 +111,9 @@ public class MusicDockFragment extends Fragment {
             });
         }
 
-        try {
-            if (MusicPlayback.mMediaSessionCompat.isActive()) {
+        mMediaBrowser = new MediaBrowserCompat(getActivity(),
+                new ComponentName(getActivity(), MusicPlayback.class), mConnectionCallback, null);
 
-                title.setText(MusicPlayback.mMediaSessionCompat.getController().getMetadata().getText(MediaMetadataCompat.METADATA_KEY_TITLE));
-                artist.setText(MusicPlayback.mMediaSessionCompat.getController().getMetadata().getText(MediaMetadataCompat.METADATA_KEY_ARTIST));
-                albumArt.setImageBitmap(
-                        (new ImageHelper()).getRoundedCornerBitmap(
-                                MusicPlayback.mMediaSessionCompat.getController().getMetadata().getBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART)
-                                , 16));
-
-            } else {
-                try {
-                    title.setText(sharedPrefsUtils.readSharedPrefsString("title", "Unknown Title"));
-                    artist.setText(sharedPrefsUtils.readSharedPrefsString("artist", "Unknown Artist"));
-                    (new ImageUtils(getContext())).getImageByPicasso(sharedPrefsUtils.readSharedPrefsString("albumid","0"), albumArt);
-
-                } catch (Exception ignored) {
-
-                }
-            }
-        } catch (Exception e) {
-            try {
-                title.setText(sharedPrefsUtils.readSharedPrefsString("title", "Unknown Title"));
-                artist.setText(sharedPrefsUtils.readSharedPrefsString("artist", "Unknown Artist"));
-                (new ImageUtils(getContext())).getImageByPicasso(sharedPrefsUtils.readSharedPrefsString("albumid","0"), albumArt);
-            } catch (Exception ignored) {
-
-            }
-        }
-
-        seekUpdation();
         return view;
 
     }
@@ -160,50 +127,118 @@ public class MusicDockFragment extends Fragment {
 
     }
 
+    private final MediaControllerCompat.Callback mCallback = new MediaControllerCompat.Callback() {
+        @Override
+        public void onPlaybackStateChanged(@NonNull PlaybackStateCompat state) {
+            Log.d(TAG, "onPlayBackStateChanged" + state);
+            updatePlaybackState(state);
+        }
+
+        @Override
+        public void onMetadataChanged(MediaMetadataCompat metadata) {
+            if (metadata != null) {
+                updateMediaDescription(metadata);
+            }
+        }
+    };
+
+    private void updateMediaDescription(MediaMetadataCompat metadata) {
+        title.setText(metadata.getText(MediaMetadataCompat.METADATA_KEY_TITLE));
+        artist.setText(metadata.getText(MediaMetadataCompat.METADATA_KEY_ARTIST));
+        albumArt.setImageBitmap(metadata.getBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART));
+    }
+
+    private String TAG = "MusicDockConsole";
+
+    private final MediaBrowserCompat.ConnectionCallback mConnectionCallback =
+            new MediaBrowserCompat.ConnectionCallback() {
+                @Override
+                public void onConnected() {
+                    Log.d(TAG, "onConnected");
+                    try {
+                        connectToSession(mMediaBrowser.getSessionToken());
+                    } catch (RemoteException e) {
+                        Log.e(TAG, "could not connect media controller");
+                    }
+                }
+            };
+
+    private void connectToSession(MediaSessionCompat.Token token) throws RemoteException {
+        MediaControllerCompat mediaController = new MediaControllerCompat(
+                getActivity(), token);
+        if (mediaController.getMetadata() == null) {
+            return;
+        }
+        MediaControllerCompat.setMediaController(getActivity(), mediaController);
+        mediaController.registerCallback(mCallback);
+        PlaybackStateCompat state = mediaController.getPlaybackState();
+        updateMediaDescription(mediaController.getMetadata());
+        updatePlaybackState(state);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mMediaBrowser != null) {
+            mMediaBrowser.connect();
+            Log.d(TAG, "connecting to MediaSession");
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mMediaBrowser != null) {
+            mMediaBrowser.disconnect();
+            Log.d(TAG, "disconnecting from MediaSession");
+        }
+        if (MediaControllerCompat.getMediaController(getActivity()) != null) {
+            MediaControllerCompat.getMediaController(getActivity()).unregisterCallback(mCallback);
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        seekHandler.removeCallbacks(run);
+        mExecutorService.shutdown();
     }
 
-    private void seekUpdation() {
-        try {
-            if (MusicPlayback.mMediaPlayer != null && MusicPlayback.mMediaSessionCompat.isActive()) {
-                if (MusicPlayback.mMediaSessionCompat.getController().getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING) {
-
-                    if (currentTitleArtist != MusicPlayback.mMediaSessionCompat.getController().getMetadata().getText(MediaMetadataCompat.METADATA_KEY_TITLE).length() +
-                            MusicPlayback.mMediaSessionCompat.getController().getMetadata().getText(MediaMetadataCompat.METADATA_KEY_ARTIST).length() +
-                            MusicPlayback.mMediaSessionCompat.getController().getMetadata().getText(MediaMetadataCompat.METADATA_KEY_ALBUM).length()) {
-                        title.setText(MusicPlayback.mMediaSessionCompat.getController().getMetadata().getText(MediaMetadataCompat.METADATA_KEY_TITLE));
-                        artist.setText(MusicPlayback.mMediaSessionCompat.getController().getMetadata().getText(MediaMetadataCompat.METADATA_KEY_ARTIST));
-                        albumArt.setImageBitmap(MusicPlayback.mMediaSessionCompat.getController().getMetadata().getBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART));
-                        currentTitleArtist = MusicPlayback.mMediaSessionCompat.getController().getMetadata().getText(MediaMetadataCompat.METADATA_KEY_TITLE).length() +
-                                MusicPlayback.mMediaSessionCompat.getController().getMetadata().getText(MediaMetadataCompat.METADATA_KEY_ARTIST).length() +
-                                MusicPlayback.mMediaSessionCompat.getController().getMetadata().getText(MediaMetadataCompat.METADATA_KEY_ALBUM).length();
-                    }
-                    btnPlay.setImageDrawable(ContextCompat.getDrawable(
-                            Objects.requireNonNull(getActivity()), R.drawable.app_pause));
-                } else {
-                    btnPlay.setImageDrawable(ContextCompat.getDrawable(
-                            Objects.requireNonNull(getActivity()), R.drawable.app_play));
-                }
-            } else {
-                btnPlay.setImageDrawable(ContextCompat.getDrawable(
-                        Objects.requireNonNull(getActivity()), R.drawable.app_play));
-            }
-        } catch (Exception e) {
-            btnPlay.setImageDrawable(ContextCompat.getDrawable(
-                    Objects.requireNonNull(getActivity()), R.drawable.app_play));
+    private void updatePlaybackState(PlaybackStateCompat state) {
+        if (state == null) {
+            return;
         }
-        seekHandler.postDelayed(run, 500);
+
+        switch (state.getState()) {
+            case PlaybackStateCompat.STATE_PLAYING:
+                btnPlay.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.app_pause));
+                break;
+            case PlaybackStateCompat.STATE_PAUSED:
+                btnPlay.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.app_play));
+                break;
+            case PlaybackStateCompat.STATE_NONE:
+            case PlaybackStateCompat.STATE_STOPPED:
+                btnPlay.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.app_play));
+                break;
+            case PlaybackStateCompat.STATE_BUFFERING:
+                break;
+            default:
+                Log.d(TAG, "Unhandled state " + state.getState());
+            case PlaybackStateCompat.STATE_CONNECTING:
+                break;
+            case PlaybackStateCompat.STATE_ERROR:
+                break;
+            case PlaybackStateCompat.STATE_FAST_FORWARDING:
+                break;
+            case PlaybackStateCompat.STATE_REWINDING:
+                break;
+            case PlaybackStateCompat.STATE_SKIPPING_TO_NEXT:
+                break;
+            case PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS:
+                break;
+            case PlaybackStateCompat.STATE_SKIPPING_TO_QUEUE_ITEM:
+                break;
+        }
     }
-
-    Runnable run = new Runnable() {
-        @Override
-        public void run() {
-            seekUpdation();
-        }
-    };
 
 
 }

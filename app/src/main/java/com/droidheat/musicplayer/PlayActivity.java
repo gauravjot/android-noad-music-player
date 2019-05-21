@@ -557,7 +557,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
             return;
         }
         int duration = (int) metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION);
-        Log.d(TAG, "updateDuration called " + duration);
         seek_bar.setMax(duration);
     }
 
@@ -617,7 +616,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                     mLastPlaybackState.getLastPositionUpdateTime();
             currentPosition += (int) timeDelta * mLastPlaybackState.getPlaybackSpeed();
         }
-        Log.d(TAG,"position: " + currentPosition);
         seek_bar.setProgress((int) currentPosition);
     }
 

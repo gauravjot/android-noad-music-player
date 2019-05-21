@@ -124,7 +124,7 @@ class AdapterFiveRecentlyAdded extends BaseAdapter implements OnClickListener {
             });
             holder.image.setClipToOutline(true);
 
-            (new ImageUtils(activity)).getImageByPicasso(tempValues.getAlbumID(), holder.image);
+            (new ImageUtils(activity)).getSmallImageByPicasso(tempValues.getAlbumID(), holder.image);
 
             holder.text.setText(finalTitle);
             holder.text1.setText(((artist.length() > 25) ? artist.substring(0,25) : artist) + "; " + duration);
