@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class QueueFragment extends Fragment implements QueueCustomAdapter.MyFragmentCallback {
@@ -48,7 +49,7 @@ public class QueueFragment extends Fragment implements QueueCustomAdapter.MyFrag
         recyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.getLayoutManager().scrollToPosition(
+        Objects.requireNonNull(recyclerView.getLayoutManager()).scrollToPosition(
                 (new SharedPrefsUtils(getContext()).readSharedPrefsInt("musicID",0)));
 
         ItemTouchHelper.Callback callback =

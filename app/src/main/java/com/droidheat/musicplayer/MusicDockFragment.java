@@ -22,12 +22,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
-import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
 @SuppressWarnings("ConstantConditions")
 public class MusicDockFragment extends Fragment {
 
@@ -36,9 +30,6 @@ public class MusicDockFragment extends Fragment {
     private ImageView btnPlay;
     private ImageView albumArt;
     private MediaBrowserCompat mMediaBrowser;
-
-    private final ScheduledExecutorService mExecutorService =
-            Executors.newSingleThreadScheduledExecutor();
     private SongsManager songsManager;
 
     @Override
@@ -77,15 +68,8 @@ public class MusicDockFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                try {
-                    if (MusicPlayback.mMediaSessionCompat.isActive()) {
-                        ContextCompat.startForegroundService(Objects.requireNonNull(getActivity()),
-                                songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_PLAY_PAUSE)));
-                    } else {
-                        songsManager.playFromLastLeft();
-                    }
-                } catch (Exception e) {
-                    songsManager.playFromLastLeft();
+                if (!songsManager.queue().isEmpty()) {
+                    MediaControllerCompat.getMediaController(getActivity()).getTransportControls().play();
                 }
             }
         });
@@ -95,8 +79,7 @@ public class MusicDockFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (!songsManager.queue().isEmpty()) {
-                        ContextCompat.startForegroundService(Objects.requireNonNull(getActivity()),
-                                songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_TRACK_NEXT)));
+                        MediaControllerCompat.getMediaController(getActivity()).getTransportControls().skipToNext();
                     }
                 }
             });
@@ -104,8 +87,7 @@ public class MusicDockFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (!songsManager.queue().isEmpty()) {
-                        ContextCompat.startForegroundService(Objects.requireNonNull(getActivity()),
-                                songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_TRACK_PREV)));
+                        MediaControllerCompat.getMediaController(getActivity()).getTransportControls().skipToNext();
                     }
                 }
             });
@@ -120,11 +102,12 @@ public class MusicDockFragment extends Fragment {
 
 
     void touchDock() {
-        if (!songsManager.queue().isEmpty() && !songsManager.allSongs().isEmpty()) {
+        if (!songsManager.queue().isEmpty()) {
             Intent intent = new Intent(getActivity(), PlayActivity.class);
             startActivity(intent);
+        } else {
+            (new CommonUtils(getActivity())).showTheToast("No music found in device, try Sync in options.");
         }
-
     }
 
     private final MediaControllerCompat.Callback mCallback = new MediaControllerCompat.Callback() {
@@ -200,7 +183,6 @@ public class MusicDockFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mExecutorService.shutdown();
     }
 
     private void updatePlaybackState(PlaybackStateCompat state) {

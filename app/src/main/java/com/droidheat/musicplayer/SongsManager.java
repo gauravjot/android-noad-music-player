@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
 import java.util.TreeMap;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -66,14 +67,21 @@ public class SongsManager {
             try {
                 Type type = new TypeToken<ArrayList<SongModel>>() {
                 }.getType();
-                ArrayList<SongModel> restoreData = new Gson().fromJson(sharedPrefsUtils.readSharedPrefsString("key",null), type);
+                ArrayList<SongModel> restoreData = new Gson().fromJson(sharedPrefsUtils.readSharedPrefsString("key", null), type);
                 replaceQueue(restoreData);
                 Log.d(TAG, "Retrieved queue from storage in SongsManager. " + restoreData.size() + " songs!");
-            }
-            catch (Exception e) {
-                Log.d(TAG,"Unable to retrieve data while queue is empty.");
+            } catch (Exception e) {
+                Log.d(TAG, "Unable to retrieve data while queue is empty.");
             }
         }
+    }
+
+    int getCurrentMusicID() {
+        return sharedPrefsUtils.readSharedPrefsInt("musicID", 0);
+    }
+
+    void setCurrentMusicID(int musicID) {
+        sharedPrefsUtils.writeSharedPrefs("musicID",musicID);
     }
 
     ArrayList<SongModel> queue() {
@@ -108,7 +116,7 @@ public class SongsManager {
     }
 
     ArrayList<HashMap<String, String>> albums() {
-        ArrayList<HashMap<String,String>> list = new ArrayList<>();
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
         ArrayList<SongModel> newSongs = newSongs();
         for (int i = 0; i < newSongs.size(); i++) {
             String name = newSongs.get(i).getAlbum();
@@ -267,10 +275,10 @@ public class SongsManager {
         return list;
     }
 
-    HashMap<String,String> getPlaylist(int ID) {
+    HashMap<String, String> getPlaylist(int ID) {
         Playlist db = new Playlist(context);
         db.open();
-        HashMap<String,String> hash = db.getRow(ID);
+        HashMap<String, String> hash = db.getRow(ID);
         db.close();
         return hash;
     }
@@ -325,7 +333,7 @@ public class SongsManager {
         db.open();
         db.deleteAll(playlistID);
         for (int i = 0; i < newList.size(); i++) {
-            db.addRow(playlistID,newList.get(i));
+            db.addRow(playlistID, newList.get(i));
         }
         db.close();
     }
@@ -373,7 +381,7 @@ public class SongsManager {
         db.open();
         db.deleteAll(1);
         for (int i = 0; i < newList.size(); i++) {
-            db.addRow(1,newList.get(i));
+            db.addRow(1, newList.get(i));
         }
         db.close();
     }
@@ -403,7 +411,7 @@ public class SongsManager {
     }
 
     void playNext(SongModel song) {
-        queue.add(sharedPrefsUtils.readSharedPrefsInt("musicID",0) + 1, song);
+        queue.add(getCurrentMusicID() + 1, song);
         (new CommonUtils(context)).showTheToast("Playing next: " + song.getTitle());
     }
 
@@ -469,9 +477,9 @@ public class SongsManager {
             File file = new File(array.get(id).getPath());
             if (file.exists()) {
                 replaceQueue(array);
+                setCurrentMusicID(id);
                 Intent intent = new Intent(MusicPlayback.ACTION_PLAY);
-                intent.putExtra("musicID", id);
-                ContextCompat.startForegroundService(context,createExplicitFromImplicitIntent(intent));
+                ContextCompat.startForegroundService(context, createExplicitFromImplicitIntent(intent));
 
             } else {
                 Toast.makeText(context,
@@ -482,31 +490,29 @@ public class SongsManager {
     }
 
     void playFromLastLeft() {
-        Log.d("MusicUtilsConsole", "Playing from where we left of last time!");
+        Log.d(TAG, "Playing from where we left of last time!");
         if (!allSongs().isEmpty()) {
 
             Type type = new TypeToken<ArrayList<SongModel>>() {
             }.getType();
-            ArrayList<SongModel> restoreData =
-                    new Gson().fromJson(sharedPrefsUtils.readSharedPrefsString("key", null), type);
+            ArrayList<SongModel> restoreData = new Gson().fromJson(sharedPrefsUtils.readSharedPrefsString("key", null), type);
+            if (restoreData == null) {
+                // null because that's default value we passed for 'key'
+                restoreData = queue();
+            }
             if (replaceQueue(restoreData)) {
-                assert restoreData != null;
-                Log.d("MusicUtilsConsole", "Songs fetched from saved queue " + restoreData.size());
-                Log.d("MusicUtilsConsole", "Initiating the play request to MusicPlayback Service");
-                if (!restoreData.isEmpty()) {
-                    File file = new File(restoreData.get(sharedPrefsUtils.readSharedPrefsInt("musicID", 0)).getPath());
-                    if (file.exists()) {
-                        replaceQueue(restoreData);
-                        Intent intent = new Intent(MusicPlayback.ACTION_PLAY);
-                        intent.putExtra("musicID", sharedPrefsUtils.readSharedPrefsInt("musicID", 0));
-                        intent.putExtra("isPlayFromLastLeft", true);
-                        ContextCompat.startForegroundService(context,createExplicitFromImplicitIntent(intent));
+                Log.d(TAG, "Songs fetched: " + restoreData.size());
+                Log.d(TAG, "Initiating the play request to MusicPlayback Service");
+                File file = new File(restoreData.get(getCurrentMusicID()).getPath());
+                if (file.exists()) {
+                    Intent intent = new Intent(MusicPlayback.ACTION_PLAY);
+                    intent.putExtra("isPlayFromLastLeft", true);
+                    ContextCompat.startForegroundService(context, createExplicitFromImplicitIntent(intent));
 
-                    } else {
-                        Toast.makeText(context,
-                                "Unable to play the song! Try syncing the library!",
-                                Toast.LENGTH_LONG).show();
-                    }
+                } else {
+                    Toast.makeText(context,
+                            "Unable to play the song! Try syncing the library!",
+                            Toast.LENGTH_LONG).show();
                 }
             } else {
                 (new CommonUtils(context)).showTheToast("Unable to resume music");
@@ -537,7 +543,7 @@ public class SongsManager {
                 PlaylistSongs db = new PlaylistSongs(context);
                 db.open();
                 int playListID = Integer.parseInt(Objects.requireNonNull(getAllPlaylists().get(position).get("ID")));
-                for (int i = 0; i < arrayList.size(); i++){
+                for (int i = 0; i < arrayList.size(); i++) {
                     if (!db.getAllRows(playListID).contains(arrayList.get(i))) {
                         db.addRow(playListID, arrayList.get(i));
                     }
@@ -560,12 +566,12 @@ public class SongsManager {
                 alertDialog.setContentView(R.layout.dialog_add_playlist);
 
                 final EditText input = alertDialog.findViewById(R.id.editText);
-                input.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context,(new CommonUtils(context)).accentColor(sharedPrefsUtils))));
+                input.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils))));
                 InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
 
                 Button btnCreate = alertDialog.findViewById(R.id.btnCreate);
-                btnCreate.setTextColor(ContextCompat.getColor(context,(new CommonUtils(context)).accentColor(sharedPrefsUtils)));
+                btnCreate.setTextColor(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils)));
                 btnCreate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -581,7 +587,7 @@ public class SongsManager {
                 });
 
                 Button btnCancel = alertDialog.findViewById(R.id.btnCancel);
-                btnCancel.setTextColor(ContextCompat.getColor(context,(new CommonUtils(context)).accentColor(sharedPrefsUtils)));
+                btnCancel.setTextColor(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils)));
                 btnCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -614,12 +620,12 @@ public class SongsManager {
                 PlaylistSongs db = new PlaylistSongs(context);
                 db.open();
                 int playListID = Integer.parseInt(Objects.requireNonNull(getAllPlaylists().get(position).get("ID")));
-                    if (!db.getAllRows(playListID).contains(hash)) {
-                        db.addRow(playListID, hash);
-                        (new CommonUtils(context)).showTheToast(hash.getTitle() + " is added to playlist! ");
-                    } else {
-                        (new CommonUtils(context)).showTheToast("Error: Song is already in Playlist!");
-                    }
+                if (!db.getAllRows(playListID).contains(hash)) {
+                    db.addRow(playListID, hash);
+                    (new CommonUtils(context)).showTheToast(hash.getTitle() + " is added to playlist! ");
+                } else {
+                    (new CommonUtils(context)).showTheToast("Error: Song is already in Playlist!");
+                }
                 db.close();
                 if (dialog.isShowing()) {
                     dialog.cancel();
@@ -636,12 +642,12 @@ public class SongsManager {
                 alertDialog.setContentView(R.layout.dialog_add_playlist);
 
                 final EditText input = alertDialog.findViewById(R.id.editText);
-                input.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context,(new CommonUtils(context)).accentColor(sharedPrefsUtils))));
+                input.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils))));
                 InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
 
                 Button btnCreate = alertDialog.findViewById(R.id.btnCreate);
-                btnCreate.setTextColor(ContextCompat.getColor(context,(new CommonUtils(context)).accentColor(sharedPrefsUtils)));
+                btnCreate.setTextColor(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils)));
                 btnCreate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -657,7 +663,7 @@ public class SongsManager {
                 });
 
                 Button btnCancel = alertDialog.findViewById(R.id.btnCancel);
-                btnCancel.setTextColor(ContextCompat.getColor(context,(new CommonUtils(context)).accentColor(sharedPrefsUtils)));
+                btnCancel.setTextColor(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils)));
                 btnCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -678,7 +684,7 @@ public class SongsManager {
             SongModel songModel = arrayList.get(id);
             arrayList.remove(id);
             Collections.shuffle(arrayList);
-            arrayList.add(0,songModel);
+            arrayList.add(0, songModel);
             play(0, arrayList);
             (new CommonUtils(context)).showTheToast("Shuffling");
         }

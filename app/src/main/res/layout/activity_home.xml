@@ -31,6 +31,7 @@
 
         <fragment
             android:id="@+id/fragment"
+            android:name="com.droidheat.musicplayer.MusicDockFragment"
             class="com.droidheat.musicplayer.MusicDockFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -118,147 +118,154 @@ public class SplashActivity extends AppCompatActivity {
             SongsManager songsManager = new SongsManager(SplashActivity.this);
 
             ArrayList<HashMap<String,String>> artists = songsManager.artists();
-            (new SharedPrefsUtils(SplashActivity.this)).writeSharedPrefs("home_artist",
-                    artists.get((new Random()).nextInt(artists.size())).get("artist"));
-
-            // -- Creating Playlist
-            Playlist playlist = new Playlist(SplashActivity.this);
-            playlist.open();
-            if (playlist.getCount() == 0) {
-                songsManager.addPlaylist("Playlist 1");
+            if (artists.size() > 0) {
+                (new SharedPrefsUtils(SplashActivity.this)).writeSharedPrefs("home_artist",
+                        artists.get((new Random()).nextInt(artists.size())).get("artist"));
             }
-            playlist.close();
 
-            if(sync) {
+            try {
+                // -- Creating Playlist
+                Playlist playlist = new Playlist(SplashActivity.this);
+                playlist.open();
+                if (playlist.getCount() == 0) {
+                    songsManager.addPlaylist("Playlist 1");
+                }
+                playlist.close();
 
-                for (int s = 0; s < songsManager.getAllPlaylists().size(); s++) {
-                    int playlistID = Integer.parseInt(songsManager.getAllPlaylists().get(s).get("ID"));
-                    ArrayList<SongModel> playListSongs =
-                            songsManager.playlistSongs(playlistID);
+                if (sync) {
 
-                    if (!playListSongs.isEmpty()) {
-                        for (int j = 0; j < playListSongs.size(); j++) {
-                            Log.d(TAG, "Playlist: Search if current song " + j + " is not similar with song in new songs list");
-                            if (!songsManager.allSongs().contains(playListSongs.get(j))) {
-                                Log.d(TAG, "Playlist: current playlist song doesn't exist in allSongs," +
+                    for (int s = 0; s < songsManager.getAllPlaylists().size(); s++) {
+                        int playlistID = Integer.parseInt(songsManager.getAllPlaylists().get(s).get("ID"));
+                        ArrayList<SongModel> playListSongs =
+                                songsManager.playlistSongs(playlistID);
+
+                        if (!playListSongs.isEmpty()) {
+                            for (int j = 0; j < playListSongs.size(); j++) {
+                                Log.d(TAG, "Playlist: Search if current song " + j + " is not similar with song in new songs list");
+                                if (!songsManager.allSongs().contains(playListSongs.get(j))) {
+                                    Log.d(TAG, "Playlist: current playlist song doesn't exist in allSongs," +
+                                            " so lets see if only path is changed or user has moved the song");
+                                    boolean isFound = false;
+                                    for (int k = 0; k < songsManager.allSongs().size(); k++) {
+                                        if ((songsManager.allSongs().get(k).getTitle() +
+                                                songsManager.allSongs().get(k).getDuration())
+                                                .equals(playListSongs.get(j).getTitle() +
+                                                        playListSongs.get(j).getDuration())) {
+                                            Log.d(TAG, "Playlist: song " + j + " does exist and is probably moved," +
+                                                    " so lets change broken song with lasted");
+                                            playListSongs.remove(j);
+                                            playListSongs.add(j, songsManager.allSongs().get(k));
+                                            Log.d(TAG, "Playlist: index doesn't change and we changed broken song. All good!");
+                                            isFound = true;
+                                            k = songsManager.allSongs().size();
+                                        }
+                                    }
+                                    if (!isFound) {
+                                        Log.d(TAG, "Playlist: " + j + " song is deleted from device");
+                                        playListSongs.remove(j);
+                                        Log.d(TAG, "Playlist: since a song is removed," +
+                                                " on doing next song loop will skip one song");
+                                        j--;
+                                        Log.d(TAG, "Playlist: j-- to ensure for loop stays on same song");
+                                    }
+                                } else {
+                                    Log.d(TAG, "Playlist: Song " + j + " is okay");
+                                }
+                                if (isCancelled()) {
+                                    break; // REMOVE IF NOT USED IN A FOR LOOP
+                                }
+                            }
+                            // Update favourite songs list
+                            songsManager.updatePlaylistSongs(playlistID,
+                                    playListSongs);
+                            Log.d(TAG, "Playlist: done!");
+                        }
+
+                        //Todo Re-add song but change fields
+
+                    }
+
+                    // -- Checking Favourites
+                    ArrayList<SongModel> favSongs =
+                            new ArrayList<>(songsManager.favouriteSongs());
+                    if (!favSongs.isEmpty()) {
+                        Log.d(TAG, "Favourites: Search if current hashMap is not similar with song in new songs list");
+                        for (int j = 0; j < favSongs.size(); j++) {
+                            if (!songsManager.allSongs().contains(favSongs.get(j))) {
+                                Log.d(TAG, "Favourites: current favourite doesn't exist in allSongs," +
                                         " so lets see if only path is changed or user has moved the song");
                                 boolean isFound = false;
-                                for (int k = 0; k < songsManager.allSongs().size(); k++) {
-                                    if ((songsManager.allSongs().get(k).getTitle() +
-                                            songsManager.allSongs().get(k).getDuration())
-                                            .equals(playListSongs.get(j).getTitle() +
-                                                    playListSongs.get(j).getDuration())) {
-                                        Log.d(TAG, "Playlist: song " + j + " does exist and is probably moved," +
+                                for (int i = 0; i < songsManager.allSongs().size(); i++) {
+                                    if ((songsManager.allSongs().get(i).getTitle() +
+                                            songsManager.allSongs().get(i).getDuration())
+                                            .equals(favSongs.get(j).getTitle() +
+                                                    favSongs.get(j).getDuration())) {
+                                        Log.d(TAG, "Favourites: songs does exist and is probably moved," +
                                                 " so lets change broken song with lasted");
-                                        playListSongs.remove(j);
-                                        playListSongs.add(j, songsManager.allSongs().get(k));
-                                        Log.d(TAG, "Playlist: index doesn't change and we changed broken song. All good!");
+                                        favSongs.remove(j);
+                                        favSongs.add(j, songsManager.allSongs().get(i));
+                                        Log.d(TAG, "Favourites: index doesn't change and we changed broken song. All good");
                                         isFound = true;
-                                        k = songsManager.allSongs().size();
+                                        i = songsManager.allSongs().size();
                                     }
                                 }
                                 if (!isFound) {
-                                    Log.d(TAG, "Playlist: " + j + " song is deleted from device");
-                                    playListSongs.remove(j);
-                                    Log.d(TAG, "Playlist: since a song is removed," +
+                                    Log.d(TAG, "Favourites: songs is deleted from device");
+                                    favSongs.remove(j);
+                                    Log.d(TAG, "Favourites: since a song is removed," +
                                             " on doing next song loop will skip one song");
                                     j--;
-                                    Log.d(TAG, "Playlist: j-- to ensure for loop stays on same song");
+                                    Log.d(TAG, "Favourites: j-- to ensure for loop stays on same song");
                                 }
-                            } else {
-                                Log.d(TAG, "Playlist: Song " + j + " is okay");
-                            }
-                            if (isCancelled()) {
-                                break; // REMOVE IF NOT USED IN A FOR LOOP
                             }
                         }
                         // Update favourite songs list
-                        songsManager.updatePlaylistSongs(playlistID,
-                                playListSongs);
-                        Log.d(TAG, "Playlist: done!");
+                        Log.d(TAG, "Favourites: done!");
+                        songsManager.updateFavouritesList(favSongs);
                     }
 
-                    //Todo Re-add song but change fields
-
-                }
-
-                // -- Checking Favourites
-                ArrayList<SongModel> favSongs =
-                        new ArrayList<>(songsManager.favouriteSongs());
-                if (!favSongs.isEmpty()) {
-                    Log.d(TAG, "Favourites: Search if current hashMap is not similar with song in new songs list");
-                    for (int j = 0; j < favSongs.size(); j++) {
-                        if (!songsManager.allSongs().contains(favSongs.get(j))) {
-                            Log.d(TAG, "Favourites: current favourite doesn't exist in allSongs," +
-                                    " so lets see if only path is changed or user has moved the song");
-                            boolean isFound = false;
-                            for (int i = 0; i < songsManager.allSongs().size(); i++) {
-                                if ((songsManager.allSongs().get(i).getTitle() +
-                                        songsManager.allSongs().get(i).getDuration())
-                                        .equals(favSongs.get(j).getTitle() +
-                                                favSongs.get(j).getDuration())) {
-                                    Log.d(TAG, "Favourites: songs does exist and is probably moved," +
-                                            " so lets change broken song with lasted");
-                                    favSongs.remove(j);
-                                    favSongs.add(j, songsManager.allSongs().get(i));
-                                    Log.d(TAG, "Favourites: index doesn't change and we changed broken song. All good");
-                                    isFound = true;
-                                    i = songsManager.allSongs().size();
+                    // -- Checking Most Played
+                    ArrayList<SongModel> mostPlayed =
+                            songsManager.mostPlayedSongs();
+                    if (!mostPlayed.isEmpty()) {
+                        Log.d(TAG, "MostPlayed: Search if current hashMap is not similar with song in new songs list");
+                        for (int j = 0; j < mostPlayed.size(); j++) {
+                            if (!songsManager.allSongs().contains(mostPlayed.get(j))) {
+                                Log.d(TAG, "MostPlayed: current song " + j + " doesn't exist in allSongs," +
+                                        " so lets see if only path is changed or user has moved the song");
+                                boolean isFound = false;
+                                for (int i = 0; i < songsManager.allSongs().size(); i++) {
+                                    if ((songsManager.allSongs().get(i).getTitle() +
+                                            songsManager.allSongs().get(i).getDuration())
+                                            .equals(mostPlayed.get(j).getTitle() +
+                                                    mostPlayed.get(j).getDuration())) {
+                                        Log.d(TAG, "MostPlayed: songs does exist and is probably moved," +
+                                                " so lets change broken song with lasted");
+                                        mostPlayed.remove(j);
+                                        mostPlayed.add(j, songsManager.allSongs().get(i));
+                                        Log.d(TAG, "MostPlayed: index doesn't change and we changed broken song. All good!");
+                                        isFound = true;
+                                        i = songsManager.allSongs().size();
+                                    }
                                 }
-                            }
-                            if (!isFound) {
-                                Log.d(TAG, "Favourites: songs is deleted from device");
-                                favSongs.remove(j);
-                                Log.d(TAG, "Favourites: since a song is removed," +
-                                        " on doing next song loop will skip one song");
-                                j--;
-                                Log.d(TAG, "Favourites: j-- to ensure for loop stays on same song");
-                            }
-                        }
-                    }
-                    // Update favourite songs list
-                    Log.d(TAG, "Favourites: done!");
-                    songsManager.updateFavouritesList(favSongs);
-                }
-
-                // -- Checking Most Played
-                ArrayList<SongModel> mostPlayed =
-                        songsManager.mostPlayedSongs();
-                if (!mostPlayed.isEmpty()) {
-                    Log.d(TAG, "MostPlayed: Search if current hashMap is not similar with song in new songs list");
-                    for (int j = 0; j < mostPlayed.size(); j++) {
-                        if (!songsManager.allSongs().contains(mostPlayed.get(j))) {
-                            Log.d(TAG, "MostPlayed: current song " + j + " doesn't exist in allSongs," +
-                                    " so lets see if only path is changed or user has moved the song");
-                            boolean isFound = false;
-                            for (int i = 0; i < songsManager.allSongs().size(); i++) {
-                                if ((songsManager.allSongs().get(i).getTitle() +
-                                        songsManager.allSongs().get(i).getDuration())
-                                        .equals(mostPlayed.get(j).getTitle() +
-                                                mostPlayed.get(j).getDuration())) {
-                                    Log.d(TAG, "MostPlayed: songs does exist and is probably moved," +
-                                            " so lets change broken song with lasted");
+                                if (!isFound) {
+                                    Log.d(TAG, "MostPlayed: songs is deleted from device");
                                     mostPlayed.remove(j);
-                                    mostPlayed.add(j, songsManager.allSongs().get(i));
-                                    Log.d(TAG, "MostPlayed: index doesn't change and we changed broken song. All good!");
-                                    isFound = true;
-                                    i = songsManager.allSongs().size();
+                                    Log.d(TAG, "MostPlayed: since a song is removed," +
+                                            " on doing next song loop will skip one song");
+                                    j--;
+                                    Log.d(TAG, "MostPlayed: j-- to ensure for loop stays on same song");
                                 }
                             }
-                            if (!isFound) {
-                                Log.d(TAG, "MostPlayed: songs is deleted from device");
-                                mostPlayed.remove(j);
-                                Log.d(TAG, "MostPlayed: since a song is removed," +
-                                        " on doing next song loop will skip one song");
-                                j--;
-                                Log.d(TAG, "MostPlayed: j-- to ensure for loop stays on same song");
-                            }
                         }
+                        // Update favourite songs list
+                        Log.d(TAG, "MostPlayed: done!");
+                        songsManager.updateMostPlayedList(mostPlayed);
                     }
-                    // Update favourite songs list
-                    Log.d(TAG, "MostPlayed: done!");
-                    songsManager.updateMostPlayedList(mostPlayed);
                 }
+            } catch (Exception e) {
+                Log.d(TAG,"Unable to perform sync");
+                e.printStackTrace();
             }
 
             return null;

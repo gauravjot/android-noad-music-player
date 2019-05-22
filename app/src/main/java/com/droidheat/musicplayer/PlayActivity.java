@@ -1,11 +1,9 @@
 package com.droidheat.musicplayer;
 
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
@@ -60,15 +58,15 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     private ImageView btnPlay;
     private ImageView btnNext;
     private ImageView btnPrev, imgFav;
-    private TextView title, album, rightTime;
+    private TextView title, album;
     private ImageView btnRepeat;
-    private ViewPager albumArt;
+    private ViewPager albumArtViewpager;
     private SeekBar seek_bar;
     private View queueFragment;
     private boolean isFavourite;
     private SongsManager songsManager;
 
-    private ImagePagerAdapter mAdapter;
+    private ImagePagerAdapter albumArtAdapter;
 
     private String TAG = "PlayActivityConsole";
 
@@ -120,20 +118,13 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         btnPlay = findViewById(R.id.play);
         btnNext = findViewById(R.id.next);
         btnPrev = findViewById(R.id.prev);
-        albumArt = findViewById(R.id.albumArt);
-        rightTime = findViewById(R.id.rightTime);
+        albumArtViewpager = findViewById(R.id.albumArt);
         seek_bar = findViewById(R.id.seekBar1);
         btnRepeat = findViewById(R.id.repeat);
         imgFav = findViewById(R.id.imageFav);
         queueFragment = findViewById(R.id.fragment);
 
-        /*
-         * This receiver registers for event when song is changed so we can update UI
-         */
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(MusicPlayback.PLAY_ACTIVITY_GRAPHICS);
-        registerReceiver(receiver, filter);
-
+        title.setSelected(true);
 
         /*
          * Getting and Setting accent color chosen by user
@@ -149,7 +140,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
             public void getOutline(View view, Outline outline) {
                 if (view.getHeight() < 120) {
                     outline.setRoundRect(0, 0, view.getWidth(), Math.round(view.getHeight()), 50F);
-                } else {
+                } else if (view.getHeight() >= 120 && view.getHeight() <= 160) {
+                    outline.setRoundRect(0, 0, view.getWidth(), Math.round(view.getHeight()), 75F);
+                } else if (view.getHeight() > 160) {
                     outline.setRoundRect(0, 0, view.getWidth(), Math.round(view.getHeight()), 100F);
                 }
             }
@@ -158,37 +151,53 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         LayerDrawable progressBarDrawable = (LayerDrawable) seek_bar.getProgressDrawable();
         Drawable progressDrawable = progressBarDrawable.getDrawable(1);
         progressDrawable.setColorFilter(ContextCompat.getColor(this, accentColor),
-                    PorterDuff.Mode.SRC_IN);
+                PorterDuff.Mode.SRC_IN);
 
         /*
          * Album Art Viewpager
          */
 
-        mAdapter = new ImagePagerAdapter(getSupportFragmentManager(), songsManager.queue().size());
-        albumArt.setPageTransformer(false, new ParallaxPagerTransformer(R.id.imageView));
-        albumArt.setAdapter(mAdapter);
-        albumArt.setCurrentItem(sharedPrefsUtils.readSharedPrefsInt("musicID",0));
-        albumArt.setOffscreenPageLimit(3);
+        albumArtAdapter = new ImagePagerAdapter(getSupportFragmentManager(), songsManager.queue().size());
+        albumArtViewpager.setPageTransformer(false, new ParallaxPagerTransformer(R.id.imageView));
+        albumArtViewpager.setAdapter(albumArtAdapter);
+        albumArtViewpager.setCurrentItem(sharedPrefsUtils.readSharedPrefsInt("musicID", 0));
+        albumArtViewpager.setOffscreenPageLimit(3);
 
-        albumArt.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        albumArtViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
-                if (sharedPrefsUtils.readSharedPrefsInt("musicID",0) != position) {
-                    Intent intent = new Intent(MusicPlayback.ACTION_PLAY_PUSH);
-                    intent.putExtra("musicID", position);
-                    Log.d(TAG, "PlayPushing musicID " + position);
-                    ContextCompat.startForegroundService(PlayActivity.this,createExplicitFromImplicitIntent(PlayActivity.this, intent));
+                if (songsManager.getCurrentMusicID() < position) {
+                    MediaControllerCompat.getMediaController(PlayActivity.this).getTransportControls().skipToNext();
+                } else if (songsManager.getCurrentMusicID() > position) {
+                    MediaControllerCompat.getMediaController(PlayActivity.this).getTransportControls().skipToPrevious();
                 }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+
+        seek_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                stopSeekbarUpdate();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                MediaControllerCompat.getMediaController(PlayActivity.this).getTransportControls().seekTo(seekBar.getProgress());
+                scheduleSeekbarUpdate();
             }
         });
 
@@ -202,7 +211,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         findViewById(R.id.addToPlayListImageView).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                songsManager.addToPlaylist(songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID",0)));
+                songsManager.addToPlaylist(songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID", 0)));
             }
         });
         imgFav.setOnClickListener(new OnClickListener() {
@@ -213,11 +222,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         });
 
         /*
-         * Setting UI Graphics
-         */
-        setGraphics();
-
-        /*
          * Hiding Songs Queue
          */
         queueFragment.setVisibility(View.GONE);
@@ -225,8 +229,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
 
     @Override
     public void viewPagerRefreshOne() {
-        albumArt.setAdapter(mAdapter);
-        albumArt.setCurrentItem(sharedPrefsUtils.readSharedPrefsInt("musicID",0));
+        albumArtViewpager.setAdapter(albumArtAdapter);
+        albumArtViewpager.setCurrentItem(sharedPrefsUtils.readSharedPrefsInt("musicID", 0));
     }
 
     private static class ImagePagerAdapter extends FragmentPagerAdapter {
@@ -250,6 +254,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     public void setGraphics() {
+        /*
+         * Favorite and Repeat if enabled or not
+         */
         if (getIndex(sharedPrefsUtils.readSharedPrefsString("raw_path", null)) != -1) {
             imgFav.setColorFilter(ContextCompat.getColor(this, accentColor));
             isFavourite = true;
@@ -257,65 +264,31 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
             imgFav.setColorFilter(null);
             isFavourite = false;
         }
-        if (sharedPrefsUtils.readSharedPrefsBoolean("repeat",false)) {
+        if (sharedPrefsUtils.readSharedPrefsBoolean("repeat", false)) {
             btnRepeat.setColorFilter(ContextCompat.getColor(this, accentColor));
-        }
-        else {
+        } else {
             btnRepeat.setColorFilter(null);
-            sharedPrefsUtils.writeSharedPrefs("repeat",false);
+            sharedPrefsUtils.writeSharedPrefs("repeat", false);
         }
 
         /*
-         * Setting ImageViews
+         * Setting current item in Album Art ViewPager
          */
-        if (albumArt.getCurrentItem() != sharedPrefsUtils.readSharedPrefsInt("musicID",0)) {
-            albumArt.setVisibility(View.VISIBLE);
+        if (albumArtViewpager.getCurrentItem() != sharedPrefsUtils.readSharedPrefsInt("musicID", 0)) {
+            albumArtViewpager.setVisibility(View.VISIBLE);
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            albumArt.setCurrentItem(sharedPrefsUtils.readSharedPrefsInt("musicID",0));
+                            albumArtViewpager.setCurrentItem(sharedPrefsUtils.readSharedPrefsInt("musicID", 0));
                         }
                     });
                 }
             });
             thread.start();
         }
-
-
-        /*
-         * Setting TextViews
-         */
-        title.setText(sharedPrefsUtils.readSharedPrefsString("title","Title"));
-        title.setSelected(true);
-        album.setText(sharedPrefsUtils.readSharedPrefsString("album","Album"));
-
-        /*
-         * Seek Bar
-         */
-        String totalDuration = songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID",0)).getDuration();
-        rightTime.setText(totalDuration);
-        //seekBarUpdate();
-
-        seek_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                stopSeekbarUpdate();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                MediaControllerCompat.getMediaController(PlayActivity.this).getTransportControls().seekTo(seekBar.getProgress());
-                scheduleSeekbarUpdate();
-            }
-        });
 
     }
 
@@ -347,30 +320,13 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         return -1;
     }
 
-    /*
-     * This receives a call from MusicPlayback when current track has been changed by another
-     * We will just change Graphical UI for current track
-     * and call a queueFragment method and ask it to update as well
-     */
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            setGraphics();
-            QueueFragment queueFragment = (QueueFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-            if (queueFragment != null) {
-                queueFragment.notifyFragmentQueueUpdate();
-            }
-        }
-    };
-
     private void doItMyFav() {
 
         FavouriteList db = new FavouriteList(PlayActivity.this);
         db.open();
         if (!isFavourite) {
             if (getIndex(sharedPrefsUtils.readSharedPrefsString("raw_path", null)) == -1) {
-                SongModel hashMap = songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID",0));
+                SongModel hashMap = songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID", 0));
                 if (songsManager.addToFavouriteSongs(hashMap)) {
 
                     imgFav.setColorFilter(ContextCompat.getColor(this, accentColor));
@@ -401,52 +357,25 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         db.close();
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(MusicPlayback.PLAY_ACTIVITY_GRAPHICS);
-        registerReceiver(receiver, filter);
-    }
-
     @Override
     public void onClick(View target) {
         if (target == btnPlay) {
-            try {
-                if (mLastPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING) {
-                    ContextCompat.startForegroundService(this,
-                            songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_PLAY_PAUSE)));
-                } else {
-                    songsManager.playFromLastLeft();
-                }
-            } catch (Exception e) {
-                songsManager.playFromLastLeft();
-            }
+            MediaControllerCompat.getMediaController(PlayActivity.this).getTransportControls().play();
         } else if (target == btnRepeat) {
-            if (sharedPrefsUtils.readSharedPrefsBoolean("repeat",false)) {
+            if (sharedPrefsUtils.readSharedPrefsBoolean("repeat", false)) {
                 btnRepeat.clearColorFilter();
                 (new CommonUtils(this)).showTheToast("Repeat Off");
-                sharedPrefsUtils.writeSharedPrefs("repeat",false);
+                sharedPrefsUtils.writeSharedPrefs("repeat", false);
             } else {
                 btnRepeat.setColorFilter(ContextCompat.getColor(this, accentColor));
                 (new CommonUtils(this)).showTheToast("Repeat On");
-                sharedPrefsUtils.writeSharedPrefs("repeat",true);
+                sharedPrefsUtils.writeSharedPrefs("repeat", true);
             }
-            ContextCompat.startForegroundService(this,createExplicitFromImplicitIntent(this, new Intent(MusicPlayback.ACTION_REPEAT)));
-        }  else if (target == btnNext)
-            if (sharedPrefsUtils.readSharedPrefsInt("musicID",0) < songsManager.queue().size()) {
-                albumArt.setCurrentItem(sharedPrefsUtils.readSharedPrefsInt("musicID",0) + 1);
-            } else {
-                albumArt.setCurrentItem(1);
-            }
-        else if (target == btnPrev)
-            if (sharedPrefsUtils.readSharedPrefsInt("musicID",0) != 0) {
-                albumArt.setCurrentItem(sharedPrefsUtils.readSharedPrefsInt("musicID",0) - 1);
-            } else {
-                seek_bar.setProgress(0);
-            }
+        } else if (target == btnNext) {
+            MediaControllerCompat.getMediaController(PlayActivity.this).getTransportControls().skipToNext();
+        } else if (target == btnPrev) {
+            MediaControllerCompat.getMediaController(PlayActivity.this).getTransportControls().skipToPrevious();
+        }
     }
 
     private final MediaControllerCompat.Callback mCallback = new MediaControllerCompat.Callback() {
@@ -459,7 +388,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
             if (metadata != null) {
-                //updateMediaDescription(metadata.getDescription());
+                updateMediaDescription(metadata);
                 updateDuration(metadata);
             }
         }
@@ -491,7 +420,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         updatePlaybackState(state);
         MediaMetadataCompat metadata = mediaController.getMetadata();
         if (metadata != null) {
-            //updateMediaDescription(metadata.getDescription());
+            updateMediaDescription(metadata);
             updateDuration(metadata);
         }
         updateProgress();
@@ -499,6 +428,16 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                 state.getState() == PlaybackStateCompat.STATE_BUFFERING)) {
             scheduleSeekbarUpdate();
         }
+    }
+
+    private void updateMediaDescription(MediaMetadataCompat metadata) {
+        title.setText(metadata.getText(MediaMetadataCompat.METADATA_KEY_TITLE));
+        album.setText(metadata.getText(MediaMetadataCompat.METADATA_KEY_ALBUM));
+        QueueFragment queueFragment = (QueueFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        if (queueFragment != null) {
+            queueFragment.notifyFragmentQueueUpdate();
+        }
+        setGraphics();
     }
 
     private void scheduleSeekbarUpdate() {
@@ -547,7 +486,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(receiver);
         stopSeekbarUpdate();
         mExecutorService.shutdown();
     }
@@ -619,31 +557,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         seek_bar.setProgress((int) currentPosition);
     }
 
-    public Intent createExplicitFromImplicitIntent(Context context, Intent implicitIntent) {
-        // Retrieve all services that can match the given intent
-        PackageManager pm = context.getPackageManager();
-        List<ResolveInfo> resolveInfo = pm.queryIntentServices(implicitIntent, 0);
-
-        // Make sure only one match was found
-        if (resolveInfo == null || resolveInfo.size() != 1) {
-            return null;
-        }
-
-        // Get component info and create ComponentName
-        ResolveInfo serviceInfo = resolveInfo.get(0);
-        String packageName = serviceInfo.serviceInfo.packageName;
-        String className = serviceInfo.serviceInfo.name;
-        ComponentName component = new ComponentName(packageName, className);
-
-        // Create a new intent. Use the old one for extras and such reuse
-        Intent explicitIntent = new Intent(implicitIntent);
-
-        // Set the component to be explicit
-        explicitIntent.setComponent(component);
-
-        return explicitIntent;
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
@@ -659,12 +572,11 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
 
     }
 
+    /*
+     * Queue Item Click
+     */
     public void onItemClick(int mPosition) {
-        if (mPosition != sharedPrefsUtils.readSharedPrefsInt("musicID",0)) {
-            Intent intent = new Intent(MusicPlayback.ACTION_PLAY_PUSH);
-            intent.putExtra("musicID", mPosition);
-            ContextCompat.startForegroundService(this,createExplicitFromImplicitIntent(this, intent));
-        }
+        MediaControllerCompat.getMediaController(this).getTransportControls().skipToQueueItem(mPosition);
     }
 
     @Override
@@ -687,7 +599,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                 }
             }
         } else if (id == R.id.add_to_playlist) {
-            songsManager.addToPlaylist(songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID",0)));
+            songsManager.addToPlaylist(songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID", 0)));
         } else if (id == R.id.equalizer) {
             startActivity(new Intent(PlayActivity.this, EqualizerActivity.class));
         } else if (id == R.id.save_as_playlist) {
@@ -697,13 +609,13 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
 
             final EditText input = alertDialog.findViewById(R.id.editText);
             input.requestFocus();
-            input.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this,(new CommonUtils(this)).accentColor(sharedPrefsUtils))));
+            input.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, (new CommonUtils(this)).accentColor(sharedPrefsUtils))));
 
             Button btnCreate = alertDialog.findViewById(R.id.btnCreate);
-            btnCreate.setTextColor(ContextCompat.getColor(this,(new CommonUtils(this)).accentColor(sharedPrefsUtils)));
+            btnCreate.setTextColor(ContextCompat.getColor(this, (new CommonUtils(this)).accentColor(sharedPrefsUtils)));
 
             Button btnCancel = alertDialog.findViewById(R.id.btnCancel);
-            btnCancel.setTextColor(ContextCompat.getColor(this,(new CommonUtils(this)).accentColor(sharedPrefsUtils)));
+            btnCancel.setTextColor(ContextCompat.getColor(this, (new CommonUtils(this)).accentColor(sharedPrefsUtils)));
 
             btnCreate.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -754,7 +666,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         } else if (id == R.id.info) {
             songsManager.info(
                     songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID", 0))
-                    )
+            )
                     .show();
         }
         return super.onOptionsItemSelected(item);

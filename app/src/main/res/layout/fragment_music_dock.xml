@@ -76,7 +76,6 @@
                     android:ellipsize="marquee"
                     android:singleLine="true"
                     android:marqueeRepeatLimit="marquee_forever"
-                    android:text="@string/choose_play"
                     android:textColor="@color/white"
                     android:textScaleX="1.05"
                     android:textSize="15sp" />
@@ -90,7 +89,6 @@
                     android:fontFamily="sans-serif"
                     android:maxLines="1"
                     android:paddingTop="0dp"
-                    android:text="@string/choose_play"
                     android:textColor="@color/textColorSubTitle"
                     android:textScaleX="1.05"
                     android:textSize="12sp" />

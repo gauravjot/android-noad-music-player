@@ -43,45 +43,53 @@ public class HomeFragment extends Fragment {
 
         MergeAdapter mergeAdapter = new MergeAdapter();
 
-        // QUICK PLAY
-        View heading = View.inflate(getActivity(),R.layout.heading,null);
-        TextView textView = heading.findViewById(R.id.heading);
-        textView.setText("Quick Play");
-        mergeAdapter.addView(heading);
+        if (!songsManager.allSongs().isEmpty()) {
+            // QUICK PLAY
+            View heading = View.inflate(getActivity(), R.layout.heading, null);
+            TextView textView = heading.findViewById(R.id.heading);
+            textView.setText("Quick Play");
+            mergeAdapter.addView(heading);
 
-        mergeAdapter.addView(threeGridView());
+            mergeAdapter.addView(threeGridView());
 
-        // One Big Two Small
+            // One Big Two Small
 
-        mergeAdapter.addView(one_big_two_small_view());
+            mergeAdapter.addView(one_big_two_small_view());
 
-        // Recently Added
-        View heading1 = View.inflate(getActivity(),R.layout.heading_with_button,null);
-        TextView textView1 = heading1.findViewById(R.id.heading);
-        textView1.setText("Recently Added To Library");
-        Button button = heading1.findViewById(R.id.button);
-        button.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), GlobalDetailActivity.class);
+            // Recently Added
+            View heading1 = View.inflate(getActivity(), R.layout.heading_with_button, null);
+            TextView textView1 = heading1.findViewById(R.id.heading);
+            textView1.setText("Recently Added To Library");
+            Button button = heading1.findViewById(R.id.button);
+            button.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), GlobalDetailActivity.class);
                     intent.putExtra("name", "Recently Added");
                     intent.putExtra("field", "recent");
-                startActivity(intent);
-            }
-        });
+                    startActivity(intent);
+                }
+            });
 
-        button.setTextColor(ContextCompat.getColor(getActivity(),
-                (new CommonUtils(getActivity())).accentColor(new SharedPrefsUtils(getActivity()))));
-        button.setText("View All");
-        mergeAdapter.addView(heading1);
+            button.setTextColor(ContextCompat.getColor(getActivity(),
+                    (new CommonUtils(getActivity())).accentColor(new SharedPrefsUtils(getActivity()))));
+            button.setText("View All");
+            mergeAdapter.addView(heading1);
 
-        View recent_list = View.inflate(getActivity(),R.layout.scroll_disabled_list_view, null);
-        NoScrollListView listView1 = recent_list.findViewById(R.id.scroll_disabled_list_view);
-        listView1.setExpanded(true);
-        AdapterFiveRecentlyAdded adapterFiveRecentlyAdded = new AdapterFiveRecentlyAdded(getActivity());
-        listView1.setAdapter(adapterFiveRecentlyAdded);
+            View recent_list = View.inflate(getActivity(), R.layout.scroll_disabled_list_view, null);
+            NoScrollListView listView1 = recent_list.findViewById(R.id.scroll_disabled_list_view);
+            listView1.setExpanded(true);
+            AdapterFiveRecentlyAdded adapterFiveRecentlyAdded = new AdapterFiveRecentlyAdded(getActivity());
+            listView1.setAdapter(adapterFiveRecentlyAdded);
 
-        mergeAdapter.addView(recent_list);
+            mergeAdapter.addView(recent_list);
+        } else {
+            View heading = View.inflate(getActivity(), R.layout.heading, null);
+            TextView textView = heading.findViewById(R.id.heading);
+            textView.setText("Unable to find any music in your device. if you have just added music then click on top right options" +
+                    " icon and try 'Sync Music'");
+            mergeAdapter.addView(heading);
+        }
 
         // Setting Adapter
 
@@ -253,6 +261,8 @@ public class HomeFragment extends Fragment {
                 imageView3.setVisibility(View.INVISIBLE);
                 textView3.setVisibility(View.INVISIBLE);
             }
+        } else {
+            three_grid.setVisibility(View.GONE);
         }
         return three_grid;
     }

@@ -28,10 +28,7 @@
             android:name=".PlayActivity"
             android:label="@string/title_activity_play"
             android:screenOrientation="portrait"
-            android:theme="@string/app_name">
-            <intent-filter>
-                <action android:name="com.garaya.musicplayer.action.GRAPHIC" />
-            </intent-filter>
+            android:theme="@style/AppThemeToolbar.Overlay">
         </activity>
 
         <service
@@ -41,7 +38,6 @@
                 <action android:name="com.droidheat.musicplayer.action.CLOSE" />
                 <action android:name="com.droidheat.musicplayer.action.PLAY_PAUSE" />
                 <action android:name="com.droidheat.musicplayer.action.PLAY" />
-                <action android:name="com.droidheat.musicplayer.action.PLAY_PUSH" />
                 <action android:name="com.droidheat.musicplayer.action.REPEAT" />
                 <action android:name="com.droidheat.musicplayer.action.TRACK_PREV" />
                 <action android:name="com.droidheat.musicplayer.action.TRACK_NEXT" />
@@ -51,13 +47,6 @@
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
-
-        <receiver android:name="android.support.v4.media.session.MediaButtonReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
-                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
-            </intent-filter>
-        </receiver>
 
         <activity
             android:name=".SearchActivity"
