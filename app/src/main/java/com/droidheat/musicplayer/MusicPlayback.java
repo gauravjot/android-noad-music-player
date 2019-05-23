@@ -123,10 +123,12 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
             assert action != null;
             switch (action) {
                 case ACTION_PLAY: {
+                    resetMediaPlayerPosition();
                     processPlayRequest();
                     break;
                 }
                 case ACTION_PLAY_PAUSE: {
+                    resetMediaPlayerPosition();
                     processPlayPause();
                     break;
                 }
