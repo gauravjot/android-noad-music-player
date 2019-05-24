@@ -275,6 +275,9 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         if (mPlaybackStateBuilder.build().getState() == PlaybackStateCompat.STATE_PLAYING) {
             processPauseRequest();
         } else if (mPlaybackStateBuilder.build().getState() == PlaybackStateCompat.STATE_PAUSED) {
+            if (successfullyRetrievedAudioFocus()) {
+                return;
+            }
             mMediaSessionCompat.setActive(true);
             mMediaPlayer.start();
             setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
@@ -545,12 +548,11 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     public void onCompletion(MediaPlayer mp) {
         flushMediaPlayer();
         resetMediaPlayerPosition();
-        int musicID = songsManager.getCurrentMusicID();
         if (!sharedPrefsUtils.readSharedPrefsBoolean("repeat", false)) {
             Log.d(TAG, "OnCompletion playing next track");
             processNextRequest();
         } else {
-            setMediaPlayer((songsManager.queue().get(musicID).getPath()));
+            setMediaPlayer((songsManager.queue().get(songsManager.getCurrentMusicID()).getPath()));
         }
     }
 
@@ -561,10 +563,15 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         /*
-         * Getting to saved location of song
+         * Getting to saved location of song if playback state is none i.e. first instance of music playback
+         * , and if we are playing same track we were playing before, if track is new then we won't seek to last
+         * remembered location
          * We reset this location to zero when we start playing a new song
          */
-        mMediaSessionCompat.getController().getTransportControls().seekTo(sharedPrefsUtils.readSharedPrefsInt("song_position", 0));
+        if (mPlaybackStateBuilder.build().getState() == PlaybackStateCompat.STATE_NONE &&
+            sharedPrefsUtils.readSharedPrefsString("raw_path",null).equals(songsManager.queue().get(songsManager.getCurrentMusicID()).getPath())) {
+            mMediaSessionCompat.getController().getTransportControls().seekTo(sharedPrefsUtils.readSharedPrefsInt("song_position", 0));
+        }
 
         /*
          * Setting Equalizer
