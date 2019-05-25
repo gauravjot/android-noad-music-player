@@ -26,10 +26,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/home_three_grid_textView_1"
-            android:text="Most Played"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:textAlignment="center"
+            android:gravity="center"
             android:padding="6dp"
             android:textSize="16sp"/>
 
@@ -54,10 +53,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Most Played"
             android:id="@+id/home_three_grid_textView_2"
             android:textStyle="bold"
-            android:textAlignment="center"
+            android:gravity="center"
             android:textColor="@color/white"
             android:padding="6dp"
             android:textSize="16sp"/>
@@ -82,10 +80,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Most Played"
             android:id="@+id/home_three_grid_textView_3"
             android:textStyle="bold"
-            android:textAlignment="center"
+            android:gravity="center"
             android:textColor="@color/white"
             android:padding="6dp"
             android:textSize="16sp"/>

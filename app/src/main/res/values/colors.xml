@@ -4,9 +4,10 @@
 
     <!-- Standardized Colors -->
 
-    <color name="blackOpaque">#22000000</color>
+    <color name="blackOpaque">#99000000</color>
     <color name="whiteOpaque">#bcFFFFFF</color>
     <color name="whiteOpaqueX2">#aaFFFFFF</color>
+    <color name="whiteOpaqueX4">#55FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="black">#000</color>

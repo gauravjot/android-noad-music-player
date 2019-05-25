@@ -143,14 +143,9 @@ class PlaylistGridAdapter extends BaseAdapter {
                 }
             });
 
-            ArrayList<SongModel> PlayListSongs = songsManager.
+            (new ImageUtils(context)).getImageByPicasso(songsManager.
                     playlistSongs(Integer.parseInt(
-                            Objects.requireNonNull(mobileValues.get(position).get("ID"))));
-            List<String> list = new ArrayList<>();
-            for (int i = 0; i < PlayListSongs.size(); i++) {
-                list.add(PlayListSongs.get(i).getAlbumID());
-            }
-            (new ImageUtils(context)).getImageByPicasso(list, holder.image, 0, list.size() - 1);
+                            Objects.requireNonNull(mobileValues.get(position).get("ID")))), holder.image);
         }
 
         return gridView;

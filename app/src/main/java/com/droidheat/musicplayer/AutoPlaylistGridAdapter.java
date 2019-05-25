@@ -140,11 +140,7 @@ class AutoPlaylistGridAdapter extends BaseAdapter {
                 }
             });
 
-            List<String> listz = new ArrayList<>();
-            for (int i = 0; i < list.size(); i++) {
-                listz.add(list.get(i).getAlbumID());
-            }
-            (new ImageUtils(context)).getImageByPicasso(listz, holder.image, 0, listz.size() - 1);
+            (new ImageUtils(context)).getImageByPicasso(list, holder.image);
         }
 
         return gridView;

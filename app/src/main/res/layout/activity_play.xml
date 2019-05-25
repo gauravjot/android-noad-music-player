@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_toStartOf="@+id/addToPlayListImageView"
+                    android:layout_toStartOf="@+id/viewQueue"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp">
 
@@ -143,6 +143,17 @@
 
 
                 </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/app_list"
+                    android:tint="@color/white"
+                    android:padding="10dp"
+                    android:id="@+id/viewQueue"
+                    android:layout_toStartOf="@+id/addToPlayListImageView"
+                    android:layout_centerVertical="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
 
                 <ImageView
                     android:layout_width="48dp"

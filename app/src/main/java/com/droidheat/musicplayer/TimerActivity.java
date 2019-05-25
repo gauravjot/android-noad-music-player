@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,13 +34,17 @@ public class TimerActivity extends AppCompatActivity {
     TextView displayTime;
     String timeButton = "0";
 
+
+    // Sets an ID for the notification
+    final int NOTIFICATION_ID = 1297601;
+
     public static int time = 0;
     public static Timer timer;
     public static String Time = null;
     public static MyTimerTask myTimerTask;
     NotificationManager mNotifyMgr;
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,12 +83,11 @@ public class TimerActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             try {
+                assert d2 != null;
                 long diff = -1 * (d2.getTime() - d1.getTime());
                 long diffMinutes = diff / (60 * 1000) % 60;
                 displayTime.setText("" + diffMinutes);
-            } catch (Exception e) {
-
-            }
+            } catch (Exception ignored) {}
         }
 
         findViewById(R.id.button3).setOnClickListener(
@@ -95,7 +99,7 @@ public class TimerActivity extends AppCompatActivity {
                         displayTime(2);
                     }
                 });
-        ;
+
         findViewById(R.id.button4).setOnClickListener(
                 new View.OnClickListener() {
 
@@ -105,7 +109,7 @@ public class TimerActivity extends AppCompatActivity {
                         displayTime(3);
                     }
                 });
-        ;
+
         findViewById(R.id.Button02).setOnClickListener(
                 new View.OnClickListener() {
 
@@ -115,7 +119,7 @@ public class TimerActivity extends AppCompatActivity {
                         displayTime(4);
                     }
                 });
-        ;
+
         findViewById(R.id.Button03).setOnClickListener(
                 new View.OnClickListener() {
 
@@ -125,7 +129,7 @@ public class TimerActivity extends AppCompatActivity {
                         displayTime(5);
                     }
                 });
-        ;
+
         findViewById(R.id.Button04).setOnClickListener(
                 new View.OnClickListener() {
 
@@ -135,7 +139,7 @@ public class TimerActivity extends AppCompatActivity {
                         displayTime(6);
                     }
                 });
-        ;
+
         findViewById(R.id.Button05).setOnClickListener(
                 new View.OnClickListener() {
 
@@ -145,7 +149,7 @@ public class TimerActivity extends AppCompatActivity {
                         displayTime(7);
                     }
                 });
-        ;
+
         findViewById(R.id.Button06).setOnClickListener(
                 new View.OnClickListener() {
 
@@ -155,7 +159,7 @@ public class TimerActivity extends AppCompatActivity {
                         displayTime(8);
                     }
                 });
-        ;
+
         findViewById(R.id.Button07).setOnClickListener(
                 new View.OnClickListener() {
 
@@ -165,7 +169,7 @@ public class TimerActivity extends AppCompatActivity {
                         displayTime(9);
                     }
                 });
-        ;
+
         findViewById(R.id.button5).setOnClickListener(
                 new View.OnClickListener() {
 
@@ -175,7 +179,7 @@ public class TimerActivity extends AppCompatActivity {
                         displayTime(0);
                     }
                 });
-        ;
+
 
         btnDone.setOnClickListener(new View.OnClickListener() {
 
@@ -224,25 +228,19 @@ public class TimerActivity extends AppCompatActivity {
 
                             mBuilder.setContentIntent(resultPendingIntent)
                                     .setOngoing(true);
-                            // Sets an ID for the notification
-                            int mNotificationId = 1297601;
                             // Gets an instance of the NotificationManager
                             // service
                             // Builds the notification and issues it.
-                            mNotifyMgr.notify(mNotificationId, mBuilder.build());
+                            mNotifyMgr.notify(NOTIFICATION_ID, mBuilder.build());
                         }
-                    } catch (Exception e) {
-
-                    }
+                    } catch (Exception ignored) {}
                     finish();
                 } else {
                     finish();
                     try {
                         timer.cancel();
                         (new CommonUtils(TimerActivity.this)).showTheToast("Music Sleep Cancelled!");
-                    } catch (Exception e) {
-
-                    }
+                    } catch (Exception ignored) {}
                 }
             }
         });
@@ -257,10 +255,9 @@ public class TimerActivity extends AppCompatActivity {
                     if (timeButton.length() > 0) {
                         timeButton = timeButton.substring(0,
                                 timeButton.length() - 1);
-                        if (timeButton == null || timeButton.trim() == ""
+                        if (timeButton.trim().equals("")
                                 || timeButton.length() == 0) {
                             timeButton = "0";
-                        } else {
                         }
                         displayTime.setText(timeButton);
 
@@ -304,10 +301,11 @@ public class TimerActivity extends AppCompatActivity {
                 timeButton = null;
             }
         } else {
-            timeButton = timeButton + Integer.toString(i);
+            timeButton = timeButton + i;
         }
 
         try {
+            assert timeButton != null;
             if (Integer.parseInt(timeButton) > 360) {
                 timeButton = fT;
                 (new CommonUtils(TimerActivity.this)).showTheToast("Cannot exceed more than 360 minutes or 6 hours");
@@ -315,6 +313,7 @@ public class TimerActivity extends AppCompatActivity {
         } catch (Exception ignored) {
 
         }
+        assert timeButton != null;
         if (Integer.parseInt(timeButton) != 0 && timeButton != null) {
             displayTime.setText(timeButton);
         }
@@ -330,9 +329,9 @@ public class TimerActivity extends AppCompatActivity {
                     (new CommonUtils(TimerActivity.this)).showTheToast("Music Player on Sleep");
                 } catch (Exception ignored) {
                 }
-                mNotifyMgr.cancel(1297601);
+                mNotifyMgr.cancel(NOTIFICATION_ID);
                 Intent intent = new Intent(MusicPlayback.ACTION_CLOSE);
-                ContextCompat.startForegroundService(TimerActivity.this,createExplicitFromImplicitIntent(TimerActivity.this, intent));
+                ContextCompat.startForegroundService(TimerActivity.this, Objects.requireNonNull(createExplicitFromImplicitIntent(TimerActivity.this, intent)));
                 finish();
             }
         }

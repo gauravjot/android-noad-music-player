@@ -2,10 +2,7 @@ package com.droidheat.musicplayer;
 
 import android.app.Dialog;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Outline;
 import android.graphics.PorterDuff;
@@ -183,6 +180,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
             }
         });
 
+        /*
+         * SeekBar Change
+         */
         seek_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
@@ -212,6 +212,18 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
             @Override
             public void onClick(View v) {
                 songsManager.addToPlaylist(songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID", 0)));
+            }
+        });
+        findViewById(R.id.viewQueue).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!getResources().getBoolean(R.bool.isLandscape)) {
+                    if (queueFragment.getVisibility() == View.VISIBLE) {
+                        queueFragment.setVisibility(View.GONE);
+                    } else {
+                        queueFragment.setVisibility(View.VISIBLE);
+                    }
+                }
             }
         });
         imgFav.setOnClickListener(new OnClickListener() {
@@ -568,8 +580,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     private void backPressed() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
         finish();
-
     }
 
     /*
@@ -590,14 +603,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         int id = item.getItemId();
         if (id == android.R.id.home) {
             finish();
-        } else if (id == R.id.action_queueBtn) {
-            if (!getResources().getBoolean(R.bool.isLandscape)) {
-                if (queueFragment.getVisibility() == View.VISIBLE) {
-                    queueFragment.setVisibility(View.GONE);
-                } else {
-                    queueFragment.setVisibility(View.VISIBLE);
-                }
-            }
+        } else if (id == R.id.action_drive_mode) {
+            startActivity(new Intent(PlayActivity.this,DriveModeActivity.class));
         } else if (id == R.id.add_to_playlist) {
             songsManager.addToPlaylist(songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID", 0)));
         } else if (id == R.id.equalizer) {

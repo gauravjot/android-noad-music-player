@@ -120,39 +120,40 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
             MediaButtonReceiver.handleIntent(mMediaSessionCompat, intent);
             Log.d(TAG,"Intent received.");
             String action = intent.getAction();
-            assert action != null;
-            switch (action) {
-                case ACTION_PLAY: {
-                    resetMediaPlayerPosition();
-                    processPlayRequest();
-                    break;
-                }
-                case ACTION_PLAY_PAUSE: {
-                    resetMediaPlayerPosition();
-                    processPlayPause();
-                    break;
-                }
-                case ACTION_TRACK_PREV: {
-                    processPrevRequest();
-                    break;
-                }
-                case ACTION_TRACK_NEXT: {
-                    processNextRequest();
-                    break;
-                }
-                case ACTION_REPEAT: {
-                    musicWidgetsReset();
-                    break;
-                }
-                case ACTION_CLOSE: {
-                    processCloseRequest();
-                    break;
-                }
-                default: {
+            if (action != null) {
+                switch (action) {
+                    case ACTION_PLAY: {
+                        resetMediaPlayerPosition();
+                        processPlayRequest();
+                        break;
+                    }
+                    case ACTION_PLAY_PAUSE: {
+                        resetMediaPlayerPosition();
+                        processPlayPause();
+                        break;
+                    }
+                    case ACTION_TRACK_PREV: {
+                        processPrevRequest();
+                        break;
+                    }
+                    case ACTION_TRACK_NEXT: {
+                        processNextRequest();
+                        break;
+                    }
+                    case ACTION_REPEAT: {
+                        musicWidgetsReset();
+                        break;
+                    }
+                    case ACTION_CLOSE: {
+                        processCloseRequest();
+                        break;
+                    }
+                    default: {
+                    }
                 }
             }
         }
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     /*
@@ -569,7 +570,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
          * We reset this location to zero when we start playing a new song
          */
         if (mPlaybackStateBuilder.build().getState() == PlaybackStateCompat.STATE_NONE &&
-            sharedPrefsUtils.readSharedPrefsString("raw_path",null).equals(songsManager.queue().get(songsManager.getCurrentMusicID()).getPath())) {
+            sharedPrefsUtils.readSharedPrefsString("raw_path","").equals(songsManager.queue().get(songsManager.getCurrentMusicID()).getPath())) {
             mMediaSessionCompat.getController().getTransportControls().seekTo(sharedPrefsUtils.readSharedPrefsInt("song_position", 0));
         }
 
@@ -586,8 +587,8 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
 
         mMediaSessionCompat.setActive(true);
         mMediaPlayer.start();
-        showPlayingNotification();
         setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
+        showPlayingNotification();
     }
 
     private void initMediaPlayer() {
@@ -736,8 +737,6 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
             virtualizer.setStrength((short) sharedPrefsUtils.readSharedPrefsInt("vzLevel" + currentEqProfile, 0));
             for (int i = 0; i < eq.getNumberOfBands(); i++) {
                 eq.setBandLevel((short) i, (short) sharedPrefsUtils.readSharedPrefsInt(
-                        "profile" + currentEqProfile + "Band" + i, 0));
-                Log.d(TAG, "Equalizer band " + sharedPrefsUtils.readSharedPrefsInt(
                         "profile" + currentEqProfile + "Band" + i, 0));
             }
             Log.d(TAG, "Equalizer successfully initiated with profile " + currentEqProfile);

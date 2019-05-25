@@ -45,7 +45,6 @@ public class AlbumGridFragment extends Fragment {
                 intent.putExtra("name", songsManager.albums().get(position).get("album"));
                 intent.putExtra("field", "albums");
                 startActivity(intent);
-
             }
         });
 		return v;

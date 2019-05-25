@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,7 +85,7 @@ public class GlobalDetailActivity extends AppCompatActivity {
             collapsingToolbar.setContentScrimColor(ContextCompat.getColor(this, R.color.primaryColor));
         }
 
-        ImageView header = findViewById(R.id.header);
+        ImageView albumArtImageView = findViewById(R.id.header);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         RecyclerView.LayoutManager layoutManager;
@@ -92,11 +93,7 @@ public class GlobalDetailActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < songsList.size(); i++) {
-            list.add(songsList.get(i).getAlbumID());
-        }
-        (new ImageUtils(this)).getImageByPicasso(list, header, 0, list.size() - 1);
+        (new ImageUtils(this)).getImageByPicasso(songsList, albumArtImageView);
         adapter = new RecyclerViewAdapter(songsList, this, field);
         recyclerView.setAdapter(adapter);
     }
@@ -188,7 +185,7 @@ public class GlobalDetailActivity extends AppCompatActivity {
                 if (performBackgroundTasks.getStatus() == AsyncTask.Status.RUNNING) {
                     performBackgroundTasks.cancel(true);
                 }
-                finish();
+                backPressed();
                 break;
             case R.id.repair_list:
                 findViewById(R.id.spinner).setVisibility(View.VISIBLE);
@@ -206,11 +203,18 @@ public class GlobalDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (performBackgroundTasks.getStatus() == AsyncTask.Status.RUNNING) {
-            performBackgroundTasks.cancel(true);
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            backPressed();
+            return true;
         }
+        return super.onKeyDown(keyCode, event);
+
+    }
+
+    private void backPressed() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
         finish();
     }
 

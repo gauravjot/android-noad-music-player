@@ -68,20 +68,16 @@ class AlbumGridAdapter extends BaseAdapter {
             // set image based on selected text
             //imageView.setImageResource(R.drawable.windows_logo);
 
-            final ArrayList<SongModel> albumsongs = songsManager.albumSongs(mobileValues.get(position).get("album")
+            final ArrayList<SongModel> albumSongs = songsManager.albumSongs(mobileValues.get(position).get("album")
             );
-            List<String> list = new ArrayList<>();
-            for (int i = 0; i < albumsongs.size(); i++) {
-                list.add(albumsongs.get(i).getAlbumID());
-            }
             holder.image.setOutlineProvider(new ViewOutlineProvider() {
                 @Override
                 public void getOutline(View view, Outline outline) {
-                    outline.setRoundRect(0,0,view.getWidth(), Math.round(view.getHeight()),20F);
+                    outline.setRoundRect(0,0,view.getWidth(), Math.round(view.getHeight()),40F);
                 }
             });
             holder.image.setClipToOutline(true);
-            (new ImageUtils(context)).getImageByPicasso(list, holder.image, 0, list.size() - 1);
+            (new ImageUtils(context)).getImageByPicasso(albumSongs, holder.image);
 
             final PopupMenu pop = new PopupMenu(context, holder.imageOverflow);
             final int[] j = new int[5];
@@ -95,23 +91,23 @@ class AlbumGridAdapter extends BaseAdapter {
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.play_musicUtils:
-                            songsManager.play(0, albumsongs);
+                            songsManager.play(0, albumSongs);
                             return true;
                         case R.id.play_next_musicUtils:
-                            for (int i = albumsongs.size(); i > 0; i--) {
-                                songsManager.playNext(albumsongs.get(i - 1));
+                            for (int i = albumSongs.size(); i > 0; i--) {
+                                songsManager.playNext(albumSongs.get(i - 1));
                             }
                             return true;
                         case R.id.add_to_queue_musicUtils:
-                            for (int i = albumsongs.size(); i > 0; i--) {
-                                songsManager.addToQueue(albumsongs.get(i - 1));
+                            for (int i = albumSongs.size(); i > 0; i--) {
+                                songsManager.addToQueue(albumSongs.get(i - 1));
                             }
                             return true;
                         case R.id.add_to_playlist_musicUtils:
-                            songsManager.addToPlaylist(albumsongs);
+                            songsManager.addToPlaylist(albumSongs);
                             return true;
                         case R.id.shuffle_play_musicUtils:
-                            songsManager.shufflePlay(albumsongs);
+                            songsManager.shufflePlay(albumSongs);
                         default:
                             return false;
                     }

@@ -1,46 +1,46 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    
+
     <item
-        android:id="@+id/action_queueBtn"
-        android:orderInCategory="104"
-        app:showAsAction="always"
-        android:icon="@drawable/app_list"
-        android:title="@string/queue"/>
+        android:id="@+id/action_drive_mode"
+        android:orderInCategory="103"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_drive_eta_black_24dp"
+        android:title="@string/drive_mode"/>
 
     <item
         android:id="@+id/goto_album"
-        android:title="Go to Album"
+        android:title="@string/go_to_album"
         app:showAsAction="never"
         />
 
     <item
         android:id="@+id/goto_artist"
-        android:title="Go to Artist"
+        android:title="@string/go_to_artist"
         app:showAsAction="never"
         />
 
     <item
         android:id="@+id/add_to_playlist"
-        android:title="Add to Playlist"
+        android:title="@string/add_to_playlist"
         app:showAsAction="never"
         />
 
     <item
         android:id="@+id/info"
-        android:title="Song Info"
+        android:title="@string/song_info"
         app:showAsAction="never"
         />
 
     <item
         android:id="@+id/save_as_playlist"
-        android:title="Save Current Playlist"
+        android:title="@string/save_current_playlist"
         app:showAsAction="never"
         />
 
     <item
         android:id="@+id/equalizer"
-        android:title="Equalizer"
+        android:title="@string/equalizer"
         app:showAsAction="never"
         />
 

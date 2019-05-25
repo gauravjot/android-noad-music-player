@@ -26,12 +26,17 @@
             android:scaleType="centerCrop"
             android:id="@+id/imageView1"/>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:src="@drawable/text_over_icon_gradient"
+            android:layout_alignBottom="@id/imageView1"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Playlist"
             android:textStyle="bold"
-            android:background="@color/blackOpaque"
             android:textSize="16sp"
             android:paddingStart="56dp"
             android:paddingTop="8dp"
@@ -46,7 +51,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_artists_black_24dp"
-            android:tint="@color/whiteOpaque"
+            android:tint="@color/white"
             android:padding="6dp"
             android:layout_marginStart="12dp"
             android:layout_alignBottom="@+id/imageView1"
@@ -86,12 +91,17 @@
                     android:src="@drawable/ic_music_notes_padded"
                     android:id="@+id/imageView3"/>
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:src="@drawable/text_over_icon_gradient"
+                    android:layout_alignBottom="@id/imageView3"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Playlist"
                     android:textStyle="bold"
-                    android:background="@color/blackOpaque"
                     android:textSize="16sp"
                     android:maxLines="1"
                     android:paddingStart="40dp"
@@ -106,7 +116,7 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:src="@drawable/app_playlist"
-                    android:tint="@color/whiteOpaque"
+                    android:tint="@color/white"
                     android:padding="7dp"
                     android:layout_marginStart="4dp"
                     android:layout_alignBottom="@+id/imageView3"
@@ -138,12 +148,17 @@
                     android:scaleType="centerCrop"
                     android:id="@+id/imageView4"/>
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:src="@drawable/text_over_icon_gradient"
+                    android:layout_alignBottom="@id/imageView4"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Playlist"
                     android:textStyle="bold"
-                    android:background="@color/blackOpaque"
                     android:textSize="16sp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
@@ -158,7 +173,7 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:src="@drawable/app_playlist"
-                    android:tint="@color/whiteOpaque"
+                    android:tint="@color/white"
                     android:padding="7dp"
                     android:layout_marginStart="4dp"
                     android:layout_alignBottom="@+id/imageView4"

@@ -140,8 +140,7 @@ public class MusicDockFragment extends Fragment {
                     Log.d(TAG, "onConnected");
                     try {
                         connectToSession(mMediaBrowser.getSessionToken());
-                        //TODO Bug: ACTION_REPEAT is placeholder intent to call onStartCommand in Service
-                        ContextCompat.startForegroundService(getActivity(),songsManager.createExplicitFromImplicitIntent(new Intent(MusicPlayback.ACTION_REPEAT)));
+                        getActivity().startService(new Intent(getActivity(),MusicPlayback.class));
                     } catch (RemoteException e) {
                         Log.e(TAG, "could not connect media controller");
                     }
