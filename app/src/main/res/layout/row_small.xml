@@ -20,7 +20,7 @@
         android:background="@drawable/ic_music_note_black_24dp" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/albumArtImageView"
         android:layout_width="48dp"
         android:layout_height="match_parent"
         android:layout_marginEnd="4dp"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:id="@+id/relativeLayout"
-        android:layout_toStartOf="@+id/imageView1"
+        android:layout_toStartOf="@+id/albumArtImageView"
         android:layout_toEndOf="@+id/image"
         android:orientation="vertical"
         android:paddingEnd="14dp"

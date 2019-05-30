@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/audio_drawable"
+    android:layout_height="72dp"
+    android:background="@color/dialogBackground"
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/albumArtImageView"
         android:layout_width="72dp"
-        android:scaleType="centerCrop"
         android:layout_height="72dp"
+        android:scaleType="centerCrop"
         android:background="@drawable/audio_drawable"
         android:contentDescription="@string/app_label"
         android:src="@drawable/app_play" />
@@ -22,7 +22,7 @@
         android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/textTitle"
+                android:id="@+id/titleTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -36,24 +36,24 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textTitle"
+                android:layout_below="@+id/titleTextView"
                 android:text="@string/album"
                 android:maxLines="1"
                 android:textColor="@color/whiteOpaque"
-                android:id="@+id/textAlbum"
-                android:layout_alignStart="@+id/textTitle"
+                android:id="@+id/albumTextView"
+                android:layout_alignStart="@+id/titleTextView"
                 android:layout_toStartOf="@+id/lin" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textAlbum"
+                android:layout_below="@+id/albumTextView"
                 android:layout_toStartOf="@+id/lin"
-                android:layout_alignStart="@+id/textTitle"
+                android:layout_alignStart="@+id/titleTextView"
                 android:textColor="@color/whiteOpaque"
                 android:maxLines="1"
                 android:text="@string/artist"
-                android:id="@+id/textArtist" />
+                android:id="@+id/artistTextView" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                 android:weightSum="3">
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/prevImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/app_label"
@@ -75,7 +75,7 @@
                     android:src="@drawable/app_next" />
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/playImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="8dp"
@@ -84,7 +84,7 @@
                     android:src="@drawable/app_play" />
 
                 <ImageView
-                    android:id="@+id/imageView4"
+                    android:id="@+id/nextImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="11dp"

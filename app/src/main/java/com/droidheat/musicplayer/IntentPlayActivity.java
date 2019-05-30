@@ -77,8 +77,8 @@ public class IntentPlayActivity extends AppCompatActivity {
              * Graphics
 	         */
             TextView totalDuration = findViewById(R.id.textView4);
-            final ImageView playPause = findViewById(R.id.imageView2);
-            TextView title = findViewById(R.id.heading);
+            final ImageView playPause = findViewById(R.id.prevImageView);
+            TextView title = findViewById(R.id.titleTextView);
             seek = findViewById(R.id.seekBar1);
             textCurrent = findViewById(R.id.textView3);
 

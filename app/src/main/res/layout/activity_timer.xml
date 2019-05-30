@@ -6,7 +6,7 @@
     tools:context="com.droidheat.musicplayer.TimerActivity">
 
     <TextView
-        android:id="@+id/heading"
+        android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -24,9 +24,9 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/heading"
-        android:layout_alignRight="@+id/heading"
-        android:layout_below="@+id/heading"
+        android:layout_alignLeft="@+id/titleTextView"
+        android:layout_alignRight="@+id/titleTextView"
+        android:layout_below="@+id/titleTextView"
         android:layout_marginBottom="16dp"
         android:lineSpacingExtra="4dp"
         android:text="@string/music_player_will_automatically_stop_playback_after_your_given_time_please_insert_the_time_in_minutes_below_"

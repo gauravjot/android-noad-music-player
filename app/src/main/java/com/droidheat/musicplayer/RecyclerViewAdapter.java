@@ -36,7 +36,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
             txtSubHeader = v.findViewById(R.id.text1);
             textTrackID = v.findViewById(R.id.trackId);
             duration = v.findViewById(R.id.textTime);
-            imageOverflow = v.findViewById(R.id.imageView1);
+            imageOverflow = v.findViewById(R.id.albumArtImageView);
             view = v.findViewById(R.id.click);
         }
     }
@@ -90,8 +90,10 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
         int[] j;
         switch (listOrigin) {
             case "albums":
+                j = new int[5];
+                break;
             case "artists":
-                j = new int[6];
+                j = new int[5];
                 break;
             case "mostplayed":
                 j = new int[6];
@@ -116,11 +118,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
                 j[5] = R.id.goto_artist_musicUtils;
                 break;
         }
-
-        if (listOrigin.equals("albums") || listOrigin.equals("artists")) {
-            j[j.length - 1] = R.id.delete_musicUtils;
-        }
-        else if (isInteger(listOrigin)) {
+        if (isInteger(listOrigin)) {
             j[j.length - 1] = R.id.remove_musicUtils;
         }
         songsManager.generateMenu(pop, j);

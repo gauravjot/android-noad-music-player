@@ -148,6 +148,8 @@ public class DriveModeActivity extends AppCompatActivity implements View.OnClick
                     Log.d(TAG, "onConnected");
                     try {
                         connectToSession(mMediaBrowser.getSessionToken());
+                        ContextCompat.startForegroundService(DriveModeActivity.this,
+                                new Intent(DriveModeActivity.this,MusicPlayback.class));
                     } catch (RemoteException e) {
                         Log.e(TAG, "could not connect media controller");
                     }

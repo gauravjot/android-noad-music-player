@@ -56,17 +56,6 @@ public class TimerActivity extends AppCompatActivity {
         displayTime = findViewById(R.id.textView4);
         mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        findViewById(R.id.button2).setOnClickListener(
-                new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        // Button - 1
-                        displayTime(1);
-                    }
-
-                });
-
         if (Time != null) {
             Calendar cal = Calendar.getInstance();
             cal.getTime();
@@ -89,6 +78,17 @@ public class TimerActivity extends AppCompatActivity {
                 displayTime.setText("" + diffMinutes);
             } catch (Exception ignored) {}
         }
+
+        findViewById(R.id.button2).setOnClickListener(
+                new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        // Button - 1
+                        displayTime(1);
+                    }
+
+                });
 
         findViewById(R.id.button3).setOnClickListener(
                 new View.OnClickListener() {
@@ -294,29 +294,20 @@ public class TimerActivity extends AppCompatActivity {
         String fT; // Initial Time
         fT = timeButton;
 
-        if (Integer.parseInt(timeButton) == 0) {
-            if (!Integer.toString(i).equals("0")) {
-                timeButton = Integer.toString(i);
-            } else {
-                timeButton = null;
-            }
+        // Check if current timer is empty
+        if (timeButton.equals("0")) {
+            timeButton = Integer.toString(i);
         } else {
             timeButton = timeButton + i;
         }
 
-        try {
-            assert timeButton != null;
-            if (Integer.parseInt(timeButton) > 360) {
-                timeButton = fT;
-                (new CommonUtils(TimerActivity.this)).showTheToast("Cannot exceed more than 360 minutes or 6 hours");
-            }
-        } catch (Exception ignored) {
+        // No longer than 360 minutes
+        if (Integer.parseInt(timeButton) > 720) {
+            timeButton = "720";
+            (new CommonUtils(TimerActivity.this)).showTheToast("Cannot exceed more than 720 minutes or 12 hours");
+        }
 
-        }
-        assert timeButton != null;
-        if (Integer.parseInt(timeButton) != 0 && timeButton != null) {
-            displayTime.setText(timeButton);
-        }
+        displayTime.setText(timeButton);
     }
 
     class MyTimerTask extends TimerTask {
@@ -331,7 +322,8 @@ public class TimerActivity extends AppCompatActivity {
                 }
                 mNotifyMgr.cancel(NOTIFICATION_ID);
                 Intent intent = new Intent(MusicPlayback.ACTION_CLOSE);
-                ContextCompat.startForegroundService(TimerActivity.this, Objects.requireNonNull(createExplicitFromImplicitIntent(TimerActivity.this, intent)));
+                ContextCompat.startForegroundService(TimerActivity.this,
+                        Objects.requireNonNull(createExplicitFromImplicitIntent(TimerActivity.this, intent)));
                 finish();
             }
         }

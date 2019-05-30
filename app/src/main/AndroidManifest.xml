@@ -55,7 +55,8 @@
             android:name=".SearchActivity"
             android:label="@string/title_activity_search"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeToolbar" />
+            android:theme="@style/AppThemeToolbar"
+            android:windowSoftInputMode="stateVisible"/>
         <activity
             android:name=".TimerActivity"
             android:label="@string/app_name"
@@ -77,7 +78,7 @@
         </activity>
 
         <receiver
-            android:name=".MusicWidget"
+            android:name=".MusicWidget4x1"
             android:label="Music Player">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -88,7 +89,7 @@
                 android:resource="@xml/widgetprovider4x1" />
         </receiver>
         <receiver
-            android:name=".MusicWidget2"
+            android:name=".MusicWidget4x2"
             android:label="Music Player">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -99,7 +100,7 @@
                 android:resource="@xml/widgetprovider4x2" />
         </receiver>
         <receiver
-            android:name=".MusicWidgetv2"
+            android:name=".MusicWidget4x1v2"
             android:label="Music Player">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

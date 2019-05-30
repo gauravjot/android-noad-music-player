@@ -83,7 +83,7 @@
     </RelativeLayout>
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/albumArtImageView"
         android:layout_width="48dp"
         android:layout_height="60dp"
         android:layout_alignParentRight="true"

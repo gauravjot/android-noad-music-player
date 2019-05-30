@@ -4,9 +4,9 @@
     >
 
     <gradient
-        android:startColor="@color/dialogBackground"
-        android:centerColor="@color/dialogBackground"
-        android:endColor="@color/dialogBackground" />
+        android:startColor="@color/background"
+        android:centerColor="@color/background"
+        android:endColor="@color/background" />
 
     <size
         android:height="14dp"

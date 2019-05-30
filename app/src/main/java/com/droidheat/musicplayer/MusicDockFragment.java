@@ -140,7 +140,7 @@ public class MusicDockFragment extends Fragment {
                     Log.d(TAG, "onConnected");
                     try {
                         connectToSession(mMediaBrowser.getSessionToken());
-                        getActivity().startService(new Intent(getActivity(),MusicPlayback.class));
+                        ContextCompat.startForegroundService(getActivity(), new Intent(getActivity(),MusicPlayback.class));
                     } catch (RemoteException e) {
                         Log.e(TAG, "could not connect media controller");
                     }

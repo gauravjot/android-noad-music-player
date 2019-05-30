@@ -19,7 +19,6 @@ import com.commonsware.cwac.merge.MergeAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment {
@@ -46,7 +45,7 @@ public class HomeFragment extends Fragment {
         if (!songsManager.allSongs().isEmpty()) {
             // QUICK PLAY
             View heading = View.inflate(getActivity(), R.layout.heading, null);
-            TextView textView = heading.findViewById(R.id.heading);
+            TextView textView = heading.findViewById(R.id.titleTextView);
             textView.setText("Quick Play");
             mergeAdapter.addView(heading);
 
@@ -58,7 +57,7 @@ public class HomeFragment extends Fragment {
 
             // Recently Added
             View heading1 = View.inflate(getActivity(), R.layout.heading_with_button, null);
-            TextView textView1 = heading1.findViewById(R.id.heading);
+            TextView textView1 = heading1.findViewById(R.id.titleTextView);
             textView1.setText("Recently Added To Library");
             Button button = heading1.findViewById(R.id.button);
             button.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
@@ -85,7 +84,7 @@ public class HomeFragment extends Fragment {
             mergeAdapter.addView(recent_list);
         } else {
             View heading = View.inflate(getActivity(), R.layout.heading, null);
-            TextView textView = heading.findViewById(R.id.heading);
+            TextView textView = heading.findViewById(R.id.titleTextView);
             textView.setText("Unable to find any music in your device. if you have just added music then click on top right options" +
                     " icon and try 'Sync Music'");
             mergeAdapter.addView(heading);
@@ -101,7 +100,7 @@ public class HomeFragment extends Fragment {
     private View one_big_two_small_view() {
         View one_big_two_small_view = View.inflate(getActivity(),R.layout.home_two_small_one_big_thumb,null);
 
-        ImageView imageView1 = one_big_two_small_view.findViewById(R.id.imageView1);
+        ImageView imageView1 = one_big_two_small_view.findViewById(R.id.albumArtImageView);
         TextView textView1 = one_big_two_small_view.findViewById(R.id.textView1);
 
         SharedPrefsUtils sharedPrefsUtils = new SharedPrefsUtils(getActivity());
@@ -123,7 +122,7 @@ public class HomeFragment extends Fragment {
         if (playLists.size() > 0) {
             TextView textView2 = one_big_two_small_view.findViewById(R.id.textView2);
             textView2.setText(playLists.get(playLists.size()-1).get("title"));
-            ImageView imageView3 = one_big_two_small_view.findViewById(R.id.imageView3);
+            ImageView imageView3 = one_big_two_small_view.findViewById(R.id.playImageView);
             final ArrayList<SongModel> arrayList1 = songsManager.playlistSongs(
                     Integer.parseInt(Objects.requireNonNull(playLists.get(playLists.size()-1).get("ID"))));
             (new ImageUtils(getActivity())).getImageByPicasso(arrayList1,imageView3);
@@ -143,7 +142,7 @@ public class HomeFragment extends Fragment {
         if (playLists.size() > 1) {
             TextView textView3 = one_big_two_small_view.findViewById(R.id.textView3);
             textView3.setText(playLists.get(playLists.size()-2).get("title"));
-            ImageView imageView4 = one_big_two_small_view.findViewById(R.id.imageView4);
+            ImageView imageView4 = one_big_two_small_view.findViewById(R.id.nextImageView);
             final ArrayList<SongModel> arrayList2 = songsManager.playlistSongs(
                     Integer.parseInt(Objects.requireNonNull(playLists.get(playLists.size()-2).get("ID"))));
             (new ImageUtils(getActivity())).getImageByPicasso(arrayList2,imageView4);

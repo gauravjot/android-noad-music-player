@@ -47,7 +47,7 @@
     </ListView>
 
     <TextView
-        android:id="@+id/heading"
+        android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

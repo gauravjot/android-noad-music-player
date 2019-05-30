@@ -396,14 +396,14 @@ public class SongsManager {
     }
 
     void addToQueue(SongModel song) {
-        queue.add(song);
+        queue().add(song);
         (new CommonUtils(context)).showTheToast("Added to current queue!");
     }
 
     void addToQueue(ArrayList<SongModel> arrayList) {
         ArrayList<SongModel> arrayList1 = new ArrayList<>(arrayList);
         if (arrayList1.size() > 0) {
-            queue.addAll(arrayList1);
+            queue().addAll(arrayList1);
             (new CommonUtils(context)).showTheToast("Added to current queue!");
         } else {
             (new CommonUtils(context)).showTheToast("Nothing to add");
@@ -411,7 +411,7 @@ public class SongsManager {
     }
 
     void playNext(SongModel song) {
-        queue.add(getCurrentMusicID() + 1, song);
+        queue().add(getCurrentMusicID() + 1, song);
         (new CommonUtils(context)).showTheToast("Playing next: " + song.getTitle());
     }
 
@@ -450,8 +450,6 @@ public class SongsManager {
                 name = "Shuffle Play";
             } else if (options[i] == R.id.use_as_ringtone_musicUtils) {
                 name = "Use as Ringtone";
-            } else if (options[i] == R.id.delete_musicUtils) {
-                name = "Delete";
             } else if (options[i] == R.id.remove_musicUtils) {
                 name = "Remove";
             } else if (options[i] == R.id.info_musicUtils) {

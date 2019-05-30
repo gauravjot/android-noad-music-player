@@ -413,6 +413,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                     Log.d(TAG, "onConnected");
                     try {
                         connectToSession(mMediaBrowser.getSessionToken());
+                        ContextCompat.startForegroundService(PlayActivity.this,
+                                new Intent(PlayActivity.this,MusicPlayback.class));
                     } catch (RemoteException e) {
                         Log.e(TAG, "could not connect media controller");
                     }
@@ -602,7 +604,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            finish();
+            backPressed();
         } else if (id == R.id.action_drive_mode) {
             startActivity(new Intent(PlayActivity.this,DriveModeActivity.class));
         } else if (id == R.id.add_to_playlist) {

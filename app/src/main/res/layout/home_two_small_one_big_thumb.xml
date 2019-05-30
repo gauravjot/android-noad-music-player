@@ -24,13 +24,13 @@
             android:layout_height="match_parent"
             android:src="@drawable/ic_music_notes_padded"
             android:scaleType="centerCrop"
-            android:id="@+id/imageView1"/>
+            android:id="@+id/albumArtImageView"/>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:src="@drawable/text_over_icon_gradient"
-            android:layout_alignBottom="@id/imageView1"/>
+            android:layout_alignBottom="@id/albumArtImageView"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -45,7 +45,7 @@
             android:id="@+id/textView1"
             android:maxLines="1"
             android:textColor="@color/white"
-            android:layout_alignBottom="@id/imageView1"/>
+            android:layout_alignBottom="@id/albumArtImageView"/>
 
         <ImageView
             android:layout_width="36dp"
@@ -54,8 +54,8 @@
             android:tint="@color/white"
             android:padding="6dp"
             android:layout_marginStart="12dp"
-            android:layout_alignBottom="@+id/imageView1"
-            android:id="@+id/imageView2"/>
+            android:layout_alignBottom="@+id/albumArtImageView"
+            android:id="@+id/prevImageView"/>
 
     </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -89,13 +89,13 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_music_notes_padded"
-                    android:id="@+id/imageView3"/>
+                    android:id="@+id/playImageView"/>
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:src="@drawable/text_over_icon_gradient"
-                    android:layout_alignBottom="@id/imageView3"/>
+                    android:layout_alignBottom="@id/playImageView"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -110,7 +110,7 @@
                     android:paddingEnd="8dp"
                     android:id="@+id/textView2"
                     android:textColor="@color/white"
-                    android:layout_alignBottom="@id/imageView3"/>
+                    android:layout_alignBottom="@id/playImageView"/>
 
                 <ImageView
                     android:layout_width="36dp"
@@ -119,7 +119,7 @@
                     android:tint="@color/white"
                     android:padding="7dp"
                     android:layout_marginStart="4dp"
-                    android:layout_alignBottom="@+id/imageView3"
+                    android:layout_alignBottom="@+id/playImageView"
                     android:id="@+id/imageView5"/>
 
             </RelativeLayout>
@@ -146,13 +146,13 @@
                     android:src="@drawable/ic_music_notes_padded"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:id="@+id/imageView4"/>
+                    android:id="@+id/nextImageView"/>
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:src="@drawable/text_over_icon_gradient"
-                    android:layout_alignBottom="@id/imageView4"/>
+                    android:layout_alignBottom="@id/nextImageView"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -167,7 +167,7 @@
                     android:maxLines="1"
                     android:id="@+id/textView3"
                     android:textColor="@color/white"
-                    android:layout_alignBottom="@id/imageView4"/>
+                    android:layout_alignBottom="@id/nextImageView"/>
 
                 <ImageView
                     android:layout_width="36dp"
@@ -176,7 +176,7 @@
                     android:tint="@color/white"
                     android:padding="7dp"
                     android:layout_marginStart="4dp"
-                    android:layout_alignBottom="@+id/imageView4"
+                    android:layout_alignBottom="@+id/nextImageView"
                     android:id="@+id/imageView6"/>
 
             </RelativeLayout>

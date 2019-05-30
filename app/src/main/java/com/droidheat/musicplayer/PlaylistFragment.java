@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,9 +45,9 @@ public class PlaylistFragment extends Fragment {
         //listView.addHeaderView(getActivity().getLayoutInflater().inflate(R.layout.listview_header, null));
         View Header =  mInflater.inflate(R.layout.heading, null);
         View Header2 =  mInflater.inflate(R.layout.heading_with_button, null);
-        TextView textView = Header.findViewById(R.id.heading);
+        TextView textView = Header.findViewById(R.id.titleTextView);
         textView.setText("Auto Playlists");
-        TextView textView2 = Header2.findViewById(R.id.heading);
+        TextView textView2 = Header2.findViewById(R.id.titleTextView);
         textView2.setText("Created Playlists");
         Button addPlaylist = Header2.findViewById(R.id.button);
         addPlaylist.setTextColor(ContextCompat.getColor(context,

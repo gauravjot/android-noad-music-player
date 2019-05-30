@@ -76,11 +76,11 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
 
     private final String TAG = "PlaybackServiceConsole";
 
-    private PlaybackStateCompat.Builder mPlaybackStateBuilder;
+    private static PlaybackStateCompat.Builder mPlaybackStateBuilder;
     private SharedPrefsUtils sharedPrefsUtils;
     private SongsManager songsManager;
 
-    private boolean autoPaused = false;
+    private static boolean autoPaused = false;
 
     /******* ---------------------------------------------------------------
      Service Methods and Intents
@@ -107,7 +107,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         /*
          * Calling startForeground() under 5 seconds to avoid ANR
          */
-        showPausedNotification();
+        initNotification();
     }
 
     @Override
@@ -239,12 +239,14 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     @Override
     public void onDestroy() {
         super.onDestroy();
+        sharedPrefsUtils.writeSharedPrefs("song_position", mMediaPlayer.getCurrentPosition());
         Log.d(TAG, "Shutting MediaPlayer service down...");
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         assert audioManager != null;
         audioManager.abandonAudioFocus(this);
         unregisterReceiver(mNoisyReceiver);
         setMediaPlaybackState(PlaybackStateCompat.STATE_STOPPED);
+        mMediaSessionCompat.setActive(false);
         mMediaSessionCompat.release();
         mMediaPlayer.release();
         stopForeground(true);
@@ -541,6 +543,34 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         stopForeground(false);
     }
 
+    private void initNotification() {
+        createChannel();
+        NotificationCompat.Builder builder
+                = MediaStyleHelper.from(MusicPlayback.this, mMediaSessionCompat);
+
+        PendingIntent pCloseIntent = PendingIntent.getService(this, 0,
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_CLOSE), 0);
+
+        PendingIntent prevIntent = PendingIntent.getService(this, 0,
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_PREV), 0);
+        PendingIntent playPauseIntent = PendingIntent.getService(this, 0,
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_PLAY_PAUSE), 0);
+        PendingIntent nextIntent = PendingIntent.getService(this, 0,
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_NEXT), 0);
+
+        builder.addAction(new NotificationCompat.Action(R.drawable.app_previous, "Previous", prevIntent));
+        builder.addAction(new NotificationCompat.Action(R.drawable.app_play, "Play", playPauseIntent));
+        builder.addAction(new NotificationCompat.Action(R.drawable.app_next, "Next", nextIntent));
+        builder.setStyle(new MediaStyle().setShowActionsInCompactView(0).setMediaSession(mMediaSessionCompat.getSessionToken()));
+        builder.setSmallIcon(R.drawable.ic_music_note_black_24dp);
+        builder.setStyle(new MediaStyle()
+                .setShowActionsInCompactView(1, 2).setMediaSession(getSessionToken()));
+        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), 0));
+        builder.setDeleteIntent(pCloseIntent);
+        builder.setShowWhen(false);
+        startForeground(1, builder.build());
+    }
+
 
     /******* ---------------------------------------------------------------
      MediaPlayer
@@ -786,33 +816,19 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
      ----------------------------------------------------------------*******/
 
     private void musicWidgetsReset() {
-        Intent intent = new Intent(this, MusicWidget.class);
+        updateMusicWidget(this, MusicWidget4x1.class);
+        updateMusicWidget(this, MusicWidget4x1v2.class);
+        updateMusicWidget(this, MusicWidget4x2.class);
+    }
+
+    private void updateMusicWidget(Context context, Class<?> cls) {
+        Intent intent = new Intent(context, cls);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         intent.putExtra("state", mPlaybackStateBuilder.build().getState());
-        int[] ids = AppWidgetManager.getInstance(getApplication())
-                .getAppWidgetIds(
-                        new ComponentName(getApplication(), MusicWidget.class));
+        int[] ids = AppWidgetManager.getInstance(context)
+                .getAppWidgetIds(new ComponentName(context, cls));
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        sendBroadcast(intent);
-
-        Intent intent2 = new Intent(this, MusicWidgetv2.class);
-        intent2.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        intent2.putExtra("state", mPlaybackStateBuilder.build().getState());
-        int[] ids2 = AppWidgetManager.getInstance(getApplication())
-                .getAppWidgetIds(
-                        new ComponentName(getApplication(), MusicWidgetv2.class));
-        intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids2);
-        sendBroadcast(intent2);
-
-        Intent intent1 = new Intent(this, MusicWidget2.class);
-        intent1.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        intent1.putExtra("state", mPlaybackStateBuilder.build().getState());
-        int[] ids1 = AppWidgetManager
-                .getInstance(getApplication())
-                .getAppWidgetIds(
-                        new ComponentName(getApplication(), MusicWidget2.class));
-        intent1.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids1);
-        sendBroadcast(intent1);
+        context.sendBroadcast(intent);
     }
 
 

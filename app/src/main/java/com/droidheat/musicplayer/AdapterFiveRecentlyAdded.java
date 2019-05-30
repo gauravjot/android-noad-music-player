@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 class AdapterFiveRecentlyAdded extends BaseAdapter implements OnClickListener {
 
@@ -92,7 +91,7 @@ class AdapterFiveRecentlyAdded extends BaseAdapter implements OnClickListener {
             holder.text = vi.findViewById(R.id.text);
             holder.text1 = vi.findViewById(R.id.text1);
             holder.image = vi.findViewById(R.id.image);
-            holder.imageOverflow = vi.findViewById(R.id.imageView1);
+            holder.imageOverflow = vi.findViewById(R.id.albumArtImageView);
             vi.setTag(holder);
 
         } else {
@@ -147,8 +146,6 @@ class AdapterFiveRecentlyAdded extends BaseAdapter implements OnClickListener {
             pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
-                        case R.id.delete_musicUtils:
-                            return true;
                         case R.id.play_next_musicUtils:
                             songsManager.playNext(data.get(position));
                             return true;

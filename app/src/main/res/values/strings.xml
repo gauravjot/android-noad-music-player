@@ -48,7 +48,6 @@
     <string name="_4">4</string>
     <string name="_1">1</string>
     <string name="x">X</string>
-    <string name="_id_textview4">\@+id/textView4</string>
     <string name="min">min</string>
     <string name="sleep_in">Sleep in</string>
     <string name="play_some_music">Play Some Music</string>
@@ -80,6 +79,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title">Title</string>
     <string name="artist">Artist</string>
     <string name="album">Album</string>
     <string name="title_activity_settings">Settings</string>

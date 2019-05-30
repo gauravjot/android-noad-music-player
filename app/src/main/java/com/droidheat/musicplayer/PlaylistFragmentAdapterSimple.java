@@ -1,11 +1,8 @@
 package com.droidheat.musicplayer;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
@@ -78,7 +75,7 @@ class PlaylistFragmentAdapterSimple extends BaseAdapter {
             /****** View Holder Object to contain tabitem.xml file elements ******/
 
             holder = new ViewHolder();
-            holder.text = vi.findViewById(R.id.heading);
+            holder.text = vi.findViewById(R.id.titleTextView);
 
             vi.setTag(holder);
 
