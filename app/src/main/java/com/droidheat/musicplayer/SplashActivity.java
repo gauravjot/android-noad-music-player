@@ -1,12 +1,15 @@
 package com.droidheat.musicplayer;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
@@ -17,8 +20,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 public class SplashActivity extends AppCompatActivity {
@@ -26,6 +31,7 @@ public class SplashActivity extends AppCompatActivity {
     String TAG = "SplashActivityLog";
     Boolean sync = false;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +59,7 @@ public class SplashActivity extends AppCompatActivity {
             int permissionCheck = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE);
 
-            if (permissionCheck == PermissionChecker.PERMISSION_DENIED || permissionCheck != PermissionChecker.PERMISSION_GRANTED) {
+            if (permissionCheck != PermissionChecker.PERMISSION_GRANTED) {
                     // No explanation needed, we can request the permission.
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
@@ -77,7 +83,7 @@ public class SplashActivity extends AppCompatActivity {
                 alertDialog.show();
                 Log.d(TAG,"asking permission");
             } else {
-                new PerformBackgroundTasks().execute("task");
+                new PerformBackgroundTasks(this, sync).execute("task");
                 Log.d(TAG,"no need for permissions");
             }
 
@@ -85,25 +91,23 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // If request is cancelled, the result arrays are empty.
+        if (requestCode == 1) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    new PerformBackgroundTasks().execute("tasks");
-                    //weGotPermissions();
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+                new PerformBackgroundTasks(this,sync).execute("tasks");
+                //weGotPermissions();
+                // permission was granted, yay! Do the
+                // contacts-related task you need to do.
 
-                } else {
-                    //TODO: if user has set to deny permission always, ask to go to settings
-                    Toast.makeText(this, "Application needs permission to run. Exiting!", Toast.LENGTH_SHORT).show();
-                    finish();
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
+            } else {
+                //TODO: if user has set to deny permission always, ask to go to settings
+                Toast.makeText(this, "Application needs permission to run. Exiting!", Toast.LENGTH_SHORT).show();
+                finish();
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
             }
 
             // other 'case' lines to check for other
@@ -111,21 +115,34 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    private class PerformBackgroundTasks extends AsyncTask<String, Integer, Long> {
+    private static class PerformBackgroundTasks extends AsyncTask<String, Integer, Long> {
+
+        private WeakReference<Activity> weakReference;
+        private Boolean sync;
+        private String TAG = "SplashActivityAsyncTaskLog";
+        private SongsManager songsManager;
+        private SharedPrefsUtils sharedPrefsUtils;
+        private Playlist playlist;
+
+        PerformBackgroundTasks(Activity activity, Boolean sync) {
+            this.weakReference = new WeakReference<>(activity);
+            this.sync = sync;
+            this.songsManager = new SongsManager(activity);
+            this.sharedPrefsUtils = new SharedPrefsUtils(activity);
+            this.playlist = new Playlist(activity);
+        }
 
         @Override
         protected Long doInBackground(String... params) {
-            SongsManager songsManager = new SongsManager(SplashActivity.this);
 
             ArrayList<HashMap<String,String>> artists = songsManager.artists();
             if (artists.size() > 0) {
-                (new SharedPrefsUtils(SplashActivity.this)).writeSharedPrefs("home_artist",
+                sharedPrefsUtils.writeSharedPrefs("home_artist",
                         artists.get((new Random()).nextInt(artists.size())).get("artist"));
             }
 
             try {
                 // -- Creating Playlist
-                Playlist playlist = new Playlist(SplashActivity.this);
                 playlist.open();
                 if (playlist.getCount() == 0) {
                     songsManager.addPlaylist("Playlist 1");
@@ -135,7 +152,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (sync) {
 
                     for (int s = 0; s < songsManager.getAllPlaylists().size(); s++) {
-                        int playlistID = Integer.parseInt(songsManager.getAllPlaylists().get(s).get("ID"));
+                        int playlistID = Integer.parseInt(Objects.requireNonNull(songsManager.getAllPlaylists().get(s).get("ID")));
                         ArrayList<SongModel> playListSongs =
                                 songsManager.playlistSongs(playlistID);
 
@@ -278,9 +295,9 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Long aLong) {
-            startActivity(new Intent(SplashActivity.this,
+            weakReference.get().startActivity(new Intent(weakReference.get(),
                     HomeActivity.class));
-            finish();
+            weakReference.get().finish();
         }
     }
 

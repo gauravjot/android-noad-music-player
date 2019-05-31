@@ -1,5 +1,6 @@
 package com.droidheat.musicplayer;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.audiofx.BassBoost;
@@ -80,12 +81,15 @@ public class SettingsActivity extends PreferenceActivity {
                                 eq.setEnabled(sharedPreferences.getBoolean("turnEqualizer", false));
                             } catch (Exception ignored) {}
                             break;
+                        case "persistentNotificationPref":
+                            break;
                     }
                 }
             };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        startActivity(new Intent(this,HomeActivity.class));
         finish();
         return super.onOptionsItemSelected(item);
     }
@@ -93,6 +97,7 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            startActivity(new Intent(this,HomeActivity.class));
             finish();
             return true;
         }

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:initialLayout="@layout/widget4x2"
     android:minHeight="80dp"
-    android:minWidth="160dp"
+    android:minWidth="250dp"
     android:previewImage="@drawable/widget4x2"
     android:updatePeriodMillis="0"
     android:widgetCategory="home_screen|keyguard"

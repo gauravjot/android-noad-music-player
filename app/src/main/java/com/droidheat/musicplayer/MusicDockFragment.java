@@ -199,6 +199,8 @@ public class MusicDockFragment extends Fragment {
                 btnPlay.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.app_play));
                 break;
             case PlaybackStateCompat.STATE_NONE:
+                btnPlay.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.app_play));
+                break;
             case PlaybackStateCompat.STATE_STOPPED:
                 btnPlay.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.app_play));
                 break;

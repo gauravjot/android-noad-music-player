@@ -85,7 +85,10 @@ public class SongsManager {
     }
 
     ArrayList<SongModel> queue() {
-        return ((queue.isEmpty()) ? newSongs() : queue);
+        if (queue.isEmpty()) {
+            replaceQueue(newSongs());
+        }
+        return (queue);
     }
 
     void setQueue(ArrayList<SongModel> queue) {

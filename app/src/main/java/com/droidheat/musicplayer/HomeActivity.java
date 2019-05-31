@@ -110,6 +110,7 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             case R.id.sync:
                 startActivity(new Intent(this, SplashActivity.class).putExtra("sync", true));
+                finish();
                 break;
             case R.id.settings:
                 startActivity(new Intent(this, SettingsActivity.class));

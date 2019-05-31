@@ -165,13 +165,13 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
      */
     private void saveData() {
         int musicID = songsManager.getCurrentMusicID();
+        sharedPrefsUtils.writeSharedPrefs("audio_session_id", mMediaPlayer.getAudioSessionId());
         try {
             sharedPrefsUtils.writeSharedPrefs("musicID", musicID);
             sharedPrefsUtils.writeSharedPrefs("title", songsManager.queue().get(musicID).getTitle());
             sharedPrefsUtils.writeSharedPrefs("artist", songsManager.queue().get(musicID).getArtist());
             sharedPrefsUtils.writeSharedPrefs("album", songsManager.queue().get(musicID).getAlbum());
             sharedPrefsUtils.writeSharedPrefs("albumid", songsManager.queue().get(musicID).getAlbumID());
-            sharedPrefsUtils.writeSharedPrefs("audio_session_id", mMediaPlayer.getAudioSessionId());
             sharedPrefsUtils.writeSharedPrefs("raw_path", songsManager.queue().get(musicID).getPath());
             sharedPrefsUtils.writeSharedPrefs("duration", songsManager.queue().get(musicID).getDuration());
             sharedPrefsUtils.writeSharedPrefs("durationInMS", mMediaPlayer.getDuration());
@@ -540,7 +540,9 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         builder.setDeleteIntent(pCloseIntent);
         builder.setShowWhen(false);
         startForeground(1, builder.build());
-        stopForeground(false);
+        if (sharedPrefsUtils.readSharedPrefsBoolean("persistentNotificationPref",false)) {
+            stopForeground(false);
+        }
     }
 
     private void initNotification() {
@@ -570,7 +572,6 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         builder.setShowWhen(false);
         startForeground(1, builder.build());
     }
-
 
     /******* ---------------------------------------------------------------
      MediaPlayer
@@ -628,6 +629,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         mMediaPlayer.setVolume(1.0f, 1.0f);
         mMediaPlayer.setOnCompletionListener(this);
         mMediaPlayer.setOnPreparedListener(this);
+        sharedPrefsUtils.writeSharedPrefs("audio_session_id", mMediaPlayer.getAudioSessionId());
 
     }
 

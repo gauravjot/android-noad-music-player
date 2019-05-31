@@ -5,6 +5,12 @@
     <com.jenzz.materialpreference.PreferenceCategory
         android:title="General">
 
+        <com.jenzz.materialpreference.Preference
+            android:id="@+id/versionPref"
+            android:key="versionPref"
+            android:summary="@string/app_version"
+            android:title="App Version" />
+
         <com.jenzz.materialpreference.SwitchPreference
             android:id="@+id/ExcludeCheckBox"
             android:key="excludeShortSounds"
@@ -25,6 +31,15 @@
             android:key="turnEqualizer"
             android:summary="Enable equalizer for songs"
             android:title="Equalizer" />
+
+    </com.jenzz.materialpreference.PreferenceCategory>
+
+    <com.jenzz.materialpreference.PreferenceCategory android:title="Playback">
+        <com.jenzz.materialpreference.CheckBoxPreference
+            android:id="@+id/persistentNotificationPref"
+            android:key="persistentNotificationPref"
+            android:summary="Always keep music player active in notifications"
+            android:title="Persistent Playback Notification" />
 
     </com.jenzz.materialpreference.PreferenceCategory>
 
