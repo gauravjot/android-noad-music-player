@@ -42,8 +42,8 @@ class ImageUtils {
         try {
             Picasso.get().load(getSongUri(Long.parseLong(albumId)))
                     .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
-                    .resize(500,500)
-                    .onlyScaleDown()
+                    .centerCrop()
+                    .fit()
                     .into(imageView);}
         catch (Exception ignored) {}
     }
@@ -64,8 +64,8 @@ class ImageUtils {
             if (i < max) {
                 Picasso.get().load(getSongUri(Long.parseLong(albumIds.get(i).toString())))
                         .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
-                        .resize(500,500)
-                        .onlyScaleDown()
+                        .centerCrop()
+                        .fit()
                         .into(imageView, new Callback() {
                             @Override
                             public void onSuccess() {
@@ -85,15 +85,15 @@ class ImageUtils {
         catch (Exception ignored) {}
     }
 
-    void getSmallImageByPicasso(String albumID, ImageView imageView) {
-        try {
-            Picasso.get().load(getSongUri(Long.parseLong(albumID)))
-                    .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
-                    .resize(400,400)
-                    .onlyScaleDown()
-                    .into(imageView);}
-        catch (Exception ignored) {}
-    }
+//    void getSmallImageByPicasso(String albumID, ImageView imageView) {
+//        try {
+//            Picasso.get().load(getSongUri(Long.parseLong(albumID)))
+//                    .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
+//                    .resize(400,400)
+//                    .onlyScaleDown()
+//                    .into(imageView);}
+//        catch (Exception ignored) {}
+//    }
 
     void getFullImageByPicasso(String albumID, ImageView imageView) {
         try {
@@ -185,8 +185,8 @@ class ImageUtils {
         try {
             if (i < max) Picasso.get().load(getSongUri(Long.parseLong(albumSongs.get(i).toString())))
                     .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
-                    .resize(500,500)
-                    .onlyScaleDown()
+                    .centerCrop()
+                    .fit()
                     .into(imageView, new Callback() {
                         @Override
                         public void onSuccess() {

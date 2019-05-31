@@ -1,6 +1,7 @@
 package com.droidheat.musicplayer;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.AsyncTask;
@@ -21,15 +22,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-public class GlobalDetailActivity extends AppCompatActivity {
+public class GlobalDetailActivity extends AppCompatActivity implements AsyncTaskCompletionCallback {
 
     RecyclerViewAdapter adapter;
     ArrayList<SongModel> songsList = new ArrayList<>();
     String field = "albums", raw = "A Sky Full Of Stars";
-    String TAG = "GlobalActivityConsole";
     PerformBackgroundTasks performBackgroundTasks = null;
     SongsManager songsManager;
 
@@ -49,11 +48,10 @@ public class GlobalDetailActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.category)).setTextColor(ContextCompat.getColor(this,accentColor));
         floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this,accentColor)));
 
-        performBackgroundTasks = new PerformBackgroundTasks();
-
-
+        field = Objects.requireNonNull(getIntent().getExtras()).getString("field");
         raw = Objects.requireNonNull(getIntent().getExtras()).getString("name");
-        field = getIntent().getExtras().getString("field");
+
+        performBackgroundTasks = new PerformBackgroundTasks(this, this, field);
 
         findViewById(R.id.spinner).setVisibility(View.INVISIBLE);
 
@@ -190,7 +188,7 @@ public class GlobalDetailActivity extends AppCompatActivity {
             case R.id.repair_list:
                 findViewById(R.id.spinner).setVisibility(View.VISIBLE);
                 if (performBackgroundTasks.getStatus() != AsyncTask.Status.RUNNING) {
-                    performBackgroundTasks = new PerformBackgroundTasks();
+                    performBackgroundTasks = new PerformBackgroundTasks(this,this,field);
                     performBackgroundTasks.execute();
                 }
                 break;
@@ -226,19 +224,28 @@ public class GlobalDetailActivity extends AppCompatActivity {
         }
     }
 
-    private class PerformBackgroundTasks extends AsyncTask<String, Integer, Long> {
+    @Override
+    public void updateViews() {
+        findViewById(R.id.spinner).setVisibility(View.INVISIBLE);
+        findViewById(R.id.recyclerView).setActivated(true);
+        setListData();
+        adapter.notifyDataSetChanged();
+    }
 
+    private static class PerformBackgroundTasks extends AsyncTask<String, Integer, Long> {
+
+        private SongsManager songsManager;
+        private String field;
+        private String TAG = "GlobalActivityAsyncTaskConsole";
+        private AsyncTaskCompletionCallback callback;
+
+        PerformBackgroundTasks(AsyncTaskCompletionCallback callback, Activity activity, String field) {
+            this.songsManager = new SongsManager(activity);
+            this.callback = callback;
+            this.field = field;
+        }
         @Override
         protected Long doInBackground(String... params) {
-            SongsManager songsManager = new SongsManager(GlobalDetailActivity.this);
-
-            // -- Creating Playlist
-//            Playlist playlist = new Playlist(SplashActivity.this);
-//            playlist.open();
-//            if (playlist.getCount() == 0) {
-//                songsManager.addPlaylist("Playlist 1");
-//            }
-//            playlist.close();
 
             // -- Checking empty playlist or broken songs
             if (isInteger(field)) {
@@ -293,7 +300,6 @@ public class GlobalDetailActivity extends AppCompatActivity {
                     Log.d(TAG, "Playlist: done!");
                 }
             } else if (field.equals("favourites")) {
-                //Todo Re-add song but change fields
 
                 // -- Checking Favourites
                 ArrayList<SongModel> favSongs =
@@ -392,36 +398,34 @@ public class GlobalDetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Long aLong) {
-                    findViewById(R.id.spinner).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.recyclerView).setActivated(true);
-                    setListData();
-                    adapter.notifyDataSetChanged();
-            Log.d(TAG, "MostPlayed: AsyncTask Done!");
+            callback.updateViews();
+            Log.d(TAG, "AsyncTask Done!");
         }
-    }
 
-    public boolean isInteger(String str) {
-        if (str == null) {
-            return false;
-        }
-        int length = str.length();
-        if (length == 0) {
-            return false;
-        }
-        int i = 0;
-        if (str.charAt(0) == '-') {
-            if (length == 1) {
+        private boolean isInteger(String str) {
+            if (str == null) {
                 return false;
             }
-            i = 1;
-        }
-        for (; i < length; i++) {
-            char c = str.charAt(i);
-            if (c < '0' || c > '9') {
+            int length = str.length();
+            if (length == 0) {
                 return false;
             }
+            int i = 0;
+            if (str.charAt(0) == '-') {
+                if (length == 1) {
+                    return false;
+                }
+                i = 1;
+            }
+            for (; i < length; i++) {
+                char c = str.charAt(i);
+                if (c < '0' || c > '9') {
+                    return false;
+                }
+            }
+            return true;
         }
-        return true;
+
     }
 
 }

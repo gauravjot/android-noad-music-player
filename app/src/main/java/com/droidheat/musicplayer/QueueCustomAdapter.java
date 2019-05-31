@@ -90,7 +90,7 @@ class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         }
         finalTitle = finalTitle1;
 
-        (new ImageUtils(activity)).getSmallImageByPicasso(tempValues.getAlbumID(), holder.image);
+        (new ImageUtils(activity)).getImageByPicasso(tempValues.getAlbumID(), holder.image);
 
         holder.image.setOutlineProvider(new ViewOutlineProvider() {
             @Override

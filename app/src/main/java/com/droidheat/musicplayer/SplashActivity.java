@@ -198,8 +198,6 @@ public class SplashActivity extends AppCompatActivity {
                             Log.d(TAG, "Playlist: done!");
                         }
 
-                        //Todo Re-add song but change fields
-
                     }
 
                     // -- Checking Favourites

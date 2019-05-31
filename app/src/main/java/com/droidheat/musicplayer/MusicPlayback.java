@@ -538,9 +538,10 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                 .setShowActionsInCompactView(1, 2).setMediaSession(getSessionToken()));
         builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), 0));
         builder.setDeleteIntent(pCloseIntent);
+        builder.setColor(ContextCompat.getColor(this,(new CommonUtils(this)).accentColor(sharedPrefsUtils)));
         builder.setShowWhen(false);
         startForeground(1, builder.build());
-        if (sharedPrefsUtils.readSharedPrefsBoolean("persistentNotificationPref",false)) {
+        if (!sharedPrefsUtils.readSharedPrefsBoolean("persistentNotificationPref",false)) {
             stopForeground(false);
         }
     }
@@ -569,6 +570,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                 .setShowActionsInCompactView(1, 2).setMediaSession(getSessionToken()));
         builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), 0));
         builder.setDeleteIntent(pCloseIntent);
+        builder.setColor(ContextCompat.getColor(this,(new CommonUtils(this)).accentColor(sharedPrefsUtils)));
         builder.setShowWhen(false);
         startForeground(1, builder.build());
     }

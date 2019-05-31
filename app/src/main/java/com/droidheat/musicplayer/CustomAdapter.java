@@ -111,7 +111,7 @@ class CustomAdapter extends BaseAdapter implements OnClickListener {
 
 
             final SongsManager songsManager = new SongsManager(activity);
-            (new ImageUtils(activity)).getSmallImageByPicasso(tempValues.getAlbumID(), holder.image);
+            (new ImageUtils(activity)).getImageByPicasso(tempValues.getAlbumID(), holder.image);
 
             holder.text.setText(finalTitle);
             holder.text1.setText(((artist.length() > 25) ? artist.substring(0,25) : artist) + "; " + duration);
