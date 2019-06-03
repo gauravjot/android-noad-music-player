@@ -43,7 +43,8 @@ class ImageUtils {
             Picasso.get().load(getSongUri(Long.parseLong(albumId)))
                     .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
                     .centerCrop()
-                    .fit()
+                    .resize(400,400)
+                    .onlyScaleDown()
                     .into(imageView);}
         catch (Exception ignored) {}
     }
@@ -65,7 +66,8 @@ class ImageUtils {
                 Picasso.get().load(getSongUri(Long.parseLong(albumIds.get(i).toString())))
                         .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
                         .centerCrop()
-                        .fit()
+                        .resize(400,400)
+                        .onlyScaleDown()
                         .into(imageView, new Callback() {
                             @Override
                             public void onSuccess() {
@@ -186,7 +188,8 @@ class ImageUtils {
             if (i < max) Picasso.get().load(getSongUri(Long.parseLong(albumSongs.get(i).toString())))
                     .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
                     .centerCrop()
-                    .fit()
+                    .resize(400,400)
+                    .onlyScaleDown()
                     .into(imageView, new Callback() {
                         @Override
                         public void onSuccess() {

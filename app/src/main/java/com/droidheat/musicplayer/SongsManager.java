@@ -53,16 +53,13 @@ public class SongsManager {
     private SharedPrefsUtils sharedPrefsUtils;
     private static ArrayList<SongModel> mainList = new ArrayList<>();
     private static ArrayList<SongModel> queue = new ArrayList<>();
+    private static ArrayList<HashMap<String, String>> albums = new ArrayList<>();
+    private static ArrayList<HashMap<String, String>> artists = new ArrayList<>();
 
     SongsManager(Context context) {
         this.context = context;
         sharedPrefsUtils = new SharedPrefsUtils(context);
-        if (mainList.isEmpty()) {
-            grabData();
-            Log.d(TAG, "Grabbing data for player...");
-        } else {
-            Log.d(TAG, "Data is present. Just setting context.");
-        }
+        grabIfEmpty();
         if (queue.isEmpty()) {
             try {
                 Type type = new TypeToken<ArrayList<SongModel>>() {
@@ -91,11 +88,6 @@ public class SongsManager {
         return (queue);
     }
 
-    void setQueue(ArrayList<SongModel> queue) {
-        SongsManager.queue.clear();
-        SongsManager.queue = new ArrayList<>(queue);
-    }
-
     ArrayList<SongModel> allSongs() {
         grabIfEmpty(); // If no song in list
 
@@ -119,46 +111,8 @@ public class SongsManager {
     }
 
     ArrayList<HashMap<String, String>> albums() {
-        ArrayList<HashMap<String, String>> list = new ArrayList<>();
-        ArrayList<SongModel> newSongs = newSongs();
-        for (int i = 0; i < newSongs.size(); i++) {
-            String name = newSongs.get(i).getAlbum();
-            String artist = newSongs.get(i).getArtist();
-            int albumIndex = -1;
-            if (list.size() > 0) {
-                for (int j = 0; j < list.size(); j++) {
-                    String auction = list.get(j).get("album");
-                    if (name.equals(auction)) {
-                        albumIndex = j;
-                    }
-                }
-            }
-            if (albumIndex == -1) {
-
-                HashMap<String, String> song = new HashMap<>();
-                song.put("album", name);
-                song.put("artist", artist);
-                list.add(song);
-            }
-        }
-
-        ArrayList<HashMap<String, String>> list2 = new ArrayList<>();
-        Map<String, String> sortedMap = new TreeMap<>();
-        for (int i = 0; i < list.size(); i++) {
-            sortedMap.put(Objects.requireNonNull(list.get(i).get("album")),
-                    Objects.requireNonNull(list.get(i).get("album")));
-        }
-        for (Map.Entry<String, String> entry : sortedMap.entrySet()) {
-            HashMap<String, String> song = new HashMap<>();
-            String title = entry.getValue();
-            int index = getIndexAlbum(title, list);
-            song.put("album", list.get(index).get("album"));
-            song.put("artist", list.get(index).get("artist"));
-            list2.add(song);
-        }
-
-
-        return list2;
+        grabIfEmpty();
+        return albums;
     }
 
     ArrayList<SongModel> albumSongs(String album) {
@@ -174,73 +128,8 @@ public class SongsManager {
     }
 
     ArrayList<HashMap<String, String>> artists() {
-        String SPLIT_EXPRESSION = ";,,;,;;";
-        ArrayList<HashMap<String, String>> list = new ArrayList<>();
-        ArrayList<SongModel> newSongs = newSongs();
-
-
-        for (int i = 0; i < newSongs.size(); i++) {
-
-            String name = newSongs.get(i).getArtist();
-            String albums = newSongs.get(i).getAlbum();
-
-            int albumIndex = -1;
-            if (list.size() > 0) {
-                for (int j = 0; j < list.size(); j++) {
-                    String auction = list.get(j).get("artist");
-                    if (name.equals(auction)) {
-                        albumIndex = j;
-                    }
-                }
-            }
-
-
-            if (albumIndex > -1) {
-                if (albums != null) {
-                    String[] albumSplit = Objects.requireNonNull(list.get(albumIndex).get("albums")).split(SPLIT_EXPRESSION);
-                    boolean found = false;
-                    for (String anAlbumSplit : albumSplit) {
-                        if (anAlbumSplit.trim().equals(albums)) {
-                            found = true;
-                        }
-                    }
-                    if (!found) {
-                        albums = list.get(albumIndex).get("albums") + SPLIT_EXPRESSION + newSongs.get(i).getAlbum();
-                    }
-
-                }
-            }
-
-            if (albumIndex == -1) {
-
-                HashMap<String, String> song = new HashMap<>();
-                song.put("artist", name);
-                song.put("albums", albums);
-                list.add(song);
-            } else {
-                HashMap<String, String> song = new HashMap<>();
-                song.put("artist", name);
-                song.put("albums", albums);
-                list.add(albumIndex, song);
-            }
-        }
-
-
-        ArrayList<HashMap<String, String>> list2 = new ArrayList<>();
-        Map<String, String> sortedMap = new TreeMap<>();
-        for (int i = 0; i < list.size(); i++) {
-            sortedMap.put(Objects.requireNonNull(list.get(i).get("artist")),
-                    Objects.requireNonNull(list.get(i).get("artist")));
-        }
-        for (Map.Entry<String, String> entry : sortedMap.entrySet()) {
-            HashMap<String, String> song = new HashMap<>();
-            String title = entry.getValue();
-            int index = getIndexArtist(title, list);
-            song.put("artist", list.get(index).get("artist"));
-            song.put("albums", list.get(index).get("albums"));
-            list2.add(song);
-        }
-        return list2;
+        grabIfEmpty();
+        return artists;
     }
 
     List<String> getAlbumIds(String rawAlbumIds) {
@@ -395,6 +284,8 @@ public class SongsManager {
 
     void sync() {
         mainList.clear();
+        albums.clear();
+        artists.clear();
         grabData();
     }
 
@@ -486,37 +377,6 @@ public class SongsManager {
                 Toast.makeText(context,
                         "Unable to play the song! Try syncing the library!",
                         Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    void playFromLastLeft() {
-        Log.d(TAG, "Playing from where we left of last time!");
-        if (!allSongs().isEmpty()) {
-
-            Type type = new TypeToken<ArrayList<SongModel>>() {
-            }.getType();
-            ArrayList<SongModel> restoreData = new Gson().fromJson(sharedPrefsUtils.readSharedPrefsString("key", null), type);
-            if (restoreData == null) {
-                // null because that's default value we passed for 'key'
-                restoreData = queue();
-            }
-            if (replaceQueue(restoreData)) {
-                Log.d(TAG, "Songs fetched: " + restoreData.size());
-                Log.d(TAG, "Initiating the play request to MusicPlayback Service");
-                File file = new File(restoreData.get(getCurrentMusicID()).getPath());
-                if (file.exists()) {
-                    Intent intent = new Intent(MusicPlayback.ACTION_PLAY);
-                    intent.putExtra("isPlayFromLastLeft", true);
-                    ContextCompat.startForegroundService(context, createExplicitFromImplicitIntent(intent));
-
-                } else {
-                    Toast.makeText(context,
-                            "Unable to play the song! Try syncing the library!",
-                            Toast.LENGTH_LONG).show();
-                }
-            } else {
-                (new CommonUtils(context)).showTheToast("Unable to resume music");
             }
         }
     }
@@ -702,14 +562,6 @@ public class SongsManager {
         }
     }
 
-    void useAsRingtone() {
-
-    }
-
-    void delete() {
-
-    }
-
     AlertDialog info(SongModel songModel) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(songModel.getTitle());
@@ -752,42 +604,32 @@ public class SongsManager {
         queue.clear();
     }
 
-    private int getIndex(String itemName, ArrayList<HashMap<String, String>> list) {
-        for (int i = 0; i < list.size(); i++) {
-            String auction = list.get(i).get("title");
-            if (itemName.equals(auction)) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    private int getIndexAlbum(String itemName, ArrayList<HashMap<String, String>> list) {
+    private int getIndexAlbum(String albumName, ArrayList<HashMap<String, String>> list) {
         for (int i = 0; i < list.size(); i++) {
             String auction = list.get(i).get("album");
-            if (itemName.equals(auction)) {
+            if (albumName.equals(auction)) {
                 return i;
             }
         }
-
         return -1;
     }
 
-    private int getIndexArtist(String itemName, ArrayList<HashMap<String, String>> list) {
+    private int getIndexArtist(String artistName, ArrayList<HashMap<String, String>> list) {
         for (int i = 0; i < list.size(); i++) {
             String auction = list.get(i).get("artist");
-            if (itemName.equals(auction)) {
+            if (artistName.equals(auction)) {
                 return i;
             }
         }
-
         return -1;
     }
 
     private void grabIfEmpty() {
         if (mainList.isEmpty()) {
             grabData();
+            Log.d(TAG, "Grabbing data for player...");
+        } else {
+            Log.d(TAG, "Data is present. Just setting context.");
         }
     }
 
@@ -854,6 +696,118 @@ public class SongsManager {
             }
             cursor.close();
         }
-    }
 
+        /*
+         * Albums Data
+         */
+
+        ArrayList<SongModel> allSongList = new ArrayList<>(mainList);
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        for (int i = 0; i < allSongList.size(); i++) {
+            String name = allSongList.get(i).getAlbum();
+            String artist = allSongList.get(i).getArtist();
+            int albumIndex = -1;
+            if (list.size() > 0) {
+                for (int j = 0; j < list.size(); j++) {
+                    String auction = list.get(j).get("album");
+                    if (name.equals(auction)) {
+                        albumIndex = j;
+                    }
+                }
+            }
+            if (albumIndex == -1) {
+
+                HashMap<String, String> song = new HashMap<>();
+                song.put("album", name);
+                song.put("artist", artist);
+                list.add(song);
+            }
+        }
+
+        ArrayList<HashMap<String, String>> list2 = new ArrayList<>();
+        Map<String, String> sortedMap = new TreeMap<>();
+        for (int i = 0; i < list.size(); i++) {
+            sortedMap.put(Objects.requireNonNull(list.get(i).get("album")),
+                    Objects.requireNonNull(list.get(i).get("album")));
+        }
+        for (Map.Entry<String, String> entry : sortedMap.entrySet()) {
+            HashMap<String, String> song = new HashMap<>();
+            String title = entry.getValue();
+            int index = getIndexAlbum(title, list);
+            song.put("album", list.get(index).get("album"));
+            song.put("artist", list.get(index).get("artist"));
+            list2.add(song);
+        }
+
+        albums().addAll(list2);
+
+        /*
+         * Artists Data
+         */
+        String SPLIT_EXPRESSION = ";,,;,;;";
+        list.clear();
+        list2.clear();
+        sortedMap.clear();
+
+        for (int i = 0; i < allSongList.size(); i++) {
+
+            String name = allSongList.get(i).getArtist();
+            String albums = allSongList.get(i).getAlbum();
+
+            int albumIndex = -1;
+            if (list.size() > 0) {
+                for (int j = 0; j < list.size(); j++) {
+                    String auction = list.get(j).get("artist");
+                    if (name.equals(auction)) {
+                        albumIndex = j;
+                    }
+                }
+            }
+
+            if (albumIndex > -1) {
+                if (albums != null) {
+                    String[] albumSplit = Objects.requireNonNull(list.get(albumIndex).get("albums")).split(SPLIT_EXPRESSION);
+                    boolean found = false;
+                    for (String anAlbumSplit : albumSplit) {
+                        if (anAlbumSplit.trim().equals(albums)) {
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        albums = list.get(albumIndex).get("albums") + SPLIT_EXPRESSION + allSongList.get(i).getAlbum();
+                    }
+
+                }
+            }
+
+            if (albumIndex == -1) {
+
+                HashMap<String, String> song = new HashMap<>();
+                song.put("artist", name);
+                song.put("albums", albums);
+                list.add(song);
+            } else {
+                HashMap<String, String> song = new HashMap<>();
+                song.put("artist", name);
+                song.put("albums", albums);
+                list.add(albumIndex, song);
+            }
+        }
+        for (int i = 0; i < list.size(); i++) {
+            sortedMap.put(Objects.requireNonNull(list.get(i).get("artist")),
+                    Objects.requireNonNull(list.get(i).get("artist")));
+        }
+        for (Map.Entry<String, String> entry : sortedMap.entrySet()) {
+            HashMap<String, String> song = new HashMap<>();
+            String title = entry.getValue();
+            int index = getIndexArtist(title, list);
+            song.put("artist", list.get(index).get("artist"));
+            song.put("albums", list.get(index).get("albums"));
+            list2.add(song);
+        }
+
+        artists.addAll(list2);
+
+        Log.d(TAG, "grabData() performed");
+    }
 }
