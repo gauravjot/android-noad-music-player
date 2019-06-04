@@ -4,11 +4,10 @@
     android:layout_height="match_parent"
     android:background="@color/transparent">
 
-    <in.srain.cube.views.GridViewWithHeaderAndFooter
+    <GridView
         android:id="@+id/gridView1"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:scrollbarStyle="outsideOverlay"
         android:gravity="center"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
@@ -19,6 +18,15 @@
         android:clipToPadding="false"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:stretchMode="columnWidth" />
+        android:stretchMode="columnWidth"
+        android:fadeScrollbars="false"
+        android:scrollbarTrackVertical="@drawable/scrollbar_vertical_track"
+        android:scrollbarThumbVertical="@drawable/scrollbar_vertical_thumb"
+        android:scrollX="0px"
+        android:scrollY="0px"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarSize="10dp"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbars="vertical" />
 
 </LinearLayout>

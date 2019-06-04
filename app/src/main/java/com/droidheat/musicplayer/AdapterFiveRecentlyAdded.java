@@ -135,17 +135,21 @@ class AdapterFiveRecentlyAdded extends BaseAdapter implements OnClickListener {
                 }
             });
             final PopupMenu pop = new PopupMenu(activity, holder.imageOverflow);
-            int[] j = new int[6];
+            int[] j = new int[7];
             j[0] = R.id.play_next_musicUtils;
             j[1] = R.id.shuffle_play_musicUtils;
             j[2] = R.id.add_to_queue_musicUtils;
             j[3] = R.id.add_to_playlist_musicUtils;
             j[4] = R.id.goto_album_musicUtils;
             j[5] = R.id.goto_artist_musicUtils;
+            j[6] = R.id.info_musicUtils;
             songsManager.generateMenu(pop, j);
             pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
+                        case R.id.info_musicUtils:
+                            songsManager.info(data.get(position)).show();
+                            return true;
                         case R.id.play_next_musicUtils:
                             songsManager.playNext(data.get(position));
                             return true;

@@ -99,7 +99,14 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
                 j = new int[7];
                 break;
             default:
-                j = new int[8];
+                if (isInteger(listOrigin) || listOrigin.equals("favourites")) {
+                    // Playlist or Favorites
+                    j = new int[8];
+                    j[j.length - 1] = R.id.remove_musicUtils;
+                } else {
+                    // Recently Added
+                    j = new int[7];
+                }
                 break;
         }
         j[0] = R.id.play_next_musicUtils;
@@ -121,14 +128,14 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
                 j[6] = R.id.info_musicUtils;
                 break;
         }
-        if (isInteger(listOrigin) || listOrigin.equals("favourites")) {
-            j[j.length - 1] = R.id.remove_musicUtils;
-        }
         songsManager.generateMenu(pop, j);
         final SongModel finalTempValues = tempValues;
         pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.info_musicUtils:
+                        songsManager.info(data.get(holder.getAdapterPosition())).show();
+                        return true;
                     case R.id.remove_musicUtils:
                         ArrayList<SongModel> aaa;
                         if (!listOrigin.equals("favourites")) {

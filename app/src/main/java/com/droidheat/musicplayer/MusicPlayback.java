@@ -11,8 +11,6 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -70,8 +68,6 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     public static final String ACTION_REPEAT = "com.droidheat.musicplayer.action.REPEAT";
     public static final String ACTION_PERSISTENT_NOTIFICATION = "com.droidheat.musicplayer.action.PERSISTENT_NOTIFICATION";
 
-    private MediaPlayer mMediaPlayer;
-    private MediaSessionCompat mMediaSessionCompat;
 
     /******* ---------------------------------------------------------------
      Private
@@ -79,6 +75,8 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
 
     private final String TAG = "PlaybackServiceConsole";
 
+    private MediaPlayer mMediaPlayer;
+    private MediaSessionCompat mMediaSessionCompat;
     private PlaybackStateCompat.Builder mPlaybackStateBuilder;
     private SharedPrefsUtils sharedPrefsUtils;
     private SongsManager songsManager;

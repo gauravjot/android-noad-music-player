@@ -160,7 +160,7 @@ class CustomAdapter extends BaseAdapter implements OnClickListener {
                             activity.startActivity(intent1);
                             return true;
                         case R.id.info_musicUtils:
-                            songsManager.info(data.get(position));
+                            songsManager.info(data.get(position)).show();
                             return true;
                         default:
                             return false;

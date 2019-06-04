@@ -9,7 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:dividerHeight="3dp"
-        android:divider="@color/transparent" >
+        android:divider="@color/transparent"
+        android:fadeScrollbars="false"
+        android:scrollbarTrackVertical="@drawable/scrollbar_vertical_track"
+        android:scrollbarThumbVertical="@drawable/scrollbar_vertical_thumb"
+        android:scrollX="0px"
+        android:scrollY="0px"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarSize="10dp"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbars="vertical" >
     </ListView>
 
 </LinearLayout>

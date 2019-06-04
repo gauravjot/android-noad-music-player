@@ -103,8 +103,8 @@ public class SplashActivity extends AppCompatActivity {
                 // contacts-related task you need to do.
 
             } else {
-                //TODO: if user has set to deny permission always, ask to go to settings
-                Toast.makeText(this, "Application needs permission to run. Exiting!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Application needs permission to run. Go to Settings > Apps > " +
+                        "Noad Player to allow permission.", Toast.LENGTH_SHORT).show();
                 finish();
                 // permission denied, boo! Disable the
                 // functionality that depends on this permission.

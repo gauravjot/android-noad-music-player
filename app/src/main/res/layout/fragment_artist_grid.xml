@@ -9,6 +9,15 @@
         android:layout_height="fill_parent"
         android:divider="@null"
         android:dividerHeight="6dp"
-        android:verticalSpacing="5dp" />
+        android:verticalSpacing="5dp"
+        android:fadeScrollbars="false"
+        android:scrollbarTrackVertical="@drawable/scrollbar_vertical_track"
+        android:scrollbarThumbVertical="@drawable/scrollbar_vertical_thumb"
+        android:scrollX="0px"
+        android:scrollY="0px"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarSize="10dp"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbars="vertical" />
 
 </LinearLayout>
