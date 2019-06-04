@@ -2,7 +2,6 @@ package com.droidheat.musicplayer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Outline;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 class PlaylistGridAdapter extends BaseAdapter {
@@ -143,7 +141,7 @@ class PlaylistGridAdapter extends BaseAdapter {
                 }
             });
 
-            (new ImageUtils(context)).getImageByPicasso(songsManager.
+            (new ImageUtils(context)).setAlbumArt(songsManager.
                     playlistSongs(Integer.parseInt(
                             Objects.requireNonNull(mobileValues.get(position).get("ID")))), holder.image);
         }

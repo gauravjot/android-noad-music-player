@@ -111,7 +111,7 @@ class CustomAdapter extends BaseAdapter implements OnClickListener {
 
 
             final SongsManager songsManager = new SongsManager(activity);
-            (new ImageUtils(activity)).getImageByPicasso(tempValues.getAlbumID(), holder.image);
+            (new ImageUtils(activity)).setAlbumArt(tempValues.getAlbumID(), holder.image);
 
             holder.text.setText(finalTitle);
             holder.text1.setText(((artist.length() > 25) ? artist.substring(0,25) : artist) + "; " + duration);
@@ -123,13 +123,14 @@ class CustomAdapter extends BaseAdapter implements OnClickListener {
                 }
             });
             final PopupMenu pop = new PopupMenu(activity, holder.imageOverflow);
-            int[] j = new int[6];
+            int[] j = new int[7];
             j[0] = R.id.play_next_musicUtils;
             j[1] = R.id.shuffle_play_musicUtils;
             j[2] = R.id.add_to_queue_musicUtils;
             j[3] = R.id.add_to_playlist_musicUtils;
             j[4] = R.id.goto_album_musicUtils;
             j[5] = R.id.goto_artist_musicUtils;
+            j[6] = R.id.info_musicUtils;
             songsManager.generateMenu(pop, j);
             pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
@@ -157,6 +158,9 @@ class CustomAdapter extends BaseAdapter implements OnClickListener {
                             intent1.putExtra("name", tempValues.getArtist());
                             intent1.putExtra("field", "artists");
                             activity.startActivity(intent1);
+                            return true;
+                        case R.id.info_musicUtils:
+                            songsManager.info(data.get(position));
                             return true;
                         default:
                             return false;

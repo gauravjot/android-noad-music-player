@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 class AlbumGridAdapter extends BaseAdapter {
     private Context context;
@@ -77,7 +76,7 @@ class AlbumGridAdapter extends BaseAdapter {
                 }
             });
             holder.image.setClipToOutline(true);
-            (new ImageUtils(context)).getImageByPicasso(albumSongs, holder.image);
+            (new ImageUtils(context)).setAlbumArt(albumSongs, holder.image);
 
             final PopupMenu pop = new PopupMenu(context, holder.imageOverflow);
             final int[] j = new int[5];

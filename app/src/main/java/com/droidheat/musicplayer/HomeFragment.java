@@ -107,7 +107,7 @@ public class HomeFragment extends Fragment {
         String artist = sharedPrefsUtils
                 .readSharedPrefsString("home_artist","<unknown>");
         final ArrayList<SongModel> arrayList = songsManager.artistSongs(artist);
-        (new ImageUtils(getActivity())).getImageByPicasso(arrayList,imageView1);
+        (new ImageUtils(getActivity())).setAlbumArt(arrayList,imageView1);
         textView1.setText((new SharedPrefsUtils(getActivity()))
                 .readSharedPrefsString("home_artist","<unknown>"));
 
@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment {
             ImageView imageView3 = one_big_two_small_view.findViewById(R.id.playImageView);
             final ArrayList<SongModel> arrayList1 = songsManager.playlistSongs(
                     Integer.parseInt(Objects.requireNonNull(playLists.get(playLists.size()-1).get("ID"))));
-            (new ImageUtils(getActivity())).getImageByPicasso(arrayList1,imageView3);
+            (new ImageUtils(getActivity())).setAlbumArt(arrayList1,imageView3);
             imageView3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment {
             ImageView imageView4 = one_big_two_small_view.findViewById(R.id.nextImageView);
             final ArrayList<SongModel> arrayList2 = songsManager.playlistSongs(
                     Integer.parseInt(Objects.requireNonNull(playLists.get(playLists.size()-2).get("ID"))));
-            (new ImageUtils(getActivity())).getImageByPicasso(arrayList2,imageView4);
+            (new ImageUtils(getActivity())).setAlbumArt(arrayList2,imageView4);
             imageView4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -205,7 +205,7 @@ public class HomeFragment extends Fragment {
                 }
             });
             if (songsManager.mostPlayedSongs().size() > 0) {
-                (new ImageUtils(getActivity())).getImageByPicasso(songsManager.mostPlayedSongs(),imageView2);
+                (new ImageUtils(getActivity())).setAlbumArt(songsManager.mostPlayedSongs(),imageView2);
                 textView2.setText("Most Played");
                 imageView2.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -214,7 +214,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
                 if (songsManager.favouriteSongs().size() > 0) {
-                    (new ImageUtils(getActivity())).getImageByPicasso(songsManager.favouriteSongs(),imageView3);
+                    (new ImageUtils(getActivity())).setAlbumArt(songsManager.favouriteSongs(),imageView3);
                     textView3.setText("Favorites");
 
                     imageView3.setOnClickListener(new View.OnClickListener() {
@@ -224,7 +224,7 @@ public class HomeFragment extends Fragment {
                         }
                     });
                 } else {
-                    (new ImageUtils(getActivity())).getImageByPicasso(songsManager.newSongs(),imageView3);
+                    (new ImageUtils(getActivity())).setAlbumArt(songsManager.newSongs(),imageView3);
                     textView3.setText("Recently Added");
                     imageView3.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -234,7 +234,7 @@ public class HomeFragment extends Fragment {
                     });
                 }
             } else {
-                (new ImageUtils(getActivity())).getImageByPicasso(songsManager.newSongs(),imageView2);
+                (new ImageUtils(getActivity())).setAlbumArt(songsManager.newSongs(),imageView2);
                 textView2.setText("Recently Added");
                 imageView2.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -472,7 +472,7 @@ public class SongsManager {
         ListView listView = dialog.findViewById(R.id.listView);
         ImageView relAdd = dialog.findViewById(R.id.add_playlist);
         ImageView albumArt = dialog.findViewById(R.id.albumArt);
-        (new ImageUtils(context)).getImageByPicasso(hash.getAlbumID(), albumArt);
+        (new ImageUtils(context)).setAlbumArt(hash.getAlbumID(), albumArt);
         final PlaylistFragmentAdapterSimple playlistAdapter = new PlaylistFragmentAdapterSimple
                 (context);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -569,6 +569,7 @@ public class SongsManager {
                 "Song Title: " + songModel.getTitle() + "\n\n" +
                 "Album: " + songModel.getAlbum() + "\n\n" +
                 "Artist: " + songModel.getArtist() + "\n\n" +
+                "Length: " + songModel.getDuration() + "\n\n" +
                 "File location: " + songModel.getPath());
         builder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
             @Override
@@ -576,12 +577,10 @@ public class SongsManager {
 
             }
         });
-
-
         return builder.create();
     }
 
-    Intent createExplicitFromImplicitIntent(Intent implicitIntent) {
+    private Intent createExplicitFromImplicitIntent(Intent implicitIntent) {
         PackageManager pm = context.getPackageManager();
         List<ResolveInfo> resolveInfo = pm.queryIntentServices(implicitIntent, 0);
         if (resolveInfo == null || resolveInfo.size() != 1) {

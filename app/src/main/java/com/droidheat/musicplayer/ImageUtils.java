@@ -30,15 +30,15 @@ class ImageUtils {
      * @params: albumIds is List<String> of album ids
      *
      * Three ways to grab album art -
-     * 1. getImageByPicasso(String albumId, ImageView imageView)
-     * 2. getImageByPicasso(ArrayList<SongModel> arrayList, ImageView imageView)
-     * 3. getImageByPicasso(final List albumIds, final ImageView imageView)
+     * 1. setAlbumArt(String albumId, ImageView imageView)
+     * 2. setAlbumArt(ArrayList<SongModel> arrayList, ImageView imageView)
+     * 3. setAlbumArt(final List albumIds, final ImageView imageView)
      *
-     * Also grab Bitmap with - getAlbumArt(Long albumId) where albumId is a long variable
+     * Also grab Bitmap with - setAlbumArt(Long albumId) where albumId is a long variable
      * (converted from string in this app)
      */
 
-    void getImageByPicasso(String albumId, ImageView imageView) {
+    void setAlbumArt(String albumId, ImageView imageView) {
         try {
             Picasso.get().load(getSongUri(Long.parseLong(albumId)))
                     .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
@@ -49,16 +49,16 @@ class ImageUtils {
         catch (Exception ignored) {}
     }
 
-    void getImageByPicasso(ArrayList<SongModel> arrayList, ImageView imageView) {
+    void setAlbumArt(ArrayList<SongModel> arrayList, ImageView imageView) {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < arrayList.size(); i++) {
             list.add(arrayList.get(i).getAlbumID());
             if (i == 20) {break; } // 20 should be enough, remove this line if you want to query whole list
         }
-        getImageByPicasso(list, imageView, 0, list.size() - 1);
+        setAlbumArt(list, imageView, 0, list.size() - 1);
     }
 
-    void getImageByPicasso(final List albumIds, final ImageView imageView) {
+    void setAlbumArt(final List albumIds, final ImageView imageView) {
         try {
             final int i = 0;
             final int max = albumIds.size()-1;
@@ -76,7 +76,7 @@ class ImageUtils {
 
                             @Override
                             public void onError(Exception e) {
-                                getImageByPicasso(albumIds, imageView, i + 1, max);
+                                setAlbumArt(albumIds, imageView, i + 1, max);
                             }
                         });
             }
@@ -120,7 +120,7 @@ class ImageUtils {
 
                             @Override
                             public void onError(Exception e) {
-                                getImageByPicasso(albumIds, imageView, i + 1, max);
+                                setAlbumArt(albumIds, imageView, i + 1, max);
                             }
                         });
             }
@@ -183,7 +183,7 @@ class ImageUtils {
         catch (Exception ignored) {}
     }
 
-    private void getImageByPicasso(final List albumSongs, final ImageView imageView, final int i, final int max) {
+    private void setAlbumArt(final List albumSongs, final ImageView imageView, final int i, final int max) {
         try {
             if (i < max) Picasso.get().load(getSongUri(Long.parseLong(albumSongs.get(i).toString())))
                     .placeholder(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.ic_music_note_black_24dp)))
@@ -198,7 +198,7 @@ class ImageUtils {
 
                         @Override
                         public void onError(Exception e) {
-                            getImageByPicasso(albumSongs, imageView, i + 1, max);
+                            setAlbumArt(albumSongs, imageView, i + 1, max);
                         }
                     });
             else if (i == max) {

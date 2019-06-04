@@ -1,7 +1,6 @@
 package com.droidheat.musicplayer;
 
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Outline;
@@ -90,7 +89,7 @@ class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         }
         finalTitle = finalTitle1;
 
-        (new ImageUtils(activity)).getImageByPicasso(tempValues.getAlbumID(), holder.image);
+        (new ImageUtils(activity)).setAlbumArt(tempValues.getAlbumID(), holder.image);
 
         holder.image.setOutlineProvider(new ViewOutlineProvider() {
             @Override

@@ -1,7 +1,10 @@
 package com.droidheat.musicplayer;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
@@ -11,6 +14,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.LayoutRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.KeyEvent;
@@ -18,6 +22,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -79,17 +85,35 @@ public class SettingsActivity extends PreferenceActivity {
                                 bassBoost.setEnabled(sharedPreferences.getBoolean("turnEqualizer", false));
                                 virtualizer.setEnabled(sharedPreferences.getBoolean("turnEqualizer", false));
                                 eq.setEnabled(sharedPreferences.getBoolean("turnEqualizer", false));
-                            } catch (Exception ignored) {}
+                            } catch (Exception ignored) {
+                            }
                             break;
                         case "persistentNotificationPref":
+                            Intent intent = new Intent(MusicPlayback.ACTION_PERSISTENT_NOTIFICATION);
+                            ContextCompat.startForegroundService(SettingsActivity.this, createExplicitFromImplicitIntent(intent));
                             break;
                     }
                 }
             };
 
+    Intent createExplicitFromImplicitIntent(Intent implicitIntent) {
+        PackageManager pm = this.getPackageManager();
+        List<ResolveInfo> resolveInfo = pm.queryIntentServices(implicitIntent, 0);
+        if (resolveInfo == null || resolveInfo.size() != 1) {
+            return null;
+        }
+        ResolveInfo serviceInfo = resolveInfo.get(0);
+        String packageName = serviceInfo.serviceInfo.packageName;
+        String className = serviceInfo.serviceInfo.name;
+        ComponentName component = new ComponentName(packageName, className);
+        Intent explicitIntent = new Intent(implicitIntent);
+        explicitIntent.setComponent(component);
+        return explicitIntent;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        startActivity(new Intent(this,HomeActivity.class));
+        startActivity(new Intent(this, HomeActivity.class));
         finish();
         return super.onOptionsItemSelected(item);
     }
@@ -97,7 +121,7 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            startActivity(new Intent(this,HomeActivity.class));
+            startActivity(new Intent(this, HomeActivity.class));
             finish();
             return true;
         }

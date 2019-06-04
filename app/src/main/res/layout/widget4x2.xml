@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/card_drawable">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/albumArtImageView"
@@ -80,7 +79,7 @@
 
     <RelativeLayout
         android:id="@+id/relpo"
-        android:layout_width="112dp"
+        android:layout_width="104dp"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/details"
         android:layout_alignBottom="@+id/details"
@@ -90,8 +89,8 @@
 
         <ImageView
             android:id="@+id/playImageView"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_centerInParent="true"
             android:layout_marginTop="0dp"
             android:layout_toStartOf="@+id/nextImageView"

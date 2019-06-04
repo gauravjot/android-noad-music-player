@@ -90,16 +90,16 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
         int[] j;
         switch (listOrigin) {
             case "albums":
-                j = new int[5];
-                break;
-            case "artists":
-                j = new int[5];
-                break;
-            case "mostplayed":
                 j = new int[6];
                 break;
-            default:
+            case "artists":
+                j = new int[6];
+                break;
+            case "mostplayed":
                 j = new int[7];
+                break;
+            default:
+                j = new int[8];
                 break;
         }
         j[0] = R.id.play_next_musicUtils;
@@ -109,16 +109,19 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
         switch (listOrigin) {
             case "albums":
                 j[4] = R.id.goto_artist_musicUtils;
+                j[5] = R.id.info_musicUtils;
                 break;
             case "artists":
                 j[4] = R.id.goto_album_musicUtils;
+                j[5] = R.id.info_musicUtils;
                 break;
             default:
                 j[4] = R.id.goto_album_musicUtils;
                 j[5] = R.id.goto_artist_musicUtils;
+                j[6] = R.id.info_musicUtils;
                 break;
         }
-        if (isInteger(listOrigin)) {
+        if (isInteger(listOrigin) || listOrigin.equals("favourites")) {
             j[j.length - 1] = R.id.remove_musicUtils;
         }
         songsManager.generateMenu(pop, j);

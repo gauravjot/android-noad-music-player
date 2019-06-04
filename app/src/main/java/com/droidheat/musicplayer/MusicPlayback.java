@@ -11,6 +11,8 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -66,9 +68,10 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     public static final String ACTION_TRACK_PREV = "com.droidheat.musicplayer.action.TRACK_PREV";
     public static final String ACTION_TRACK_NEXT = "com.droidheat.musicplayer.action.TRACK_NEXT";
     public static final String ACTION_REPEAT = "com.droidheat.musicplayer.action.REPEAT";
+    public static final String ACTION_PERSISTENT_NOTIFICATION = "com.droidheat.musicplayer.action.PERSISTENT_NOTIFICATION";
 
-    static MediaPlayer mMediaPlayer;
-    static MediaSessionCompat mMediaSessionCompat;
+    private MediaPlayer mMediaPlayer;
+    private MediaSessionCompat mMediaSessionCompat;
 
     /******* ---------------------------------------------------------------
      Private
@@ -76,11 +79,9 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
 
     private final String TAG = "PlaybackServiceConsole";
 
-    private static PlaybackStateCompat.Builder mPlaybackStateBuilder;
+    private PlaybackStateCompat.Builder mPlaybackStateBuilder;
     private SharedPrefsUtils sharedPrefsUtils;
     private SongsManager songsManager;
-
-    private static boolean autoPaused = false;
 
     /******* ---------------------------------------------------------------
      Service Methods and Intents
@@ -145,9 +146,18 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                         break;
                     }
                     case ACTION_CLOSE: {
-                        processCloseRequest();
+                        if (!sharedPrefsUtils.readSharedPrefsBoolean("persistentNotificationPref",false)) {
+                            processCloseRequest();
+                        } else {
+                            processPauseRequest();
+                        }
                         break;
                     }
+                    case ACTION_PERSISTENT_NOTIFICATION:
+                        if (mPlaybackStateBuilder.build().getState() != PlaybackStateCompat.STATE_PLAYING) {
+                            showPausedNotification();
+                        }
+                        break;
                     default: {
                     }
                 }
@@ -249,6 +259,9 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         mMediaSessionCompat.setActive(false);
         mMediaSessionCompat.release();
         mMediaPlayer.release();
+        eq.release();
+        bassBoost.release();
+        virtualizer.release();
         stopForeground(true);
         NotificationManagerCompat.from(this).cancel(1);
     }
@@ -693,6 +706,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     /******* ---------------------------------------------------------------
      AudioFocus
      ----------------------------------------------------------------*******/
+    boolean autoPaused = false;
     @Override
     public void onAudioFocusChange(int focusChange) {
         switch (focusChange) {
@@ -834,6 +848,5 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         context.sendBroadcast(intent);
     }
-
 
 }

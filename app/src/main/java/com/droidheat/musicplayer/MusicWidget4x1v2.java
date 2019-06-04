@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.widget.RemoteViews;
 
@@ -64,11 +63,20 @@ public class MusicWidget4x1v2 extends AppWidgetProvider {
                     views.setImageViewResource(R.id.playImageView, R.drawable.app_play);
                 }
 
-                if (MusicPlayback.mMediaSessionCompat.getController().getMetadata().getBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART) != null) {
-                    views.setImageViewBitmap(R.id.albumArtImageView, MusicPlayback.mMediaSessionCompat.getController().getMetadata().getBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART));
+                SharedPrefsUtils sharedPrefsUtils = new SharedPrefsUtils(context);
+
+                if (!sharedPrefsUtils.readSharedPrefsString("albumid", "0").equals("0")) {
+                    views.setImageViewBitmap(
+                            R.id.albumArtImageView,
+                            (new ImageUtils(context))
+                                    .getAlbumArt(
+                                            Long.parseLong(sharedPrefsUtils.readSharedPrefsString("albumid", "0"))
+                                    )
+                    );
+
+                    views.setTextViewText(R.id.titleTextView, sharedPrefsUtils.readSharedPrefsString("title","title"));
+                    views.setTextViewText(R.id.albumTextView, sharedPrefsUtils.readSharedPrefsString("album","album"));
                 }
-                views.setTextViewText(R.id.titleTextView, MusicPlayback.mMediaSessionCompat.getController().getMetadata().getString(MediaMetadataCompat.METADATA_KEY_TITLE));
-                views.setTextViewText(R.id.albumTextView, MusicPlayback.mMediaSessionCompat.getController().getMetadata().getString(MediaMetadataCompat.METADATA_KEY_ALBUM));
 
                 appWidgetManager.updateAppWidget(appWidgetId1, views);
 

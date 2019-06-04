@@ -91,7 +91,7 @@ public class GlobalDetailActivity extends AppCompatActivity implements AsyncTask
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        (new ImageUtils(this)).getImageByPicasso(songsList, albumArtImageView);
+        (new ImageUtils(this)).setAlbumArt(songsList, albumArtImageView);
         adapter = new RecyclerViewAdapter(songsList, this, field);
         recyclerView.setAdapter(adapter);
     }

@@ -44,12 +44,20 @@
                 <action android:name="com.droidheat.musicplayer.action.REPEAT" />
                 <action android:name="com.droidheat.musicplayer.action.TRACK_PREV" />
                 <action android:name="com.droidheat.musicplayer.action.TRACK_NEXT" />
+                <action android:name="com.droidheat.musicplayer.action.PERSISTENT_NOTIFICATION" />
                 <action android:name="android.intent.action.HEADSET_PLUG" />
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
                 <action android:name="android.media.AUDIO_BECOMING_NOISY" />
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
+
+        <receiver android:name="android.support.v4.media.session.MediaButtonReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".SearchActivity"

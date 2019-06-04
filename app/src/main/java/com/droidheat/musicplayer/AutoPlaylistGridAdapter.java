@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 class AutoPlaylistGridAdapter extends BaseAdapter {
     private Context context;
@@ -140,7 +139,7 @@ class AutoPlaylistGridAdapter extends BaseAdapter {
                 }
             });
 
-            (new ImageUtils(context)).getImageByPicasso(list, holder.image);
+            (new ImageUtils(context)).setAlbumArt(list, holder.image);
         }
 
         return gridView;

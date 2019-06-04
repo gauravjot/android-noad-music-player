@@ -76,7 +76,8 @@ public class TimerActivity extends AppCompatActivity {
                 long diff = -1 * (d2.getTime() - d1.getTime());
                 long diffMinutes = diff / (60 * 1000) % 60;
                 displayTime.setText("" + diffMinutes);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
 
         findViewById(R.id.button2).setOnClickListener(
@@ -205,12 +206,12 @@ public class TimerActivity extends AppCompatActivity {
                             createNotificationChannel();
 
                             NotificationCompat.Builder mBuilder =
-                                    new NotificationCompat.Builder(TimerActivity.this,"timer")
-                                    .setSmallIcon(R.drawable.ic_access_time_black_48dp)
-                                    .setContentTitle("Music Player Sleep Timer")
-                                    .setContentText("Will sleep at " + Time)
-                                    .setPriority(NotificationCompat.PRIORITY_MIN)
-                                    .setSound(null);
+                                    new NotificationCompat.Builder(TimerActivity.this, "timer")
+                                            .setSmallIcon(R.drawable.ic_access_time_black_48dp)
+                                            .setContentTitle("Music Player Sleep Timer")
+                                            .setContentText("Will sleep at " + Time)
+                                            .setPriority(NotificationCompat.PRIORITY_MIN)
+                                            .setSound(null);
 
                             Intent resultIntent = new Intent(
                                     TimerActivity.this, HomeActivity.class);
@@ -233,14 +234,16 @@ public class TimerActivity extends AppCompatActivity {
                             // Builds the notification and issues it.
                             mNotifyMgr.notify(NOTIFICATION_ID, mBuilder.build());
                         }
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                     finish();
                 } else {
                     finish();
                     try {
                         timer.cancel();
                         (new CommonUtils(TimerActivity.this)).showTheToast("Music Sleep Cancelled!");
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                 }
             }
         });
@@ -290,10 +293,6 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void displayTime(int i) {
-
-        String fT; // Initial Time
-        fT = timeButton;
-
         // Check if current timer is empty
         if (timeButton.equals("0")) {
             timeButton = Integer.toString(i);
@@ -306,7 +305,6 @@ public class TimerActivity extends AppCompatActivity {
             timeButton = "720";
             (new CommonUtils(TimerActivity.this)).showTheToast("Cannot exceed more than 720 minutes or 12 hours");
         }
-
         displayTime.setText(timeButton);
     }
 
@@ -314,19 +312,18 @@ public class TimerActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            if (MusicPlayback.mMediaSessionCompat.isActive()) {
-                Time = null;
-                try {
-                    (new CommonUtils(TimerActivity.this)).showTheToast("Music Player on Sleep");
-                } catch (Exception ignored) {
-                }
-                mNotifyMgr.cancel(NOTIFICATION_ID);
-                Intent intent = new Intent(MusicPlayback.ACTION_CLOSE);
-                ContextCompat.startForegroundService(TimerActivity.this,
-                        Objects.requireNonNull(createExplicitFromImplicitIntent(TimerActivity.this, intent)));
-                finish();
+            Time = null;
+            try {
+                (new CommonUtils(TimerActivity.this)).showTheToast("Music Player on Sleep");
+            } catch (Exception ignored) {
             }
+            mNotifyMgr.cancel(NOTIFICATION_ID);
+            Intent intent = new Intent(MusicPlayback.ACTION_CLOSE);
+            ContextCompat.startForegroundService(TimerActivity.this,
+                    Objects.requireNonNull(createExplicitFromImplicitIntent(TimerActivity.this, intent)));
+            finish();
         }
+
         private Intent createExplicitFromImplicitIntent(Context context, Intent implicitIntent) {
             PackageManager pm = context.getPackageManager();
             List<ResolveInfo> resolveInfo = pm.queryIntentServices(implicitIntent, 0);
