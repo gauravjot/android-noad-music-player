@@ -74,7 +74,8 @@ public class SongsManager {
     }
 
     int getCurrentMusicID() {
-        return sharedPrefsUtils.readSharedPrefsInt("musicID", 0);
+        int musicID = sharedPrefsUtils.readSharedPrefsInt("musicID", 0);
+        return (musicID > -1) ? musicID : 0;
     }
 
     void setCurrentMusicID(int musicID) {

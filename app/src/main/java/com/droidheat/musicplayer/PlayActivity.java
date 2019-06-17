@@ -591,7 +591,10 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
      * Queue Item Click
      */
     public void onItemClick(int mPosition) {
-        MediaControllerCompat.getMediaController(this).getTransportControls().skipToQueueItem(mPosition);
+        Log.d(TAG,"Position: " + mPosition);
+        if (mPosition >= 0) {
+            MediaControllerCompat.getMediaController(this).getTransportControls().skipToQueueItem(mPosition);
+        }
     }
 
     @Override
