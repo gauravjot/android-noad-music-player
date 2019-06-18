@@ -29,7 +29,7 @@
         android:contentDescription="@string/hello_world"
         android:scaleType="centerCrop"
         android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_dots_vertical_grey600_48dp" />
+        android:src="@drawable/ic_dots_vert_black_24dp" />
 
     <RelativeLayout
         android:layout_width="wrap_content"

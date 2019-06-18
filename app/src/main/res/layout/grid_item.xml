@@ -32,7 +32,7 @@
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:padding="10dp"
             android:tint="@color/textColorSubTitle"
-            android:src="@drawable/ic_dots_vertical_grey600_48dp" />
+            android:src="@drawable/ic_dots_vert_black_24dp" />
 
         <TextView
             android:id="@+id/grid_item_label"

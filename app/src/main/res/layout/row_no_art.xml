@@ -95,7 +95,7 @@
         android:padding="12dp"
         android:tint="@color/textColorSubTitle"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_dots_vertical_grey600_48dp" />
+        android:src="@drawable/ic_dots_vert_black_24dp" />
 
 
 </RelativeLayout>
