@@ -24,7 +24,7 @@ public class QueueFragment extends Fragment implements QueueCustomAdapter.MyFrag
     SongsManager songsManager;
 
     QueueCustomAdapter adapter;
-    ArrayList<SongModel> CustomListViewValuesArr = new ArrayList<>();
+    ArrayList<SongModel> currentQueue = new ArrayList<>();
 
     RecyclerView recyclerView;
 
@@ -39,12 +39,12 @@ public class QueueFragment extends Fragment implements QueueCustomAdapter.MyFrag
         super.onViewCreated(view, savedInstanceState);
 
         songsManager = new SongsManager(getActivity());
-        CustomListViewValuesArr = new ArrayList<>(songsManager.queue());
+        currentQueue = new ArrayList<>(songsManager.queue());
 
         Resources res = getResources();
         recyclerView = view.findViewById(R.id.recyclerView);
 
-        adapter = new QueueCustomAdapter(getActivity(), CustomListViewValuesArr, res);
+        adapter = new QueueCustomAdapter(getActivity(), currentQueue, res);
         adapter.setMyFragmentCallback(this);
         recyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -60,6 +60,7 @@ public class QueueFragment extends Fragment implements QueueCustomAdapter.MyFrag
     }
 
     public void notifyFragmentQueueUpdate() {
+        currentQueue = new ArrayList<>(songsManager.queue());
         adapter.notifyDataSetChanged();
     }
 

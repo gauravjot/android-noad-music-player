@@ -43,7 +43,7 @@ import android.widget.Toast;
 import com.xgc1986.parallaxPagerTransformer.ParallaxPagerTransformer;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -208,6 +208,12 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         btnNext.setOnClickListener(this);
         btnPrev.setOnClickListener(this);
         btnRepeat.setOnClickListener(this);
+        imgFav.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doItMyFav();
+            }
+        });
         findViewById(R.id.addToPlayListImageView).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -226,10 +232,30 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                 }
             }
         });
-        imgFav.setOnClickListener(new OnClickListener() {
+        findViewById(R.id.shuffleImageView).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                doItMyFav();
+                shuffle();
+            }
+        });
+        findViewById(R.id.equalizer).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(PlayActivity.this, EqualizerActivity.class));
+            }
+        });
+        findViewById(R.id.infoImageView).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                songsManager.info(
+                        songsManager.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID", 0))
+                ).show();
+            }
+        });
+        findViewById(R.id.sleepTimerImageView).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(PlayActivity.this, TimerActivity.class));
             }
         });
 
@@ -241,6 +267,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
 
     @Override
     public void viewPagerRefreshOne() {
+        albumArtAdapter = new ImagePagerAdapter(getSupportFragmentManager(), songsManager.queue().size());
         albumArtViewpager.setAdapter(albumArtAdapter);
         albumArtViewpager.setCurrentItem(sharedPrefsUtils.readSharedPrefsInt("musicID", 0));
     }
@@ -304,6 +331,33 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
 
     }
 
+    public void shuffle() {
+        // Current playing music ID
+        int musicID = sharedPrefsUtils.readSharedPrefsInt("musicID", 0);
+        // New ArrayList which is an exact copy of current playing queue
+        ArrayList<SongModel> arrayList = new ArrayList<>(songsManager.queue());
+        // Current song we are playing
+        SongModel currentSong = arrayList.get(musicID);
+
+        // Putting current song on top of list and shuffling remaining songs
+        arrayList.remove(musicID);
+        Collections.shuffle(arrayList);
+        arrayList.add(0,currentSong);
+
+        // Saving the current queue and musicID
+        songsManager.replaceQueue(arrayList);
+        sharedPrefsUtils.writeSharedPrefs("musicID",0);
+
+        // Updating ViewPager and Queue in accordance to new songs queue
+        viewPagerRefreshOne();
+        QueueFragment queueFragment = (QueueFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        if (queueFragment != null) {
+            queueFragment.notifyFragmentQueueUpdate();
+        }
+
+        // Letting user know
+        (new CommonUtils(PlayActivity.this)).showTheToast("Shuffling the list");
+    }
 
     private int getIndex(String rawPath) {
         FavouriteList db = new FavouriteList(this);

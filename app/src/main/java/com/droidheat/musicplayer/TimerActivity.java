@@ -38,10 +38,8 @@ public class TimerActivity extends AppCompatActivity {
     // Sets an ID for the notification
     final int NOTIFICATION_ID = 1297601;
 
-    public static int time = 0;
     public static Timer timer;
     public static String Time = null;
-    public static MyTimerTask myTimerTask;
     NotificationManager mNotifyMgr;
 
     @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
@@ -57,26 +55,15 @@ public class TimerActivity extends AppCompatActivity {
         mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (Time != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.getTime();
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-
-            String TimeNow = sdf.format(cal.getTime());
-
-            Date d1 = null;
-            Date d2 = null;
             try {
-                d1 = sdf.parse(Time);
-                d2 = sdf.parse(TimeNow);
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+                Date d1 = sdf.parse(Time);
+                Date d2 = sdf.parse(sdf.format(new Date()));
+                long diff = d1.getTime() - d2.getTime();
+                long diffMinutes = diff / 60000;
+                displayTime.setText("" + diffMinutes);
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-            try {
-                assert d2 != null;
-                long diff = -1 * (d2.getTime() - d1.getTime());
-                long diffMinutes = diff / (60 * 1000) % 60;
-                displayTime.setText("" + diffMinutes);
-            } catch (Exception ignored) {
             }
         }
 
@@ -190,10 +177,9 @@ public class TimerActivity extends AppCompatActivity {
                 timer = new Timer();
                 if (timeButton.length() != 0) {
                     try {
-                        time = Integer.parseInt(timeButton) * 60 * 1000;
-                        if (TimerActivity.time > 0) {
-                            myTimerTask = new MyTimerTask();
-                            timer.schedule(myTimerTask, TimerActivity.time);
+                        int time = Integer.parseInt(timeButton) * 60 * 1000;
+                        if (time > 0) {
+                            timer.schedule(new MyTimerTask(), time);
                             Calendar cal = Calendar.getInstance();
                             cal.getTime();
                             cal.add(Calendar.MILLISECOND, time);
@@ -207,7 +193,7 @@ public class TimerActivity extends AppCompatActivity {
 
                             NotificationCompat.Builder mBuilder =
                                     new NotificationCompat.Builder(TimerActivity.this, "timer")
-                                            .setSmallIcon(R.drawable.ic_access_time_black_48dp)
+                                            .setSmallIcon(R.drawable.ic_timer_black_24dp)
                                             .setContentTitle("Music Player Sleep Timer")
                                             .setContentText("Will sleep at " + Time)
                                             .setPriority(NotificationCompat.PRIORITY_MIN)
@@ -238,10 +224,11 @@ public class TimerActivity extends AppCompatActivity {
                     }
                     finish();
                 } else {
-                    finish();
                     try {
                         timer.cancel();
-                        (new CommonUtils(TimerActivity.this)).showTheToast("Music Sleep Cancelled!");
+                        Time = null;
+                        mNotifyMgr.cancel(NOTIFICATION_ID);
+                        finish();
                     } catch (Exception ignored) {
                     }
                 }

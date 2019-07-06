@@ -398,6 +398,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
             getCurrentMediaPlayer().start();
             setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
             showPlayingNotification();
+            autoPaused = false;
         } else {
             processPlayRequest();
         }
@@ -733,6 +734,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         Log.d(TAG, "starting playback");
 
         mMediaSessionCompat.setActive(true);
+        autoPaused = false;
         getCurrentMediaPlayer().start();
         setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
         showPlayingNotification();
@@ -846,7 +848,6 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                     Log.d(TAG, "Auto-paused is " + ((autoPaused) ? "enabled" : "disabled"));
                     if (!getCurrentMediaPlayer().isPlaying() && autoPaused) {
                         processPlayPause();
-                        autoPaused = false;
                         Log.d(TAG, "Auto paused disabled");
                     }
                     getCurrentMediaPlayer().setVolume(1.0f, 1.0f);
