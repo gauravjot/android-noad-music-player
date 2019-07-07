@@ -359,9 +359,11 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         mMediaSessionCompat.setActive(false);
         mMediaSessionCompat.release();
         getCurrentMediaPlayer().release();
-        eq.release();
-        bassBoost.release();
-        virtualizer.release();
+        try {
+            eq.release();
+            bassBoost.release();
+            virtualizer.release();
+        } catch (Exception ignored) {}
         stopForeground(true);
         NotificationManagerCompat.from(this).cancel(1);
     }
@@ -876,23 +878,11 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     Virtualizer virtualizer;
 
     private void setEqualizer() {
+        boolean isEqInSettings = sharedPrefsUtils.readSharedPrefsBoolean("turnEqualizer", false);
+        int currentEqProfile = sharedPrefsUtils.readSharedPrefsInt("currentEqProfile", 0);
         try {
             eq = new Equalizer(0, getCurrentMediaPlayer().getAudioSessionId());
-            bassBoost = new BassBoost(0, getCurrentMediaPlayer().getAudioSessionId());
-            virtualizer = new Virtualizer(0, getCurrentMediaPlayer().getAudioSessionId());
-            boolean isEqInSettings = sharedPrefsUtils.readSharedPrefsBoolean("turnEqualizer", false);
-            if (isEqInSettings) {
-                eq.setEnabled(true);
-                bassBoost.setEnabled(true);
-                virtualizer.setEnabled(true);
-            } else {
-                eq.setEnabled(false);
-                bassBoost.setEnabled(false);
-                virtualizer.setEnabled(false);
-            }
-            int currentEqProfile = sharedPrefsUtils.readSharedPrefsInt("currentEqProfile", 0);
-            bassBoost.setStrength((short) sharedPrefsUtils.readSharedPrefsInt("bassLevel" + currentEqProfile, 0));
-            virtualizer.setStrength((short) sharedPrefsUtils.readSharedPrefsInt("vzLevel" + currentEqProfile, 0));
+            eq.setEnabled(isEqInSettings);
             for (int i = 0; i < eq.getNumberOfBands(); i++) {
                 eq.setBandLevel((short) i, (short) sharedPrefsUtils.readSharedPrefsInt(
                         "profile" + currentEqProfile + "Band" + i, 0));
@@ -901,6 +891,16 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         } catch (Exception e) {
             (new CommonUtils(this)).showTheToast("Unable to run Equalizer");
         }
+        try {
+            bassBoost = new BassBoost(0, getCurrentMediaPlayer().getAudioSessionId());
+            bassBoost.setEnabled(isEqInSettings);
+            bassBoost.setStrength((short) sharedPrefsUtils.readSharedPrefsInt("bassLevel" + currentEqProfile, 0));
+        } catch (Exception ignored) {}
+        try {
+            virtualizer = new Virtualizer(0, getCurrentMediaPlayer().getAudioSessionId());
+            virtualizer.setEnabled(isEqInSettings);
+            virtualizer.setStrength((short) sharedPrefsUtils.readSharedPrefsInt("vzLevel" + currentEqProfile, 0));
+        } catch (Exception ignored) {}
     }
 
     void addVoteToTrack(String path) {

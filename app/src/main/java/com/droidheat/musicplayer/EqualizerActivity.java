@@ -92,8 +92,8 @@ public class EqualizerActivity extends AppCompatActivity
                     eq.release();
                     bassBoost.release();
                     virtualizer.release();
+                } catch (Exception ignored) {
                 }
-                catch (Exception ignored) {}
             }
         });
 
@@ -142,38 +142,40 @@ public class EqualizerActivity extends AppCompatActivity
     @Override
     public void onProgressChanged(SeekBar seekBar, int level,
                                   boolean fromTouch) {
-        Equalizer eq = new Equalizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
-        BassBoost bassBoost = new BassBoost(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
-        Virtualizer virtualizer = new Virtualizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
-        if (seekBar == bass_boost) {
-            if (eq.getEnabled()) {
-                bassBoost.setEnabled(level > 0);
-                bassBoost.setStrength((short) level);// Already in the right range 0-1000
-            }
-            sharedPrefsUtils.writeSharedPrefs("bassLevel" + currentEqProfile, level);
-        } else if (seekBar == virtualizerSeekBar) {
-            if (eq.getEnabled()) {
-                virtualizer.setEnabled(level > 0);
-                virtualizer.setStrength((short) level);
-            }
-            sharedPrefsUtils.writeSharedPrefs("vzLevel" + currentEqProfile, level);
-        } else {
-            int new_level = min_level + (max_level - min_level) * level / 100;
-            for (int i = 0; i < num_sliders; i++) {
-                if (sliders[i] == seekBar) {
-                    if (eq.getEnabled()) {
-                        eq.setBandLevel((short) i, (short) new_level);
+        try {
+            Equalizer eq = new Equalizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
+            BassBoost bassBoost = new BassBoost(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
+            Virtualizer virtualizer = new Virtualizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
+            if (seekBar == bass_boost) {
+                if (eq.getEnabled()) {
+                    bassBoost.setEnabled(level > 0);
+                    bassBoost.setStrength((short) level);// Already in the right range 0-1000
+                }
+                sharedPrefsUtils.writeSharedPrefs("bassLevel" + currentEqProfile, level);
+            } else if (seekBar == virtualizerSeekBar) {
+                if (eq.getEnabled()) {
+                    virtualizer.setEnabled(level > 0);
+                    virtualizer.setStrength((short) level);
+                }
+                sharedPrefsUtils.writeSharedPrefs("vzLevel" + currentEqProfile, level);
+            } else {
+                int new_level = min_level + (max_level - min_level) * level / 100;
+                for (int i = 0; i < num_sliders; i++) {
+                    if (sliders[i] == seekBar) {
+                        if (eq.getEnabled()) {
+                            eq.setBandLevel((short) i, (short) new_level);
+                        }
+                        sharedPrefsUtils.writeSharedPrefs("profile" + currentEqProfile + "Band" + i, new_level);
+                        break;
                     }
-                    sharedPrefsUtils.writeSharedPrefs("profile" + currentEqProfile + "Band" + i, new_level);
-                    break;
                 }
             }
+            eq.release();
+            bassBoost.release();
+            virtualizer.release();
+        } catch (Exception ignored) {
         }
-        eq.release();
-        bassBoost.release();
-        virtualizer.release();
     }
-
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
@@ -184,19 +186,28 @@ public class EqualizerActivity extends AppCompatActivity
     }
 
     public void updateSliders() {
-        for (int i = 0; i < num_sliders; i++) {
-            int level = (short) sharedPrefsUtils.readSharedPrefsInt("profile" + currentEqProfile + "Band" + i, 0);
-            int pos = 100 * level / (max_level - min_level) + 50;
-            sliders[i].setProgress(pos);
+        try {
+            for (int i = 0; i < num_sliders; i++) {
+                int level = (short) sharedPrefsUtils.readSharedPrefsInt("profile" + currentEqProfile + "Band" + i, 0);
+                int pos = 100 * level / (max_level - min_level) + 50;
+                sliders[i].setProgress(pos);
+            }
+        } catch (Exception ignored) {
         }
     }
 
     public void updateBassBoost() {
-        bass_boost.setProgress((short) sharedPrefsUtils.readSharedPrefsInt("bassLevel" + currentEqProfile, 0));
+        try {
+            bass_boost.setProgress((short) sharedPrefsUtils.readSharedPrefsInt("bassLevel" + currentEqProfile, 0));
+        } catch (Exception ignored) {
+        }
     }
 
     public void updateVirtualizer() {
-        virtualizerSeekBar.setProgress((short) sharedPrefsUtils.readSharedPrefsInt("vzLevel" + currentEqProfile, 0));
+        try {
+            virtualizerSeekBar.setProgress((short) sharedPrefsUtils.readSharedPrefsInt("vzLevel" + currentEqProfile, 0));
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
@@ -214,23 +225,26 @@ public class EqualizerActivity extends AppCompatActivity
     }
 
     public void setFlat() {
-        Equalizer eq = new Equalizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
-        BassBoost bassBoost = new BassBoost(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
-        Virtualizer virtualizer = new Virtualizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
-        bassBoost.setEnabled(false);
-        bassBoost.setStrength((short) 0);
-        virtualizer.setEnabled(false);
-        virtualizer.setStrength((short) 0);
-        for (int i = 0; i < num_sliders; i++) {
-            eq.setBandLevel((short) i, (short) 0);
-            sharedPrefsUtils.writeSharedPrefs("profile" + currentEqProfile + "Band" + i, 0);
+        try {
+            Equalizer eq = new Equalizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
+            BassBoost bassBoost = new BassBoost(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
+            Virtualizer virtualizer = new Virtualizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
+            bassBoost.setEnabled(false);
+            bassBoost.setStrength((short) 0);
+            virtualizer.setEnabled(false);
+            virtualizer.setStrength((short) 0);
+            for (int i = 0; i < num_sliders; i++) {
+                eq.setBandLevel((short) i, (short) 0);
+                sharedPrefsUtils.writeSharedPrefs("profile" + currentEqProfile + "Band" + i, 0);
+            }
+            sharedPrefsUtils.writeSharedPrefs("bassLevel" + currentEqProfile, 0);
+            sharedPrefsUtils.writeSharedPrefs("vzLevel" + currentEqProfile, 0);
+            updateUI();
+            eq.release();
+            bassBoost.release();
+            virtualizer.release();
+        } catch (Exception ignored) {
         }
-        sharedPrefsUtils.writeSharedPrefs("bassLevel" + currentEqProfile, 0);
-        sharedPrefsUtils.writeSharedPrefs("vzLevel" + currentEqProfile, 0);
-        updateUI();
-        eq.release();
-        bassBoost.release();
-        virtualizer.release();
     }
 
     @Override
