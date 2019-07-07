@@ -17,11 +17,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
@@ -29,17 +29,15 @@ import java.util.TimerTask;
 
 public class TimerActivity extends AppCompatActivity {
 
-    Button btnCancel;
-    Button btnDone;
-    TextView displayTime;
-    String timeButton = "0";
-
+    TextView userTimeInputTextView;
+    String DEFAULT_TIME_INPUT = "*";
+    String userTimeInput = DEFAULT_TIME_INPUT;
 
     // Sets an ID for the notification
     final int NOTIFICATION_ID = 1297601;
 
     public static Timer timer;
-    public static String Time = null;
+    public static String currentSleepTimer = null;
     NotificationManager mNotifyMgr;
 
     @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
@@ -49,23 +47,42 @@ public class TimerActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_timer);
 
-        btnDone = findViewById(R.id.button1);
-        btnCancel = findViewById(R.id.Button01);
-        displayTime = findViewById(R.id.textView4);
+
+        Button sleepTimerCancelButton = findViewById(R.id.sleepTimerCancelButton);
+        sleepTimerCancelButton.setTextColor(ContextCompat.getColor(this,
+                (new CommonUtils(this)).accentColor(new SharedPrefsUtils(this))));
+
+        Button btnDone = findViewById(R.id.button1);
+        btnDone.setTextColor(ContextCompat.getColor(this,
+                (new CommonUtils(this)).accentColor(new SharedPrefsUtils(this))));
+        Button btnCancel = findViewById(R.id.Button01);
+        userTimeInputTextView = findViewById(R.id.textView4);
         mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        if (Time != null) {
+        userTimeInputTextView.setText(userTimeInput);
+        if (currentSleepTimer != null) {
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-                Date d1 = sdf.parse(Time);
-                Date d2 = sdf.parse(sdf.format(new Date()));
-                long diff = d1.getTime() - d2.getTime();
-                long diffMinutes = diff / 60000;
-                displayTime.setText("" + diffMinutes);
+//                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+//                Date d1 = sdf.parse(currentSleepTimer);
+//                long diff = d1.getTime() - sdf.parse(sdf.format(new Date())).getTime();
+//                long diffMinutes = diff / 60000;
+                findViewById(R.id.currentSleepTimer).setVisibility(View.VISIBLE);
+                ((TextView) findViewById(R.id.currentSleepTimerTextView)).setText("Sleeps at " + currentSleepTimer);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            findViewById(R.id.currentSleepTimer).setVisibility(View.GONE);
         }
+
+
+        sleepTimerCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelTimer();
+                if (currentSleepTimer == null) findViewById(R.id.currentSleepTimer).setVisibility(View.GONE);
+            }
+        });
 
         findViewById(R.id.button2).setOnClickListener(
                 new View.OnClickListener() {
@@ -175,9 +192,9 @@ public class TimerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // editText.getText().toString()
                 timer = new Timer();
-                if (timeButton.length() != 0) {
+                if (userTimeInput.length() != 0) {
                     try {
-                        int time = Integer.parseInt(timeButton) * 60 * 1000;
+                        int time = Integer.parseInt(userTimeInput) * 60 * 1000;
                         if (time > 0) {
                             timer.schedule(new MyTimerTask(), time);
                             Calendar cal = Calendar.getInstance();
@@ -186,7 +203,7 @@ public class TimerActivity extends AppCompatActivity {
                             SimpleDateFormat sdf2 = new SimpleDateFormat(
                                     "hh:mm a");
 
-                            Time = sdf2.format(cal.getTime());
+                            currentSleepTimer = sdf2.format(cal.getTime());
                             (new CommonUtils(TimerActivity.this)).showTheToast("Music Sleep Timer Started!");
 
                             createNotificationChannel();
@@ -195,12 +212,12 @@ public class TimerActivity extends AppCompatActivity {
                                     new NotificationCompat.Builder(TimerActivity.this, "timer")
                                             .setSmallIcon(R.drawable.ic_timer_black_24dp)
                                             .setContentTitle("Music Player Sleep Timer")
-                                            .setContentText("Will sleep at " + Time)
+                                            .setContentText("Will sleep at " + currentSleepTimer)
                                             .setPriority(NotificationCompat.PRIORITY_MIN)
                                             .setSound(null);
 
                             Intent resultIntent = new Intent(
-                                    TimerActivity.this, HomeActivity.class);
+                                    TimerActivity.this, TimerActivity.class);
                             // Because clicking the notification opens a new
                             // ("special") activity, there's
                             // no need to create an artificial back stack.
@@ -219,18 +236,15 @@ public class TimerActivity extends AppCompatActivity {
                             // service
                             // Builds the notification and issues it.
                             mNotifyMgr.notify(NOTIFICATION_ID, mBuilder.build());
+                        } else {
+                            try {
+                                cancelTimer();
+                            } catch (Exception ignored) {
+                            }
                         }
                     } catch (Exception ignored) {
                     }
                     finish();
-                } else {
-                    try {
-                        timer.cancel();
-                        Time = null;
-                        mNotifyMgr.cancel(NOTIFICATION_ID);
-                        finish();
-                    } catch (Exception ignored) {
-                    }
                 }
             }
         });
@@ -239,26 +253,40 @@ public class TimerActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                if (Integer.parseInt(timeButton) == 0) {
+                if (userTimeInput.equals(DEFAULT_TIME_INPUT)) {
                     finish();
                 } else {
-                    if (timeButton.length() > 0) {
-                        timeButton = timeButton.substring(0,
-                                timeButton.length() - 1);
-                        if (timeButton.trim().equals("")
-                                || timeButton.length() == 0) {
-                            timeButton = "0";
+                    if (userTimeInput.length() > 0) {
+                        userTimeInput = userTimeInput.substring(0,
+                                userTimeInput.length() - 1);
+                        if (userTimeInput.trim().isEmpty()) {
+                            userTimeInput = DEFAULT_TIME_INPUT;
                         }
-                        displayTime.setText(timeButton);
-
                     } else {
-                        timeButton = "0";
-                        displayTime.setText(timeButton);
+                        userTimeInput = DEFAULT_TIME_INPUT;
+                    }
+                    userTimeInputTextView.setText(userTimeInput);
+                    if (userTimeInput.equals(DEFAULT_TIME_INPUT)) {
+                        ImageView backCloseImageView = findViewById(R.id.backCloseImageView);
+                        backCloseImageView.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                        TimerActivity.this, R.drawable.ic_close_black_24dp
+                                )
+                        );
                     }
                 }
             }
         });
 
+    }
+
+    private void cancelTimer() {
+        if (currentSleepTimer != null) {
+            timer.cancel();
+            currentSleepTimer = null;
+            mNotifyMgr.cancel(NOTIFICATION_ID);
+            (new CommonUtils(TimerActivity.this)).showTheToast("Music Sleep Timer is cancelled!");
+        }
     }
 
     private void createNotificationChannel() {
@@ -281,25 +309,28 @@ public class TimerActivity extends AppCompatActivity {
 
     private void displayTime(int i) {
         // Check if current timer is empty
-        if (timeButton.equals("0")) {
-            timeButton = Integer.toString(i);
+        if (userTimeInput.equals(DEFAULT_TIME_INPUT) || userTimeInput.equals("0")) {
+            userTimeInput = Integer.toString(i);
         } else {
-            timeButton = timeButton + i;
+            userTimeInput = userTimeInput + i;
         }
 
+        ImageView backCloseImageView = findViewById(R.id.backCloseImageView);
+        backCloseImageView.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_arrow_back_black_24dp));
+
         // No longer than 360 minutes
-        if (Integer.parseInt(timeButton) > 720) {
-            timeButton = "720";
+        if (Integer.parseInt(userTimeInput) > 720) {
+            userTimeInput = "720";
             (new CommonUtils(TimerActivity.this)).showTheToast("Cannot exceed more than 720 minutes or 12 hours");
         }
-        displayTime.setText(timeButton);
+        userTimeInputTextView.setText(userTimeInput);
     }
 
     class MyTimerTask extends TimerTask {
 
         @Override
         public void run() {
-            Time = null;
+            currentSleepTimer = null;
             try {
                 (new CommonUtils(TimerActivity.this)).showTheToast("Music Player on Sleep");
             } catch (Exception ignored) {

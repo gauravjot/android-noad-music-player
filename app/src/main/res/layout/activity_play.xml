@@ -1,10 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/play_activity_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/accentColor"
-    android:id="@+id/play_activity_bg"
     tools:context="com.droidheat.musicplayer.PlayActivity">
 
     <RelativeLayout
@@ -16,17 +16,17 @@
             android:id="@+id/albumArt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
 
         <ImageView
             android:id="@+id/imageView18"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:rotation="180"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/widget_dark_gradient" />
+            android:background="@drawable/widget_dark_gradient"
+            android:rotation="180" />
 
     </RelativeLayout>
 
@@ -42,8 +42,8 @@
             android:id="@+id/imageView9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignTop="@+id/lowerOne"
+            android:layout_alignParentBottom="true"
             android:layout_marginTop="-80dp"
             android:src="@drawable/widget_dark_gradient" />
 
@@ -52,15 +52,14 @@
             android:name="com.droidheat.musicplayer.QueueFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="-150dp"
-            tools:layout="@layout/fragment_queue"
             android:layout_above="@+id/lowerOne"
-            android:layout_marginTop="88dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="88dp"
             android:layout_marginRight="10dp"
-            />
+            android:layout_marginBottom="-150dp"
+            tools:layout="@layout/fragment_queue" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -69,27 +68,26 @@
             android:layout_alignParentTop="true"
             android:background="@color/transparent" />
 
-        <RelativeLayout
+        <RelativeLayout xmlns:card_view="http://schemas.android.com/tools"
             android:id="@+id/lowerOne"
             android:layout_width="match_parent"
             android:layout_height="214dp"
-            xmlns:card_view="http://schemas.android.com/tools"
-            android:gravity="bottom"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
-            android:background="@color/transparent">
+            android:background="@color/transparent"
+            android:gravity="bottom">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
-                android:clickable="true"
-                android:focusable="true"
                 android:layout_above="@+id/additionalCtr"
                 android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:focusable="true"
                 android:paddingLeft="6dp"
-                android:paddingRight="6dp"
-                android:paddingTop="4dp">
+                android:paddingTop="4dp"
+                android:paddingRight="6dp">
 
 
                 <RelativeLayout
@@ -98,6 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/viewQueue"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp">
 
@@ -116,13 +115,13 @@
                         android:id="@+id/title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentStart="true"
                         android:layout_below="@+id/playing"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
                         android:ellipsize="marquee"
-                        android:singleLine="true"
-                        android:marqueeRepeatLimit="marquee_forever"
                         android:fontFamily="sans-serif-condensed"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:singleLine="true"
                         android:text="@string/app_name"
                         android:textColor="#ffffff"
                         android:textScaleX="1.1"
@@ -132,9 +131,9 @@
                         android:id="@+id/album"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentStart="true"
                         android:layout_below="@+id/title"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
                         android:fontFamily="sans-serif-condensed"
                         android:maxLines="1"
                         android:text="@string/app_name"
@@ -145,86 +144,80 @@
 
                 </RelativeLayout>
 
+                <ImageView
+                    android:id="@+id/viewQueue"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="10dp"
+                    android:src="@drawable/app_list"
+                    android:tint="@color/white" />
 
 
             </RelativeLayout>
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/additionalCtr"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_above="@+id/cardView"
-                android:id="@+id/additionalCtr">
+                android:orientation="horizontal"
+                android:weightSum="5">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="5">
+                <ImageView
+                    android:id="@+id/infoImageView"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_info_outline_black_24dp"
+                    android:tint="@color/white" />
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_info_outline_black_24dp"
-                        android:tint="@color/white"
-                        android:padding="12dp"
-                        android:layout_weight="1"
-                        android:id="@+id/infoImageView"
-                        android:background="?attr/selectableItemBackgroundBorderless"/>
+                <ImageView
+                    android:id="@+id/sleepTimerImageView"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_timer_black_24dp"
+                    android:tint="@color/white" />
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_timer_black_24dp"
-                        android:tint="@color/white"
-                        android:padding="12dp"
-                        android:layout_weight="1"
-                        android:id="@+id/sleepTimerImageView"
-                        android:background="?attr/selectableItemBackgroundBorderless"/>
+                <ImageView
+                    android:id="@+id/addToPlayListImageView"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="10dp"
+                    android:src="@drawable/app_add_playlist"
+                    android:tint="@color/white" />
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/app_add_playlist"
-                        android:tint="@color/white"
-                        android:padding="10dp"
-                        android:layout_weight="1"
-                        android:id="@+id/addToPlayListImageView"
-                        android:background="?attr/selectableItemBackgroundBorderless"/>
+                <ImageView
+                    android:id="@+id/shuffleImageView"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="12dp"
+                    android:src="@drawable/app_shuffle"
+                    android:tint="@color/white" />
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/app_shuffle"
-                        android:tint="@color/white"
-                        android:padding="12dp"
-                        android:layout_weight="1"
-                        android:id="@+id/shuffleImageView"
-                        android:background="?attr/selectableItemBackgroundBorderless"/>
+                <ImageView
+                    android:id="@+id/equalizer"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="8dp"
+                    android:src="@drawable/app_equalizer"
+                    android:tint="@color/white" />
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/app_equalizer"
-                        android:tint="@color/white"
-                        android:padding="8dp"
-                        android:layout_weight="1"
-                        android:id="@+id/equalizer"
-                        android:background="?attr/selectableItemBackgroundBorderless"/>
+            </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/app_list"
-                        android:tint="@color/white"
-                        android:padding="10dp"
-                        android:layout_weight="1"
-                        android:id="@+id/viewQueue"
-                        android:background="?attr/selectableItemBackgroundBorderless"/>
-
-                </LinearLayout>
-
-
-            </RelativeLayout>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardView"
@@ -249,8 +242,8 @@
                             android:id="@+id/leftTime"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
-                            android:layout_alignParentStart="true"
                             android:layout_below="@+id/seekBar1"
+                            android:layout_alignParentStart="true"
                             android:layout_marginStart="10dp"
                             android:text="@string/nullTime"
                             android:textColor="#ffffff"
@@ -276,8 +269,8 @@
                             android:id="@+id/rightTime"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
-                            android:layout_alignParentEnd="true"
                             android:layout_below="@+id/seekBar1"
+                            android:layout_alignParentEnd="true"
                             android:layout_marginEnd="10dp"
                             android:focusable="false"
                             android:text="@string/nullTime"
@@ -291,10 +284,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="72dp"
                         android:layout_below="@+id/lowerTwo"
-                        android:orientation="horizontal"
                         android:baselineAligned="true"
                         android:clickable="true"
                         android:focusable="true"
+                        android:orientation="horizontal"
                         android:padding="8dp">
 
 
@@ -308,9 +301,9 @@
                                 android:id="@+id/repeat"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
+                                android:background="?android:attr/selectableItemBackgroundBorderless"
                                 android:maxWidth="48dp"
                                 android:maxHeight="48dp"
-                                android:background="?android:attr/selectableItemBackgroundBorderless"
                                 android:padding="13dp"
                                 android:src="@drawable/app_repeat"
                                 android:tint="@color/white" />
@@ -344,9 +337,9 @@
                             android:gravity="center">
 
                             <ImageView
+                                android:id="@+id/play_bg"
                                 android:layout_width="54dp"
                                 android:layout_height="54dp"
-                                android:id="@+id/play_bg"
                                 android:background="@color/accentColor" />
 
                             <ImageView

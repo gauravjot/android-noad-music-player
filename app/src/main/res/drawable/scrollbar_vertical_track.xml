@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <stroke android:color="@color/transparent" android:width="9dp"/>
+    <stroke android:color="@color/transparent" android:width="18dp"/>
     <gradient
         android:angle="0"
-        android:endColor="@color/textColorSubTitle"
-        android:startColor="@color/textColorSubTitle" />
+        android:endColor="@color/progressBarBackground"
+        android:startColor="@color/progressBarBackground" />
 
     <corners android:radius="6dp" />
 

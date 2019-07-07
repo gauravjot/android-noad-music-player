@@ -14,18 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 
 public class QueueFragment extends Fragment implements QueueCustomAdapter.MyFragmentCallback {
 
-
-    SongsManager songsManager;
-
     QueueCustomAdapter adapter;
-    ArrayList<SongModel> currentQueue = new ArrayList<>();
-
     RecyclerView recyclerView;
 
     @Override
@@ -38,13 +32,11 @@ public class QueueFragment extends Fragment implements QueueCustomAdapter.MyFrag
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        songsManager = new SongsManager(getActivity());
-        currentQueue = new ArrayList<>(songsManager.queue());
 
         Resources res = getResources();
         recyclerView = view.findViewById(R.id.recyclerView);
 
-        adapter = new QueueCustomAdapter(getActivity(), currentQueue, res);
+        adapter = new QueueCustomAdapter(getActivity(), res);
         adapter.setMyFragmentCallback(this);
         recyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -60,8 +52,7 @@ public class QueueFragment extends Fragment implements QueueCustomAdapter.MyFrag
     }
 
     public void notifyFragmentQueueUpdate() {
-        currentQueue = new ArrayList<>(songsManager.queue());
-        adapter.notifyDataSetChanged();
+        adapter.notifyAdapterDataSetChanged();
     }
 
     interface MyFragmentCallbackOne {

@@ -29,12 +29,18 @@ class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     private SharedPrefsUtils sharedPrefsUtils;
     private ArrayList<SongModel> arrayList = new ArrayList<>();
 
+    void notifyAdapterDataSetChanged() {
+        arrayList.clear();
+        arrayList.addAll(songsManager.queue());
+        notifyItemRangeChanged(0,arrayList.size());
+        //notifyDataSetChanged();
+    }
 
     /**
      * ********** CustomAdapter Constructor ****************
      */
     @SuppressWarnings("rawtypes")
-    QueueCustomAdapter(Activity a, ArrayList<SongModel> d, Resources resLocal) {
+    QueueCustomAdapter(Activity a, Resources resLocal) {
 
         /*
         * Take passed values
@@ -44,7 +50,7 @@ class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         songsManager = new SongsManager(a);
         sharedPrefsUtils = new SharedPrefsUtils(activity);
 
-        arrayList.addAll(d);
+        arrayList.addAll(songsManager.queue());
 
     }
 
@@ -55,6 +61,8 @@ class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     public int getItemCount() {
         return arrayList.size();
     }
+
+
 
     @NonNull
     @Override

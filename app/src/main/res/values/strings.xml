@@ -50,7 +50,7 @@
     <string name="_4">4</string>
     <string name="_1">1</string>
     <string name="x">X</string>
-    <string name="min">min</string>
+    <string name="min">mins</string>
     <string name="sleep_in">Sleep in</string>
     <string name="play_some_music">Play Some Music</string>
     <string name="title_activity_intent_play">IntentPlayActivity</string>
@@ -94,4 +94,8 @@
     <string name="song_info">Song Info</string>
     <string name="save_current_playlist">Save Current Playlist</string>
     <string name="equalizer">Equalizer</string>
+    <string name="unknown_album">unknown album</string>
+    <string name="unknown_artist">unknown artist</string>
+    <string name="current_sleep_timer">Current Sleep Timer</string>
+    <string name="sleeps_at_3_00am">Sleeps at 3:00am</string>
 </resources>

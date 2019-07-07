@@ -16,7 +16,7 @@
         android:scrollX="0px"
         android:scrollY="0px"
         android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:scrollbarSize="10dp"
+        android:scrollbarSize="20dp"
         android:scrollbarStyle="outsideInset"
         android:scrollbars="vertical" >
     </ListView>

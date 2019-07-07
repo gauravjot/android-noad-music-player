@@ -4,10 +4,10 @@
     <item>
         <shape
             android:shape="rectangle" >
-            <stroke android:color="@color/transparent" android:width="4dp"/>
+            <stroke android:color="@color/transparent" android:width="16dp"/>
             <size
                 android:height="40dp"
-                android:width="10dp"/>
+                android:width="20dp"/>
             <gradient
                 android:angle="0"
                 android:endColor="@color/textColorTitle"

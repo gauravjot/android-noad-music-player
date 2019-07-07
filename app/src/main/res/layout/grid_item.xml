@@ -4,22 +4,15 @@
     android:layout_height="wrap_content"
     android:background="@color/background">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
         <com.droidheat.musicplayer.Icon
             android:id="@+id/grid_item_image2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/app_label"
             android:background="@drawable/ic_music_notes_padded"/>
-
 
         <ImageView
             android:id="@+id/imageOverflow"
@@ -27,10 +20,9 @@
             android:layout_height="48dp"
             android:layout_alignEnd="@+id/grid_item_image2"
             android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/grid_item_image2"
             android:layout_below="@+id/grid_item_image2"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:padding="10dp"
+            android:padding="8dp"
             android:tint="@color/textColorSubTitle"
             android:src="@drawable/ic_dots_vert_black_24dp" />
 
@@ -38,18 +30,17 @@
             android:id="@+id/grid_item_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/grid_item_image2"
-            android:layout_toLeftOf="@+id/imageOverflow"
             android:layout_toStartOf="@+id/imageOverflow"
             android:maxLines="1"
             android:ellipsize="end"
             android:paddingBottom="3dp"
             android:textStyle="bold"
-            android:paddingRight="8dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp"
             android:paddingTop="6dp"
-            android:text="unknown album"
+            android:text="@string/unknown_album"
             android:textSize="16sp"
             android:textColor="@color/textColorTitle" />
 
@@ -57,20 +48,16 @@
             android:id="@+id/grid_item_sublabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/grid_item_label"
-            android:layout_toLeftOf="@+id/imageOverflow"
             android:layout_toStartOf="@+id/imageOverflow"
             android:maxLines="1"
             android:ellipsize="end"
             android:paddingBottom="6dp"
-            android:paddingRight="8dp"
-            android:text="unknown artist"
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp"
+            android:text="@string/unknown_artist"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/textColorSubTitle" />
-
-    </RelativeLayout>
-
 
 </RelativeLayout>
