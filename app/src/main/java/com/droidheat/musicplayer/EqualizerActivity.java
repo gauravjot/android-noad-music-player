@@ -66,27 +66,34 @@ public class EqualizerActivity extends AppCompatActivity
         enabled.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Equalizer eq = new Equalizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
-                BassBoost bassBoost = new BassBoost(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
-                Virtualizer virtualizer = new Virtualizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
-                eq.setEnabled(b);
-                bassBoost.setEnabled(b);
-                virtualizer.setEnabled(b);
+
+                // saving setting for equalizer
                 sharedPrefsUtils.writeSharedPrefs("turnEqualizer", b);
 
-                if (b) {
-                    for (int i = 0; i < 5; i++) {
-                        eq.setBandLevel((short) i, (short) sharedPrefsUtils
-                                .readSharedPrefsInt("profile" + currentEqProfile + "Band" + i, 0));
+                // Crash can be expected in case no audio session is active. In that case we only
+                // need to turn equalizer on in settings
+                try {
+                    Equalizer eq = new Equalizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
+                    BassBoost bassBoost = new BassBoost(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
+                    Virtualizer virtualizer = new Virtualizer(0, sharedPrefsUtils.readSharedPrefsInt("audio_session_id", 0));
+                    eq.setEnabled(b);
+                    bassBoost.setEnabled(b);
+                    virtualizer.setEnabled(b);
+                    if (b) {
+                        for (int i = 0; i < 5; i++) {
+                            eq.setBandLevel((short) i, (short) sharedPrefsUtils
+                                    .readSharedPrefsInt("profile" + currentEqProfile + "Band" + i, 0));
+                        }
+                        bassBoost.setStrength((short) sharedPrefsUtils.
+                                readSharedPrefsInt("bassLevel" + currentEqProfile, 0));
+                        virtualizer.setStrength((short) sharedPrefsUtils.
+                                readSharedPrefsInt("vzLevel" + currentEqProfile, 0));
                     }
-                    bassBoost.setStrength((short) sharedPrefsUtils.
-                            readSharedPrefsInt("bassLevel" + currentEqProfile, 0));
-                    virtualizer.setStrength((short) sharedPrefsUtils.
-                            readSharedPrefsInt("vzLevel" + currentEqProfile, 0));
+                    eq.release();
+                    bassBoost.release();
+                    virtualizer.release();
                 }
-                eq.release();
-                bassBoost.release();
-                virtualizer.release();
+                catch (Exception ignored) {}
             }
         });
 
