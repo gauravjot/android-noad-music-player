@@ -423,40 +423,7 @@ public class SongsManager {
         relAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog alertDialog = new Dialog(context);
-                alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                alertDialog.setContentView(R.layout.dialog_add_playlist);
-
-                final EditText input = alertDialog.findViewById(R.id.editText);
-                input.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils))));
-                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
-
-                Button btnCreate = alertDialog.findViewById(R.id.btnCreate);
-                btnCreate.setTextColor(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils)));
-                btnCreate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String name = input.getText().toString();
-                        if (!name.isEmpty()) {
-                            addPlaylist(name);
-                            playlistAdapter.notifyDataSetChanged();
-                            alertDialog.cancel();
-                        } else {
-                            Toast.makeText(context, "Please enter playlist name.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-                Button btnCancel = alertDialog.findViewById(R.id.btnCancel);
-                btnCancel.setTextColor(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils)));
-                btnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.cancel();
-                    }
-                });
-                alertDialog.show();
+                addPlayListDialog(playlistAdapter);
             }
 
         });
@@ -499,45 +466,47 @@ public class SongsManager {
         relAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog alertDialog = new Dialog(context);
-                alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                alertDialog.setContentView(R.layout.dialog_add_playlist);
-
-                final EditText input = alertDialog.findViewById(R.id.editText);
-                input.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils))));
-                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
-
-                Button btnCreate = alertDialog.findViewById(R.id.btnCreate);
-                btnCreate.setTextColor(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils)));
-                btnCreate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String name = input.getText().toString();
-                        if (!name.isEmpty()) {
-                            addPlaylist(name);
-                            playlistAdapter.notifyDataSetChanged();
-                            alertDialog.cancel();
-                        } else {
-                            Toast.makeText(context, "Please enter playlist name.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-                Button btnCancel = alertDialog.findViewById(R.id.btnCancel);
-                btnCancel.setTextColor(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils)));
-                btnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.cancel();
-                    }
-                });
-                alertDialog.show();
+                addPlayListDialog(playlistAdapter);
             }
-
         });
         listView.setAdapter(playlistAdapter);
         dialog.show();
+    }
+
+    private void addPlayListDialog(final PlaylistFragmentAdapterSimple playlistAdapter) {
+        final Dialog alertDialog = new Dialog(context);
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alertDialog.setContentView(R.layout.dialog_add_playlist);
+
+        final EditText input = alertDialog.findViewById(R.id.editText);
+        input.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils))));
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
+
+        Button btnCreate = alertDialog.findViewById(R.id.btnCreate);
+        btnCreate.setTextColor(ContextCompat.getColor(context, (new CommonUtils(context)).accentColor(sharedPrefsUtils)));
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = input.getText().toString();
+                if (!name.isEmpty()) {
+                    addPlaylist(name);
+                    playlistAdapter.notifyDataSetChanged();
+                    alertDialog.cancel();
+                } else {
+                    Toast.makeText(context, "Please enter playlist name.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        Button btnCancel = alertDialog.findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.cancel();
+            }
+        });
+        alertDialog.show();
     }
 
     void shufflePlay(int id, ArrayList<SongModel> array) {

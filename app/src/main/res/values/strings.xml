@@ -75,9 +75,6 @@
     <string name="search">Search</string>
     <string name="PLAYING">PLAYING</string>
     <string name="app_id">unknown</string> <!-- 4F8B3483 -->
-    <string name="media_route_menu_title">Cast to Device</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -98,4 +95,6 @@
     <string name="unknown_artist">unknown artist</string>
     <string name="current_sleep_timer">Current Sleep Timer</string>
     <string name="sleeps_at_3_00am">Sleeps at 3:00am</string>
+    <string name="auto_playlist">Auto Playlists</string>
+    <string name="created_playlists">Created Playlists</string>
 </resources>

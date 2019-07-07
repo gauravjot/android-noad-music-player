@@ -2,6 +2,7 @@ package com.droidheat.musicplayer;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -46,9 +47,9 @@ public class PlaylistFragment extends Fragment {
         View Header =  mInflater.inflate(R.layout.heading, null);
         View Header2 =  mInflater.inflate(R.layout.heading_with_button, null);
         TextView textView = Header.findViewById(R.id.titleTextView);
-        textView.setText("Auto Playlists");
+        textView.setText(getString(R.string.auto_playlist));
         TextView textView2 = Header2.findViewById(R.id.titleTextView);
-        textView2.setText("Created Playlists");
+        textView2.setText(getString(R.string.created_playlists));
         Button addPlaylist = Header2.findViewById(R.id.button);
         addPlaylist.setTextColor(ContextCompat.getColor(context,
                 (new CommonUtils(context)).accentColor(new SharedPrefsUtils(context))));

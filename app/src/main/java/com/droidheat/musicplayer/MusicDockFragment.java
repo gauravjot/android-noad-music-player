@@ -74,7 +74,7 @@ public class MusicDockFragment extends Fragment {
             }
         });
 
-        if (getResources().getBoolean(R.bool.isTablet) || getResources().getBoolean(R.bool.isLandscape)) {
+        if (getResources().getBoolean(R.bool.isTablet)) {
             (view.findViewById(R.id.XbtnNext)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -1,56 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/dialogBackground">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:id="@+id/albumArt"
-                android:scaleType="centerCrop"/>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:src="@drawable/status_bar_dark_shadow"
-                android:background="#55000000"
-                android:rotation="180"/>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/dialogBackground"
+    android:paddingBottom="16dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:gravity="bottom"
-                android:padding="16dp"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:fontFamily="sans-serif-condensed"
-                android:maxLines="1"
-                android:text="Add to Playlist"
-                android:id="@+id/textView11" />
+    <ImageView
+        android:id="@+id/albumArt"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop" />
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_margin="12dp"
-                android:src="@drawable/app_add_playlist"
-                android:tint="@android:color/white"
-                android:background="?attr/selectableItemBackground"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:id="@+id/add_playlist"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="#55000000"
+        android:rotation="180" />
 
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/listView"
-                android:dividerHeight="0dp"
-                android:divider="@null"
-                android:background="@color/primaryDark"
-                android:layout_below="@+id/albumArt"/>
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="bottom"
+        android:maxLines="1"
+        android:padding="16dp"
+        android:text="@string/add_to_playlist"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
 
-        </RelativeLayout>
+    <ImageView
+        android:id="@+id/add_playlist"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="12dp"
+        android:background="?attr/selectableItemBackground"
+        android:padding="10dp"
+        android:src="@drawable/app_add_playlist"
+        android:tint="@android:color/white" />
 
-</LinearLayout>
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/albumArt"
+        android:background="@color/dialogBackground"
+        android:divider="@null"
+        android:dividerHeight="0dp" />
+
+</RelativeLayout>
