@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -51,22 +52,20 @@ public class SplashActivity extends AppCompatActivity {
             songsManager.sync();
             ((TextView) findViewById(R.id.textView10)).setText("Syncing..");
             sync = true;
-        }
-        else {
+        } else {
             ((TextView) findViewById(R.id.textView10)).setText("Initiating..");
         }
 
-            int permissionCheck = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE);
-
-            if (permissionCheck != PermissionChecker.PERMISSION_GRANTED) {
-                    // No explanation needed, we can request the permission.
+        if (Build.VERSION.SDK_INT > 22) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+                // No explanation needed, we can request the permission.
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
                 alertDialog.setTitle("Request for permissions");
                 alertDialog.setMessage("For music player to work we need your permission to access" +
                         " files on your device.");
-                alertDialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ActivityCompat.requestPermissions(SplashActivity.this,
@@ -74,30 +73,36 @@ public class SplashActivity extends AppCompatActivity {
                                 1);
                     }
                 });
-                alertDialog.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+                alertDialog.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
                 });
                 alertDialog.show();
-                Log.d(TAG,"asking permission");
-            } else {
+                Log.d(TAG, "asking permission");
+            } else if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED) {
                 new PerformBackgroundTasks(this, sync).execute("task");
-                Log.d(TAG,"no need for permissions");
+            } else {
+                (new CommonUtils(this)).showTheToast("Please enable permission from " +
+                        "Settings > Apps > Noad Player > Permissions.");
             }
+        } else {
+            new PerformBackgroundTasks(this, sync).execute("task");
+        }
 
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-        @NonNull String[] permissions, @NonNull int[] grantResults) {
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
         // If request is cancelled, the result arrays are empty.
         if (requestCode == 1) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                new PerformBackgroundTasks(this,sync).execute("tasks");
+                new PerformBackgroundTasks(this, sync).execute("tasks");
                 //weGotPermissions();
                 // permission was granted, yay! Do the
                 // contacts-related task you need to do.
@@ -135,7 +140,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected Long doInBackground(String... params) {
 
-            ArrayList<HashMap<String,String>> artists = songsManager.artists();
+            ArrayList<HashMap<String, String>> artists = songsManager.artists();
             if (artists.size() > 0) {
                 sharedPrefsUtils.writeSharedPrefs("home_artist",
                         artists.get((new Random()).nextInt(artists.size())).get("artist"));
@@ -279,7 +284,7 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 }
             } catch (Exception e) {
-                Log.d(TAG,"Unable to perform sync");
+                Log.d(TAG, "Unable to perform sync");
                 e.printStackTrace();
             }
 
