@@ -18,24 +18,24 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".DriveModeActivity"
+            android:name=".ui.activities.DriveModeActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeToolbar"/>
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.activities.HomeActivity"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeToolbar" />
         <activity
-            android:name=".PlayActivity"
+            android:name=".ui.activities.PlayActivity"
             android:label="@string/title_activity_play"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeToolbar.Overlay"/>
 
         <service
-            android:name=".MusicPlayback"
+            android:name=".services.MusicPlayback"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.droidheat.musicplayer.action.CLOSE" />
@@ -60,18 +60,18 @@
         </receiver>
 
         <activity
-            android:name=".SearchActivity"
+            android:name=".ui.activities.SearchActivity"
             android:label="@string/title_activity_search"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeToolbar"
             android:windowSoftInputMode="stateVisible"/>
         <activity
-            android:name=".TimerActivity"
+            android:name=".ui.activities.TimerActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/DialogTheme" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.activities.SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeToolbar">
@@ -86,7 +86,7 @@
         </activity>
 
         <receiver
-            android:name=".MusicWidget4x1"
+            android:name=".ui.widgets.MusicWidget4x1"
             android:label="Music Player">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -97,7 +97,7 @@
                 android:resource="@xml/widgetprovider4x1" />
         </receiver>
         <receiver
-            android:name=".MusicWidget4x2"
+            android:name=".ui.widgets.MusicWidget4x2"
             android:label="Music Player">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -108,7 +108,7 @@
                 android:resource="@xml/widgetprovider4x2" />
         </receiver>
         <receiver
-            android:name=".MusicWidget4x1v2"
+            android:name=".ui.widgets.MusicWidget4x1v2"
             android:label="Music Player">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -120,7 +120,7 @@
         </receiver>
 
         <activity
-            android:name=".IntentPlayActivity"
+            android:name=".ui.activities.IntentPlayActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:label="@string/app_name"
@@ -145,17 +145,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EqualizerActivity"
+            android:name=".ui.activities.EqualizerActivity"
             android:label="Equalizer"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeToolbar" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeActionBar" />
         <activity
-            android:name=".GlobalDetailActivity"
+            android:name=".ui.activities.GlobalDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeToolBarTranslucent" />
     </application>

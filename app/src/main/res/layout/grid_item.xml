@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@color/background">
 
-        <com.droidheat.musicplayer.Icon
+        <com.droidheat.musicplayer.ui.views.SquareImageView
             android:id="@+id/grid_item_image2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

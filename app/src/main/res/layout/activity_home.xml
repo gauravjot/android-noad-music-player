@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity">
+    tools:context=".ui.activities.HomeActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -31,8 +31,8 @@
 
         <fragment
             android:id="@+id/fragment"
-            android:name="com.droidheat.musicplayer.MusicDockFragment"
-            class="com.droidheat.musicplayer.MusicDockFragment"
+            android:name="com.droidheat.musicplayer.ui.fragments.MusicDockFragment"
+            class="com.droidheat.musicplayer.ui.fragments.MusicDockFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context="com.droidheat.musicplayer.IntentPlayActivity">
+    tools:context="com.droidheat.musicplayer.ui.activities.IntentPlayActivity">
 
     <SeekBar
         android:id="@+id/seekBar1"

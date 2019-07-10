@@ -97,4 +97,9 @@
     <string name="sleeps_at_3_00am">Sleeps at 3:00am</string>
     <string name="auto_playlist">Auto Playlists</string>
     <string name="created_playlists">Created Playlists</string>
+    <string name="album_cap">ALBUM</string>
+    <string name="auto_plalist_cap">AUTO-PLAYLIST</string>
+    <string name="artist_cap">ARTIST</string>
+    <string name="recently_added_cap">RECENTLY ADDED</string>
+    <string name="playlist_cap">PLAYLIST</string>
 </resources>

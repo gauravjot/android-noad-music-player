@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DriveModeActivity"
+    tools:context=".ui.activities.DriveModeActivity"
     android:keepScreenOn="true">
 
     <Button
@@ -65,7 +65,7 @@
 
     </RelativeLayout>
 
-    <com.droidheat.musicplayer.Icon
+    <com.droidheat.musicplayer.ui.views.SquareImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linearLayout"
@@ -85,7 +85,7 @@
         android:layout_marginBottom="24dp"
         android:layout_alignParentBottom="true">
 
-        <com.droidheat.musicplayer.Icon
+        <com.droidheat.musicplayer.ui.views.SquareImageView
             android:id="@+id/prevButton"
             android:layout_margin="24dp"
             android:padding="24dp"
@@ -95,7 +95,7 @@
             android:src="@drawable/app_previous"
             android:tint="@color/white"/>
 
-        <com.droidheat.musicplayer.Icon
+        <com.droidheat.musicplayer.ui.views.SquareImageView
             android:id="@+id/playButton"
             android:layout_margin="24dp"
             android:padding="16dp"
@@ -106,7 +106,7 @@
             android:src="@drawable/app_play"
             android:tint="@color/white"/>
 
-        <com.droidheat.musicplayer.Icon
+        <com.droidheat.musicplayer.ui.views.SquareImageView
             android:id="@+id/nextButton"
             android:layout_margin="24dp"
             android:padding="24dp"

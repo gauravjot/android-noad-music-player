@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:minWidth="400dp"
     android:background="@color/dialogBackground"
-    tools:context="com.droidheat.musicplayer.TimerActivity">
+    tools:context="com.droidheat.musicplayer.ui.activities.TimerActivity">
 
     <TextView
         android:id="@+id/titleTextView"

@@ -33,7 +33,7 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
-                <com.droidheat.musicplayer.Icon
+                <com.droidheat.musicplayer.ui.views.SquareImageView
                     android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -139,7 +139,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.droidheat.musicplayer.MusicDockFragment"
+        android:name="com.droidheat.musicplayer.ui.fragments.MusicDockFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

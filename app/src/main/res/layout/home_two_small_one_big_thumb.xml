@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.droidheat.musicplayer.Icon
+        <com.droidheat.musicplayer.ui.views.SquareImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/ic_music_notes_padded"
@@ -84,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.droidheat.musicplayer.Icon
+                <com.droidheat.musicplayer.ui.views.SquareImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -141,7 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.droidheat.musicplayer.Icon
+                <com.droidheat.musicplayer.ui.views.SquareImageView
                     android:layout_width="match_parent"
                     android:src="@drawable/ic_music_notes_padded"
                     android:layout_height="match_parent"
