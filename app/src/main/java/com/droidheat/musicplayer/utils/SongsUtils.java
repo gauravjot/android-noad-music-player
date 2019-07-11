@@ -92,7 +92,9 @@ public class SongsUtils {
 
     public ArrayList<SongModel> queue() {
         if (queue.isEmpty()) {
-            replaceQueue(newSongs());
+            ArrayList<SongModel> list = new ArrayList<>(mainList);
+            Collections.reverse(list);
+            replaceQueue(list);
         }
         return (queue);
     }
@@ -101,7 +103,7 @@ public class SongsUtils {
         grabIfEmpty(); // If no song in list
 
         // Sorted list of 0-9 A-Z
-        ArrayList<SongModel> songs = new ArrayList<>(newSongs());
+        ArrayList<SongModel> songs = new ArrayList<>(mainList);
         Collections.sort(songs, new Comparator<SongModel>() {
             @Override
             public int compare(SongModel song1, SongModel song2) {
@@ -295,7 +297,7 @@ public class SongsUtils {
         mainList.clear();
         albums.clear();
         artists.clear();
-        grabData();
+        grabIfEmpty();
     }
 
     public void addToQueue(SongModel song) {
@@ -716,7 +718,7 @@ public class SongsUtils {
             list2.add(song);
         }
 
-        albums().addAll(list2);
+        albums.addAll(list2);
 
         /*
          * Artists Data
