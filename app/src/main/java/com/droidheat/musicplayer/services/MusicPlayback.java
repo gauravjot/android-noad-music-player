@@ -117,6 +117,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         /*
          Initialize
          */
+        checkErrorInPrefs();
         initMediaPlayer();
         initMediaSession();
         initNoisyReceiver();
@@ -187,6 +188,12 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
      */
     private MediaPlayer getCurrentMediaPlayer() {
         return (currentMediaPlayer == 0) ? mMediaPlayer : mMediaPlayer2;
+    }
+
+    private void checkErrorInPrefs() {
+        if (songsUtils.getCurrentMusicID() > songsUtils.queue().size() - 1) {
+            songsUtils.setCurrentMusicID(0);
+        }
     }
 
     private void switchMediaPlayer() {

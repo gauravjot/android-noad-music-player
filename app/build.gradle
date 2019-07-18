@@ -7,8 +7,8 @@ android {
         applicationId "com.droidheat.musicplayer"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 31
-        versionName "0.9.5"
+        versionCode 32
+        versionName "0.9.51"
         multiDexEnabled true
     }
     buildTypes {
