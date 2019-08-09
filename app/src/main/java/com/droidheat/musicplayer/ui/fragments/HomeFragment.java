@@ -52,11 +52,6 @@ public class HomeFragment extends Fragment {
         MergeAdapter mergeAdapter = new MergeAdapter();
 
         if (!songsUtils.allSongs().isEmpty()) {
-            // QUICK PLAY
-            View heading = View.inflate(getActivity(), R.layout.heading, null);
-            TextView textView = heading.findViewById(R.id.titleTextView);
-            textView.setText("Quick Play");
-            mergeAdapter.addView(heading);
 
             mergeAdapter.addView(threeGridView());
 

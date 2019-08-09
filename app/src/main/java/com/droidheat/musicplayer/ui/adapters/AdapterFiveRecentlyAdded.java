@@ -91,7 +91,7 @@ public class AdapterFiveRecentlyAdded extends BaseAdapter implements OnClickList
         if (vi == null) {
             LayoutInflater inflater = (LayoutInflater) activity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = inflater.inflate(R.layout.row_small, parent, false);
+            vi = inflater.inflate(R.layout.row, parent, false);
 
             holder = new ViewHolder();
             holder.text = vi.findViewById(R.id.text);

@@ -22,6 +22,8 @@ import com.droidheat.musicplayer.ui.fragments.AlbumGridFragment;
 import com.droidheat.musicplayer.ui.fragments.AllSongsFragment;
 import com.droidheat.musicplayer.ui.fragments.ArtistGridFragment;
 
+import java.util.Objects;
+
 public class HomeActivity extends AppCompatActivity {
 
     ViewPager viewPager;
@@ -41,6 +43,7 @@ public class HomeActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         setupViewPager(viewPager);
         viewPager.setCurrentItem(0);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Quick Play");
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
@@ -52,6 +55,25 @@ public class HomeActivity extends AppCompatActivity {
                 navView.getMenu().getItem(currentViewPagerPosition).setChecked(false);
                 navView.getMenu().getItem(i).setChecked(true);
                 currentViewPagerPosition = i;
+                switch (i) {
+                    case 0:
+                        Objects.requireNonNull(getSupportActionBar()).setTitle("Quick Play");
+                        return;
+                    case 1:
+                        Objects.requireNonNull(getSupportActionBar()).setTitle("All Songs");
+                        return;
+                    case 2:
+                        Objects.requireNonNull(getSupportActionBar()).setTitle("Albums");
+                        return;
+                    case 3:
+                        Objects.requireNonNull(getSupportActionBar()).setTitle("Artists");
+                        return;
+                    case 4:
+                        Objects.requireNonNull(getSupportActionBar()).setTitle("Playlists");
+                        return;
+                    default:
+                        Objects.requireNonNull(getSupportActionBar()).setTitle("Noad Player");
+                }
             }
 
             @Override

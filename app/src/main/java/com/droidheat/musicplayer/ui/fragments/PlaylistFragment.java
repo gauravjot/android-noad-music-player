@@ -49,10 +49,7 @@ public class PlaylistFragment extends Fragment {
         playlistGridAdapter = new PlaylistGridAdapter(getActivity());
         autoPlaylistGridAdapter = new AutoPlaylistGridAdapter(getActivity());
         //listView.addHeaderView(getActivity().getLayoutInflater().inflate(R.layout.listview_header, null));
-        View Header =  mInflater.inflate(R.layout.heading, null);
         View Header2 =  mInflater.inflate(R.layout.heading_with_button, null);
-        TextView textView = Header.findViewById(R.id.titleTextView);
-        textView.setText(getString(R.string.auto_playlist));
         TextView textView2 = Header2.findViewById(R.id.titleTextView);
         textView2.setText(getString(R.string.created_playlists));
         Button addPlaylist = Header2.findViewById(R.id.button);
@@ -88,7 +85,6 @@ public class PlaylistFragment extends Fragment {
                 alertDialog.show();
             }
         });
-        mergeAdapter.addView(Header);
         mergeAdapter.addAdapter(autoPlaylistGridAdapter);
         mergeAdapter.addView(Header2);
         mergeAdapter.addAdapter(playlistGridAdapter);

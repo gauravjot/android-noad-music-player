@@ -130,13 +130,6 @@
     </android.support.design.widget.CoordinatorLayout>
 
 
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#404040"
-        android:layout_above="@id/fragment"/>
-
     <fragment
         android:id="@+id/fragment"
         android:name="com.droidheat.musicplayer.ui.fragments.MusicDockFragment"
