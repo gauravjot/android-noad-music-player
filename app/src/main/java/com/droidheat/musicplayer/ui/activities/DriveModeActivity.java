@@ -83,14 +83,6 @@ public class DriveModeActivity extends AppCompatActivity implements View.OnClick
 
         titleTextView.setSelected(true); // selected for marquee
 
-        albumArtImageView.setOutlineProvider(new ViewOutlineProvider() {
-            @Override
-            public void getOutline(View view, Outline outline) {
-                outline.setRoundRect(0, 0, view.getWidth(), Math.round(view.getHeight()), 60F);
-            }
-        });
-        albumArtImageView.setClipToOutline(true);
-
         /*
          * Getting and Setting accent color chosen by user
          */

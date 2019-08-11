@@ -6,6 +6,6 @@
     android:orientation="vertical"
     android:dividerHeight="0dp"
     android:divider="@color/transparent"
-    android:paddingTop="16dp"
+    android:paddingTop="8dp"
     android:id="@+id/scroll_disabled_list_view"
     />

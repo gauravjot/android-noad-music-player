@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.droidheat.musicplayer.ui.views.NoScrollGridView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:horizontalSpacing="20dp"
+    android:numColumns="2"
+    android:stretchMode="columnWidth"
+    android:paddingTop="8dp"
+    android:verticalSpacing="24dp"
+    android:id="@+id/scroll_disabled_grid_view"
+    />

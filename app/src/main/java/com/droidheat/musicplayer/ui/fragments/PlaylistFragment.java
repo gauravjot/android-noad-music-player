@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.commonsware.cwac.merge.MergeAdapter;
 import com.droidheat.musicplayer.R;
+import com.droidheat.musicplayer.ui.views.NoScrollGridView;
 import com.droidheat.musicplayer.utils.SharedPrefsUtils;
 import com.droidheat.musicplayer.ui.adapters.PlaylistGridAdapter;
 import com.droidheat.musicplayer.utils.SongsUtils;
@@ -46,7 +47,6 @@ public class PlaylistFragment extends Fragment {
 
         listView = view.findViewById(R.id.listView);
         final MergeAdapter mergeAdapter = new MergeAdapter();
-        playlistGridAdapter = new PlaylistGridAdapter(getActivity());
         autoPlaylistGridAdapter = new AutoPlaylistGridAdapter(getActivity());
         //listView.addHeaderView(getActivity().getLayoutInflater().inflate(R.layout.listview_header, null));
         View Header2 =  mInflater.inflate(R.layout.heading_with_button, null);
@@ -85,9 +85,13 @@ public class PlaylistFragment extends Fragment {
                 alertDialog.show();
             }
         });
+        View playlistGrid =  mInflater.inflate(R.layout.scroll_disabled_grid_view, null);
+        NoScrollGridView noScrollGridView = playlistGrid.findViewById(R.id.scroll_disabled_grid_view);
+        playlistGridAdapter = new PlaylistGridAdapter(getActivity());
+        noScrollGridView.setAdapter(playlistGridAdapter);
         mergeAdapter.addAdapter(autoPlaylistGridAdapter);
         mergeAdapter.addView(Header2);
-        mergeAdapter.addAdapter(playlistGridAdapter);
+        mergeAdapter.addView(noScrollGridView);
         listView.setAdapter(mergeAdapter);
 
 

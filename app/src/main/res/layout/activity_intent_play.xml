@@ -14,8 +14,7 @@
         android:layout_below="@+id/rel1"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:progressDrawable="@drawable/seekbar_light_drawable"
-        android:thumb="@drawable/thumb" />
+        android:progressDrawable="@drawable/seekbar_light_drawable" />
 
     <RelativeLayout
         android:id="@+id/rel1"
@@ -28,12 +27,14 @@
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
             android:layout_centerVertical="true"
             android:layout_marginTop="2dp"
             android:layout_toStartOf="@+id/prevImageView"
-            android:singleLine="true"
+            android:maxLines="2"
             android:text="@string/app_label"
+            android:textStyle="bold"
             android:paddingStart="4dp"
             android:paddingEnd="0dp"
             android:textSize="18sp"
@@ -65,7 +66,7 @@
         android:layout_alignBaseline="@+id/textView4"
         android:layout_alignBottom="@+id/textView4"
         android:layout_alignStart="@+id/seekBar1"
-        android:textColor="@color/textColorSubTitle"
+        android:textColor="@color/textColorTitle"
         android:text="@string/nullTime" />
 
     <TextView

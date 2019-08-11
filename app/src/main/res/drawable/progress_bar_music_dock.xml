@@ -5,7 +5,7 @@
         android:gravity="center_vertical">
         <shape android:shape="rectangle">
             <size android:height="4dp"/>
-            <solid android:color="#55ffffff" />
+            <solid android:color="#44ffffff" />
         </shape>
     </item>
     <item android:id="@android:id/progress"

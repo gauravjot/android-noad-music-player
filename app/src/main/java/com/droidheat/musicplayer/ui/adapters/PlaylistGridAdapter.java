@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.droidheat.musicplayer.R;
 import com.droidheat.musicplayer.models.SongModel;
+import com.droidheat.musicplayer.utils.CommonUtils;
 import com.droidheat.musicplayer.utils.SongsUtils;
 import com.droidheat.musicplayer.ui.activities.GlobalDetailActivity;
 import com.droidheat.musicplayer.utils.ImageUtils;
@@ -26,8 +27,8 @@ import java.util.Objects;
 public class PlaylistGridAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<HashMap<String, String>> mobileValues;
-    LayoutInflater inflater;
-    SongsUtils songsUtils;
+    private LayoutInflater inflater;
+    private SongsUtils songsUtils;
 
     public PlaylistGridAdapter(Context context) {
         this.context = context;
@@ -60,10 +61,10 @@ public class PlaylistGridAdapter extends BaseAdapter {
             holder = new ViewHolder();
 
             // get layout from mobile.xml
-            gridView = inflater.inflate(R.layout.row_playlist_item, parent, false);
+            gridView = inflater.inflate(R.layout.grid_item, parent, false);
 
 
-            holder.image = gridView.findViewById(R.id.image);
+            holder.image = gridView.findViewById(R.id.grid_item_image2);
             holder.image.setOutlineProvider(new ViewOutlineProvider() {
                 @Override
                 public void getOutline(View view, Outline outline) {
@@ -71,10 +72,10 @@ public class PlaylistGridAdapter extends BaseAdapter {
                 }
             });
             holder.image.setClipToOutline(true);
-            holder.text = gridView.findViewById(R.id.textView13);
-            holder.subtext = gridView.findViewById(R.id.textView14);
+            holder.text = gridView.findViewById(R.id.grid_item_label);
+            holder.subtext = gridView.findViewById(R.id.grid_item_sublabel);
 
-            holder.btn = gridView.findViewById(R.id.imageView19);
+            holder.btn = gridView.findViewById(R.id.imageOverflow);
             gridView.setTag(holder);
 
         } else {
@@ -138,12 +139,15 @@ public class PlaylistGridAdapter extends BaseAdapter {
             gridView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    Intent intent = new Intent(context, GlobalDetailActivity.class);
-                    intent.putExtra("id", position);
-                    intent.putExtra("name", mobileValues.get(position).get("title"));
-                    intent.putExtra("field", mobileValues.get(position).get("ID"));
-                    context.startActivity(intent);
+                    if (albumSongs.size() > 0) {
+                        Intent intent = new Intent(context, GlobalDetailActivity.class);
+                        intent.putExtra("id", position);
+                        intent.putExtra("name", mobileValues.get(position).get("title"));
+                        intent.putExtra("field", mobileValues.get(position).get("ID"));
+                        context.startActivity(intent);
+                    } else {
+                        (new CommonUtils(context)).showTheToast("The list is empty.");
+                    }
                 }
             });
 

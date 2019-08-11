@@ -177,6 +177,11 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
 
             @Override
             public void onPageSelected(int position) {
+                if (position < 0 || position > songsUtils.queue().size() - 1) {
+                    finish();
+                    startActivity(getIntent());
+                    return;
+                }
                 if (songsUtils.getCurrentMusicID() < position) {
                     MediaControllerCompat.getMediaController(PlayActivity.this).getTransportControls().skipToNext();
                 } else if (songsUtils.getCurrentMusicID() > position) {
@@ -646,8 +651,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     private void backPressed() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
         finish();
     }
 

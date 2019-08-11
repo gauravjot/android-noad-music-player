@@ -98,6 +98,8 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     private int crossfadeDuration = 3000; // 3 seconds
     private Handler mHandler;
 
+    private final int NOTIFICATION_ID = 34213134;
+
     /******* ---------------------------------------------------------------
      Service Methods and Intents
      ----------------------------------------------------------------*******/
@@ -176,8 +178,11 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                         }
                         break;
                     default: {
+                        initNotification();
                     }
                 }
+            } else {
+                initNotification();
             }
         }
         return START_STICKY;
@@ -383,7 +388,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
             virtualizer.release();
         } catch (Exception ignored) {}
         stopForeground(true);
-        NotificationManagerCompat.from(this).cancel(1);
+        NotificationManagerCompat.from(this).cancel(NOTIFICATION_ID);
     }
 
     private void processPauseRequest() {
@@ -644,7 +649,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         builder.setDeleteIntent(pCloseIntent);
         builder.setColor(ContextCompat.getColor(this, (new CommonUtils(this)).accentColor(sharedPrefsUtils)));
         builder.setShowWhen(false);
-        startForeground(1, builder.build());
+        startForeground(NOTIFICATION_ID, builder.build());
     }
 
     private void showPausedNotification() {
@@ -675,7 +680,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         builder.setDeleteIntent(pCloseIntent);
         builder.setColor(ContextCompat.getColor(this, (new CommonUtils(this)).accentColor(sharedPrefsUtils)));
         builder.setShowWhen(false);
-        startForeground(1, builder.build());
+        startForeground(NOTIFICATION_ID, builder.build());
         if (!sharedPrefsUtils.readSharedPrefsBoolean("persistentNotificationPref", false)) {
             stopForeground(false);
         }
@@ -707,7 +712,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         builder.setDeleteIntent(pCloseIntent);
         builder.setColor(ContextCompat.getColor(this, (new CommonUtils(this)).accentColor(sharedPrefsUtils)));
         builder.setShowWhen(false);
-        startForeground(1, builder.build());
+        startForeground(NOTIFICATION_ID, builder.build());
     }
 
     /******* ---------------------------------------------------------------
@@ -715,7 +720,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
      ----------------------------------------------------------------*******/
     @Override
     public void onCompletion(MediaPlayer mp) {
-        flushMediaPlayer();
+        getCurrentMediaPlayer().reset();
         resetMediaPlayerPosition();
         if (!sharedPrefsUtils.readSharedPrefsBoolean("repeat", false)) {
             Log.d(TAG, "OnCompletion playing next track");
@@ -778,15 +783,8 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
 
     }
 
-    private void flushMediaPlayer() {
-        if (mPlaybackStateBuilder.build().getState() == PlaybackStateCompat.STATE_PLAYING ||
-                mPlaybackStateBuilder.build().getState() == PlaybackStateCompat.STATE_PAUSED) {
-            getCurrentMediaPlayer().reset();
-        }
-    }
-
     private void setMediaPlayer(String path) {
-        flushMediaPlayer();
+        getCurrentMediaPlayer().reset();
         File file = new File(path);
         if (file.exists()) {
             try {

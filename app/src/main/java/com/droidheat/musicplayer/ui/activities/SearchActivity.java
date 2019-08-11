@@ -81,7 +81,6 @@ public class SearchActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            startActivity(new Intent(SearchActivity.this, HomeActivity.class));
             finish();
         }
 

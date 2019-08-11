@@ -3,11 +3,9 @@ package com.droidheat.musicplayer.ui.activities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +28,7 @@ import com.droidheat.musicplayer.models.SongModel;
 import com.droidheat.musicplayer.utils.SongsUtils;
 import com.droidheat.musicplayer.utils.CommonUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -50,12 +49,9 @@ public class GlobalDetailActivity extends AppCompatActivity implements AsyncTask
         Toolbar toolbar = findViewById(R.id.anim_toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
-
         int accentColor = (new CommonUtils(this)).accentColor(new SharedPrefsUtils(this));
 
         ((TextView) findViewById(R.id.category)).setTextColor(ContextCompat.getColor(this,accentColor));
-        floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this,accentColor)));
 
         field = Objects.requireNonNull(getIntent().getExtras()).getString("field");
         raw = Objects.requireNonNull(getIntent().getExtras()).getString("name");
@@ -73,14 +69,29 @@ public class GlobalDetailActivity extends AppCompatActivity implements AsyncTask
         songsUtils = new SongsUtils(this);
         setListData();
 
-        ((TextView) findViewById(R.id.listInfoTextView))
-                .setText("total tracks: " + songsList.size() +
-                ", playback time: " + getPlayBackTime(songsList) + " mins");
+        int playbackTime = getPlayBackTime(songsList);
+        String netPlayback = playbackTime +" mins";
+        if (playbackTime > 60) {
+            netPlayback = playbackTime / 60 + "h " + playbackTime % 60 + "m";
+        }
+        int numSongs = songsList.size();
+        if (numSongs > 0) {
+            ((TextView) findViewById(R.id.listInfoTextView))
+                    .setText(numSongs + ((songsList.size() > 1) ? " tracks, " : " track, ") +
+            netPlayback + " playback");
+        }
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.play).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 songsUtils.play(0, songsList);
+            }
+        });
+
+        findViewById(R.id.shuffle).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                songsUtils.shufflePlay(songsList);
             }
         });
 
@@ -171,9 +182,6 @@ public class GlobalDetailActivity extends AppCompatActivity implements AsyncTask
                 Intent intent = new Intent(GlobalDetailActivity.this, SearchActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.play:
-                songsUtils.play(0, songsList);
-                break;
             case R.id.play_next:
                 if (songsList.size() > 0) {
                     songsUtils.playNext(songsList);
@@ -181,9 +189,6 @@ public class GlobalDetailActivity extends AppCompatActivity implements AsyncTask
                 } else {
                     (new CommonUtils(this)).showTheToast("Error adding empty song list to queue");
                 }
-                break;
-            case R.id.shuffle:
-                songsUtils.shufflePlay(songsList);
                 break;
             case R.id.add_to_queue:
                 songsUtils.addToQueue(songsList);
@@ -193,13 +198,6 @@ public class GlobalDetailActivity extends AppCompatActivity implements AsyncTask
                     performBackgroundTasks.cancel(true);
                 }
                 backPressed();
-                break;
-            case R.id.repair_list:
-                findViewById(R.id.spinner).setVisibility(View.VISIBLE);
-                if (performBackgroundTasks.getStatus() != AsyncTask.Status.RUNNING) {
-                    performBackgroundTasks = new PerformBackgroundTasks(this,this,field);
-                    performBackgroundTasks.execute();
-                }
                 break;
             case R.id.add_to_playlist:
                 songsUtils.addToPlaylist(songsList);
