@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Noad Player</string>
-    <string name="app_version">v0.9.51 (July 10, 2019)</string>
+    <string name="app_version">v0.9.6 (August 12, 2019)</string>
 
     <string name="action_settings">Settings</string>
     <string name="action_timer">Set Sleep Time</string>

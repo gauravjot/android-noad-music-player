@@ -87,6 +87,7 @@ public class PlaylistFragment extends Fragment {
         });
         View playlistGrid =  mInflater.inflate(R.layout.scroll_disabled_grid_view, null);
         NoScrollGridView noScrollGridView = playlistGrid.findViewById(R.id.scroll_disabled_grid_view);
+        noScrollGridView.setExpanded(true);
         playlistGridAdapter = new PlaylistGridAdapter(getActivity());
         noScrollGridView.setAdapter(playlistGridAdapter);
         mergeAdapter.addAdapter(autoPlaylistGridAdapter);
