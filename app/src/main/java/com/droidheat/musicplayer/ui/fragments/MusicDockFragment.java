@@ -29,7 +29,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.droidheat.musicplayer.models.SongModel;
 import com.droidheat.musicplayer.services.MusicPlayback;
 import com.droidheat.musicplayer.ui.activities.PlayActivity;
 import com.droidheat.musicplayer.R;
@@ -37,7 +36,6 @@ import com.droidheat.musicplayer.utils.SharedPrefsUtils;
 import com.droidheat.musicplayer.utils.SongsUtils;
 import com.droidheat.musicplayer.utils.CommonUtils;
 
-import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
