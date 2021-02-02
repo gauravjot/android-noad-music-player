@@ -26,8 +26,10 @@ import android.view.ViewOutlineProvider;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.droidheat.musicplayer.models.SongModel;
 import com.droidheat.musicplayer.services.MusicPlayback;
 import com.droidheat.musicplayer.ui.activities.PlayActivity;
 import com.droidheat.musicplayer.R;
@@ -35,6 +37,7 @@ import com.droidheat.musicplayer.utils.SharedPrefsUtils;
 import com.droidheat.musicplayer.utils.SongsUtils;
 import com.droidheat.musicplayer.utils.CommonUtils;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -52,6 +55,7 @@ public class MusicDockFragment extends Fragment {
     private ProgressBar progressBar;
     private MediaBrowserCompat mMediaBrowser;
     private SongsUtils songsUtils;
+    private RelativeLayout musicDockRoot;
 
     private final Runnable mUpdateProgressTask = new Runnable() {
         @Override
@@ -72,6 +76,7 @@ public class MusicDockFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_music_dock, container,
                 false);
 
+        musicDockRoot = view.findViewById(R.id.root_music_dock);
         title = view.findViewById(R.id.XtextView1);
         artist = view.findViewById(R.id.XtextView2);
         btnPlay = view.findViewById(R.id.XbtnPlay);
@@ -232,8 +237,11 @@ public class MusicDockFragment extends Fragment {
         }
         if (mLastPlaybackState == null) {
             SharedPrefsUtils sharedPrefsUtils = new SharedPrefsUtils(getActivity());
-            if (sharedPrefsUtils.readSharedPrefsString("raw_path", "").equals(songsUtils.queue().get(songsUtils.getCurrentMusicID()).getPath())) {
+            if (songsUtils.queue().size() != 0 && sharedPrefsUtils.readSharedPrefsString("raw_path", "").equals(songsUtils.queue().get(songsUtils.getCurrentMusicID()).getPath())) {
                 progressBar.setMax(sharedPrefsUtils.readSharedPrefsInt("durationInMS", 0));
+                musicDockRoot.setVisibility(View.VISIBLE);
+            } else {
+                musicDockRoot.setVisibility(View.INVISIBLE);
             }
             return;
         }
@@ -244,8 +252,11 @@ public class MusicDockFragment extends Fragment {
     private void updateProgress() {
         if (mLastPlaybackState == null) {
             SharedPrefsUtils sharedPrefsUtils = new SharedPrefsUtils(getActivity());
-            if (sharedPrefsUtils.readSharedPrefsString("raw_path", "").equals(songsUtils.queue().get(songsUtils.getCurrentMusicID()).getPath())) {
+            if (songsUtils.queue().size() != 0 && sharedPrefsUtils.readSharedPrefsString("raw_path", "").equals(songsUtils.queue().get(songsUtils.getCurrentMusicID()).getPath())) {
                 progressBar.setProgress(sharedPrefsUtils.readSharedPrefsInt("song_position", 0));
+                musicDockRoot.setVisibility(View.VISIBLE);
+            } else {
+                musicDockRoot.setVisibility(View.INVISIBLE);
             }
             return;
         }
