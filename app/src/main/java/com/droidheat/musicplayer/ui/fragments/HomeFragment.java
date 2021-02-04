@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +92,7 @@ public class HomeFragment extends Fragment {
             TextView textView = heading.findViewById(R.id.titleTextView);
             textView.setText("Unable to find any music in your device. if you have just added music then click on top right options" +
                     " icon and try 'Sync Music'");
+            textView.setGravity(Gravity.CENTER_HORIZONTAL);
             mergeAdapter.addView(heading);
         }
 
