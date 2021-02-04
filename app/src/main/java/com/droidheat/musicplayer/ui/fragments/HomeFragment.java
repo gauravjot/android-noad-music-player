@@ -93,6 +93,7 @@ public class HomeFragment extends Fragment {
             textView.setText("Unable to find any music in your device. if you have just added music then click on top right options" +
                     " icon and try 'Sync Music'");
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
+            textView.setLineSpacing(0f, 1.2f);
             mergeAdapter.addView(heading);
         }
 
