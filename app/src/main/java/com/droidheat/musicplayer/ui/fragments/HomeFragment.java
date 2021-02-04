@@ -90,8 +90,7 @@ public class HomeFragment extends Fragment {
         } else {
             View heading = View.inflate(getActivity(), R.layout.heading, null);
             TextView textView = heading.findViewById(R.id.titleTextView);
-            textView.setText("Unable to find any music in your device. if you have just added music then click on top right options" +
-                    " icon and try 'Sync Music'");
+            textView.setText(R.string.Unable_to_find_music);
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
             textView.setLineSpacing(0f, 1.2f);
             mergeAdapter.addView(heading);
