@@ -86,6 +86,10 @@ public class SongsUtils {
         return (musicID > -1) ? musicID : 0;
     }
 
+    public int getMainListSize() {
+        return mainList.size();
+    }
+
     public void setCurrentMusicID(int musicID) {
         sharedPrefsUtils.writeSharedPrefs("musicID",musicID);
     }
