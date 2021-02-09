@@ -26,9 +26,7 @@
             android:layout_height="match_parent"
             android:src="@drawable/ic_music_notes_padded"
             android:scaleType="centerCrop"
-            android:id="@+id/albumArtImageView"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"/>
+            android:id="@+id/albumArtImageView"/>
 
         <ImageView
             android:layout_width="match_parent"
@@ -91,9 +89,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_music_notes_padded"
-                    android:id="@+id/playImageView"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:clickable="true"/>
+                    android:id="@+id/playImageView"/>
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -150,9 +146,7 @@
                     android:src="@drawable/ic_music_notes_padded"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:id="@+id/nextImageView"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:clickable="true"/>
+                    android:id="@+id/nextImageView"/>
 
                 <ImageView
                     android:layout_width="match_parent"

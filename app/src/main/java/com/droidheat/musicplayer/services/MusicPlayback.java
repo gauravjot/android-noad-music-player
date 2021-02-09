@@ -687,7 +687,6 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     }
 
     private void initNotification() {
-        if(songsUtils.getMainListSize() == 0)  return;
         createChannel();
         NotificationCompat.Builder builder
                 = MediaStyleHelper.from(MusicPlayback.this, mMediaSessionCompat);
