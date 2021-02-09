@@ -102,4 +102,5 @@
     <string name="artist_cap">ARTIST</string>
     <string name="recently_added_cap">RECENTLY ADDED</string>
     <string name="playlist_cap">PLAYLIST</string>
+    <string name="Unable_to_find_music">"Unable to find any music in your device. if you have just added music then click on top right options icon and try 'Sync Music'"</string>
 </resources>

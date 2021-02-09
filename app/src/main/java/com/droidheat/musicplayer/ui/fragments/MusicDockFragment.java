@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaBrowserCompat;
@@ -66,6 +67,19 @@ public class MusicDockFragment extends Fragment {
             Executors.newSingleThreadScheduledExecutor();
     private ScheduledFuture<?> mScheduleFuture;
     private final Handler mHandler = new Handler();
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Set visibility of Music Dock
+        //songsUtils.grabIfEmpty();
+        Log.d("==>", String.valueOf(songsUtils.getMainListSize()));
+        if(songsUtils.getMainListSize()==0) {
+            musicDockRoot.setVisibility(View.INVISIBLE);
+        } else {
+            musicDockRoot.setVisibility(View.VISIBLE);
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -238,8 +252,6 @@ public class MusicDockFragment extends Fragment {
             if (songsUtils.queue().size() != 0 && sharedPrefsUtils.readSharedPrefsString("raw_path", "").equals(songsUtils.queue().get(songsUtils.getCurrentMusicID()).getPath())) {
                 progressBar.setMax(sharedPrefsUtils.readSharedPrefsInt("durationInMS", 0));
                 musicDockRoot.setVisibility(View.VISIBLE);
-            } else {
-                musicDockRoot.setVisibility(View.INVISIBLE);
             }
             return;
         }
@@ -253,8 +265,6 @@ public class MusicDockFragment extends Fragment {
             if (songsUtils.queue().size() != 0 && sharedPrefsUtils.readSharedPrefsString("raw_path", "").equals(songsUtils.queue().get(songsUtils.getCurrentMusicID()).getPath())) {
                 progressBar.setProgress(sharedPrefsUtils.readSharedPrefsInt("song_position", 0));
                 musicDockRoot.setVisibility(View.VISIBLE);
-            } else {
-                musicDockRoot.setVisibility(View.INVISIBLE);
             }
             return;
         }
