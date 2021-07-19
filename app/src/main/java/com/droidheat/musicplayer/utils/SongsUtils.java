@@ -55,14 +55,14 @@ import com.google.gson.reflect.TypeToken;
 
 public class SongsUtils {
 
-    private String TAG = "SongsManagerConsole";
+    private final String TAG = "SongsManagerConsole";
 
-    private Context context;
-    private SharedPrefsUtils sharedPrefsUtils;
-    private static ArrayList<SongModel> mainList = new ArrayList<>();
-    private static ArrayList<SongModel> queue = new ArrayList<>();
-    private static ArrayList<HashMap<String, String>> albums = new ArrayList<>();
-    private static ArrayList<HashMap<String, String>> artists = new ArrayList<>();
+    private final Context context;
+    private final SharedPrefsUtils sharedPrefsUtils;
+    private static final ArrayList<SongModel> mainList = new ArrayList<>();
+    private static final ArrayList<SongModel> queue = new ArrayList<>();
+    private static final ArrayList<HashMap<String, String>> albums = new ArrayList<>();
+    private static final ArrayList<HashMap<String, String>> artists = new ArrayList<>();
 
     public SongsUtils(Context context) {
         this.context = context;
@@ -617,67 +617,56 @@ public class SongsUtils {
     }
 
     private void grabData() {
-        String[] STAR = {"*"};
 
         boolean excludeShortSounds = sharedPrefsUtils.readSharedPrefsBoolean("excludeShortSounds", false);
         boolean excludeWhatsApp = sharedPrefsUtils.readSharedPrefsBoolean("excludeWhatsAppSounds", false);
 
-        Cursor cursor;
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
-        cursor = context.getContentResolver().query(uri, STAR, selection, null, null);
+        String[] projection = new String[] {
+                MediaStore.Audio.Media.DURATION,
+                MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.DISPLAY_NAME,
+                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.ALBUM_ID
+        };
 
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    String duration = cursor
-                            .getString(cursor
-                                    .getColumnIndex(MediaStore.Audio.Media.DURATION));
-                    int currentDuration = Math.round(Integer
-                            .parseInt(duration));
-                    if (currentDuration > ((excludeShortSounds) ? 60000 : 0)) {
-                        if (!excludeWhatsApp || !cursor.getString(cursor
-                                .getColumnIndex(MediaStore.Audio.Media.ALBUM)).equals("WhatsApp Audio")) {
-                            String songName = cursor
-                                    .getString(
-                                            cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME))
-                                    .replace("_", " ").trim().replaceAll(" +", " ");
-                            String path = cursor.getString(cursor
-                                    .getColumnIndex(MediaStore.Audio.Media.DATA));
-                            String title = cursor.getString(cursor
-                                    .getColumnIndex(MediaStore.Audio.Media.TITLE)).replace("_", " ").trim().replaceAll(" +", " ");
-                            String artistName = cursor.getString(cursor
-                                    .getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                            String albumName = cursor.getString(cursor
-                                    .getColumnIndex(MediaStore.Audio.Media.ALBUM));
+        try (Cursor cursor = context.getContentResolver().query(
+                uri, projection, null, null, null
+        )) {
+            int songNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME);
+            int durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION);
+            int pathColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+            int titleColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE);
+            int artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST);
+            int albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM);
+            int albumIDColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID);
 
-                            String albumID = cursor
-                                    .getString(
-                                            cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)
-                                    );
+            while (cursor.moveToNext()) {
+                int currentDuration = Math.round((cursor.getInt(durationColumn)));
+                if (currentDuration > ((excludeShortSounds) ? 60000 : 0)) {
+                    if (!excludeWhatsApp || !cursor.getString(albumColumn).equals("WhatsApp Audio")) {
+                        TimeZone tz = TimeZone.getTimeZone("UTC");
+                        SimpleDateFormat df = new SimpleDateFormat("mm:ss", Locale.getDefault());
+                        df.setTimeZone(tz);
+                        String time = String.valueOf(df.format(currentDuration));
 
-                            TimeZone tz = TimeZone.getTimeZone("UTC");
-                            SimpleDateFormat df = new SimpleDateFormat("mm:ss", Locale.getDefault());
-                            df.setTimeZone(tz);
-                            String time = String.valueOf(df.format(currentDuration));
+                        // Adding song to list
+                        SongModel songModel = new SongModel();
+                        songModel.setFileName(cursor.getString(songNameColumn));
+                        songModel.setTitle(cursor.getString(titleColumn));
+                        songModel.setArtist(cursor.getString(artistColumn));
+                        songModel.setAlbum(cursor.getString(albumColumn));
+                        songModel.setAlbumID(cursor.getString(albumIDColumn));
+                        songModel.setPath(cursor.getString(pathColumn));
+                        songModel.setDuration(time);
 
-                            // Adding song to list
-                            SongModel songModel = new SongModel();
-                            songModel.setFileName(songName);
-                            songModel.setTitle(title);
-                            songModel.setArtist(artistName);
-                            songModel.setAlbum(albumName);
-                            songModel.setAlbumID(albumID);
-                            songModel.setPath(path);
-                            songModel.setDuration(time);
-
-                            mainList.add(songModel);
-                        }
+                        mainList.add(songModel);
                     }
                 }
-                while (cursor.moveToNext());
             }
-            cursor.close();
         }
 
         /*

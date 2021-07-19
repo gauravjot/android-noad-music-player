@@ -31,7 +31,7 @@
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
+        android:layout_height="46dp"
         android:text="@string/close"
         android:id="@+id/closeButton"
         android:background="@drawable/button_outline"
@@ -46,13 +46,14 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_above="@+id/linearLayout"
-        android:progressDrawable="@drawable/progress_bar_music_dock"/>
+        android:progressDrawable="@drawable/progress_bar_music_dock"
+        android:thumb="@drawable/thumb_white"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/relativeLayout"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:layout_below="@+id/closeButton">
 
         <TextView
@@ -62,8 +63,8 @@
             android:layout_marginEnd="24dp"
             android:text="@string/app_name"
             android:layout_centerHorizontal="true"
-            android:textSize="22sp"
-            android:layout_marginBottom="4dp"
+            android:textSize="24sp"
+            android:layout_marginBottom="6dp"
             android:singleLine="true"
             android:background="@color/black"
             android:paddingTop="2dp"
@@ -110,7 +111,7 @@
         <com.droidheat.musicplayer.ui.views.SquareImageView
             android:id="@+id/prevButton"
             android:layout_margin="24dp"
-            android:padding="24dp"
+            android:padding="32dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -131,7 +132,7 @@
         <com.droidheat.musicplayer.ui.views.SquareImageView
             android:id="@+id/nextButton"
             android:layout_margin="24dp"
-            android:padding="24dp"
+            android:padding="32dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
@@ -65,7 +66,9 @@ public class SplashActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT > 22) {
             if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+                    Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_MEDIA_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
                 // No explanation needed, we can request the permission.
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
@@ -73,10 +76,12 @@ public class SplashActivity extends AppCompatActivity {
                 alertDialog.setMessage("For music player to work we need your permission to access" +
                         " files on your device.");
                 alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.Q)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ActivityCompat.requestPermissions(SplashActivity.this,
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                        Manifest.permission.ACCESS_MEDIA_LOCATION},
                                 1);
                     }
                 });

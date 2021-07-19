@@ -324,6 +324,9 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     }
 
     private void processNextRequest() {
+        if (songsUtils.getCurrentMusicID() + 1 == songsUtils.queue().size()) {
+            return;
+        }
         resetMediaPlayerPosition();
 
         int musicID = songsUtils.getCurrentMusicID();
@@ -798,7 +801,9 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
 
             try {
                 getCurrentMediaPlayer().prepare();
-            } catch (IOException ignored) {
+            } catch (Exception e) {
+                e.printStackTrace();
+                (new CommonUtils(this)).showTheToast("Unable to play music file :/");
             }
         } else {
             processNextRequest();

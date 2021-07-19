@@ -14,7 +14,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="136dp"
+            android:paddingBottom="146dp"
             android:background="@color/playerControlsBackground">
 
         <android.support.v7.widget.RecyclerView
