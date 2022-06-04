@@ -28,18 +28,18 @@ import android.os.Handler;
 import android.os.ParcelFileDescriptor;
 import android.os.PowerManager;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import android.support.v4.media.MediaBrowserCompat;
-import android.support.v4.media.MediaBrowserServiceCompat;
+import androidx.media.MediaBrowserServiceCompat;
 import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.MediaButtonReceiver;
+import androidx.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.media.app.NotificationCompat.MediaStyle;
+import androidx.core.app.NotificationCompat;
+import androidx.media.app.NotificationCompat.MediaStyle;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -632,14 +632,14 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                 = MediaStyleHelper.from(MusicPlayback.this, mMediaSessionCompat);
 
         PendingIntent pCloseIntent = PendingIntent.getService(this, 0,
-                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_CLOSE), 0);
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_CLOSE), PendingIntent.FLAG_IMMUTABLE);
 
         PendingIntent prevIntent = PendingIntent.getService(this, 0,
-                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_PREV), 0);
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_PREV), PendingIntent.FLAG_IMMUTABLE);
         PendingIntent playPauseIntent = PendingIntent.getService(this, 0,
-                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_PLAY_PAUSE), 0);
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_PLAY_PAUSE), PendingIntent.FLAG_IMMUTABLE);
         PendingIntent nextIntent = PendingIntent.getService(this, 0,
-                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_NEXT), 0);
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_NEXT), PendingIntent.FLAG_IMMUTABLE);
 
         builder.addAction(new NotificationCompat.Action(R.drawable.app_previous, "Previous", prevIntent));
         builder.addAction(new NotificationCompat.Action(R.drawable.app_pause, "Play", playPauseIntent));
@@ -648,7 +648,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         builder.setSmallIcon(R.drawable.ic_music_note_black_24dp);
         builder.setStyle(new MediaStyle()
                 .setShowActionsInCompactView(1, 2).setMediaSession(getSessionToken()));
-        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), 0));
+        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), PendingIntent.FLAG_IMMUTABLE));
         builder.setDeleteIntent(pCloseIntent);
         builder.setColor(ContextCompat.getColor(this, (new CommonUtils(this)).accentColor(sharedPrefsUtils)));
         builder.setShowWhen(false);
@@ -663,14 +663,14 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                 = MediaStyleHelper.from(MusicPlayback.this, mMediaSessionCompat);
 
         PendingIntent pCloseIntent = PendingIntent.getService(this, 0,
-                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_CLOSE), 0);
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_CLOSE), PendingIntent.FLAG_IMMUTABLE);
 
         PendingIntent prevIntent = PendingIntent.getService(this, 0,
-                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_PREV), 0);
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_PREV), PendingIntent.FLAG_IMMUTABLE);
         PendingIntent playPauseIntent = PendingIntent.getService(this, 0,
-                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_PLAY_PAUSE), 0);
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_PLAY_PAUSE), PendingIntent.FLAG_IMMUTABLE);
         PendingIntent nextIntent = PendingIntent.getService(this, 0,
-                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_NEXT), 0);
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_NEXT), PendingIntent.FLAG_IMMUTABLE);
 
         builder.addAction(new NotificationCompat.Action(R.drawable.app_previous, "Previous", prevIntent));
         builder.addAction(new NotificationCompat.Action(R.drawable.app_play, "Play", playPauseIntent));
@@ -679,7 +679,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         builder.setSmallIcon(R.drawable.ic_music_note_black_24dp);
         builder.setStyle(new MediaStyle()
                 .setShowActionsInCompactView(1, 2).setMediaSession(getSessionToken()));
-        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), 0));
+        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), PendingIntent.FLAG_IMMUTABLE));
         builder.setDeleteIntent(pCloseIntent);
         builder.setColor(ContextCompat.getColor(this, (new CommonUtils(this)).accentColor(sharedPrefsUtils)));
         builder.setShowWhen(false);
@@ -696,14 +696,14 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                 = MediaStyleHelper.from(MusicPlayback.this, mMediaSessionCompat);
 
         PendingIntent pCloseIntent = PendingIntent.getService(this, 0,
-                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_CLOSE), 0);
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_CLOSE), PendingIntent.FLAG_IMMUTABLE);
 
         PendingIntent prevIntent = PendingIntent.getService(this, 0,
-                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_PREV), 0);
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_PREV), PendingIntent.FLAG_IMMUTABLE);
         PendingIntent playPauseIntent = PendingIntent.getService(this, 0,
-                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_PLAY_PAUSE), 0);
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_PLAY_PAUSE), PendingIntent.FLAG_IMMUTABLE);
         PendingIntent nextIntent = PendingIntent.getService(this, 0,
-                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_NEXT), 0);
+                (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_NEXT), PendingIntent.FLAG_IMMUTABLE);
 
         builder.addAction(new NotificationCompat.Action(R.drawable.app_previous, "Previous", prevIntent));
         builder.addAction(new NotificationCompat.Action(R.drawable.app_play, "Play", playPauseIntent));
@@ -712,7 +712,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         builder.setSmallIcon(R.drawable.ic_music_note_black_24dp);
         builder.setStyle(new MediaStyle()
                 .setShowActionsInCompactView(1, 2).setMediaSession(getSessionToken()));
-        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), 0));
+        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, HomeActivity.class), PendingIntent.FLAG_IMMUTABLE));
         builder.setDeleteIntent(pCloseIntent);
         builder.setColor(ContextCompat.getColor(this, (new CommonUtils(this)).accentColor(sharedPrefsUtils)));
         builder.setShowWhen(false);
@@ -814,14 +814,15 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
 
     private void initMediaSession() {
         ComponentName mediaButtonReceiver = new ComponentName(getApplicationContext(), MediaButtonReceiver.class);
-        mMediaSessionCompat = new MediaSessionCompat(getApplicationContext(), "Tag", mediaButtonReceiver, null);
+        mMediaSessionCompat = new MediaSessionCompat(getApplicationContext(), "Tag", mediaButtonReceiver,
+                PendingIntent.getActivity(getApplicationContext(), 0, new Intent(),PendingIntent.FLAG_IMMUTABLE));
 
         mMediaSessionCompat.setCallback(mMediaSessionCallback);
         mMediaSessionCompat.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
         Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
         mediaButtonIntent.setClass(this, MediaButtonReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, PendingIntent.FLAG_IMMUTABLE);
         mMediaSessionCompat.setMediaButtonReceiver(pendingIntent);
 
         mPlaybackStateBuilder = new PlaybackStateCompat.Builder();

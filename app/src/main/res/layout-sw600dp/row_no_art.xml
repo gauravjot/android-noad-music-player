@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="72dp">
 
@@ -91,9 +92,10 @@
         android:layout_marginEnd="4dp"
         android:contentDescription="@string/hello_world"
         android:padding="6dp"
-        android:tint="@color/textColorSubTitle"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_dots_vert_black_24dp" />
+        android:src="@drawable/ic_dots_vert_black_24dp"
+        android:rotation="90"
+        app:tint="@color/textColorSubTitle" />
 
 
 </RelativeLayout>

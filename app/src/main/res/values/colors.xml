@@ -26,17 +26,18 @@
 
     <!-- App Theme -->
 
-    <color name="primaryColor">#000000</color>
-    <color name="primaryDark">#000000</color>
+    <color name="primaryColor">#101116</color>
+    <color name="primaryDark">#101116</color>
     <color name="accentColor">#FFFFFF</color>
-    <color name="imageColorAlpha">#66000000</color>
-    <color name="background">#000000</color>
-    <color name="dialogBackground">#252525</color>
-    <color name="progressBarBackground">#44ffffff</color>
-    <color name="navigationBar">#000000</color>
+    <color name="imageColorAlpha">#66101116</color>
+    <color name="background">#101116</color>
+    <color name="dialogBackground">#2D2F3D</color>
+    <color name="progressBarBackground">#22ffffff</color>
+    <color name="navigationBar">#09090C</color>
 
     <color name="textColorTitle">#ffffff</color>
     <color name="textColorSubTitle">#999</color>
     <color name="unselected_text">#999</color>
     <color name="playerControlsBackground">@color/primaryDark</color>
+
 </resources>

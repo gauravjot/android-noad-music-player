@@ -2,42 +2,52 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/background">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <com.droidheat.musicplayer.ui.views.SquareImageView
-            android:id="@+id/grid_item_image2"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:contentDescription="@string/app_label"
-            android:background="@drawable/ic_music_notes_padded"/>
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            android:id="@+id/cardView"
+            app:cardBackgroundColor="@color/dialogBackground" >
+
+                <com.droidheat.musicplayer.ui.views.SquareImageView
+                    android:id="@+id/grid_item_image2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/app_label"
+                    android:src="@drawable/ic_music_notes_padded"/>
+        </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/imageOverflow"
             android:layout_width="40dp"
             android:layout_height="48dp"
-            android:layout_alignEnd="@+id/grid_item_image2"
+            android:layout_alignEnd="@+id/cardView"
             android:layout_alignParentBottom="true"
-            android:layout_below="@+id/grid_item_image2"
+            android:layout_below="@+id/cardView"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:padding="8dp"
-            android:tint="@color/textColorSubTitle"
-            android:src="@drawable/ic_dots_vert_black_24dp" />
+            android:src="@drawable/ic_dots_vert_black_24dp"
+            android:rotation="90"
+            app:tint="@color/textColorSubTitle"
+            android:contentDescription="@string/choose_an_option" />
 
         <TextView
             android:id="@+id/grid_item_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/grid_item_image2"
+            android:layout_below="@+id/cardView"
             android:layout_toStartOf="@+id/imageOverflow"
             android:maxLines="1"
             android:ellipsize="end"
-            android:paddingBottom="3dp"
             android:textStyle="bold"
-            android:paddingStart="0dp"
+            android:paddingStart="6dp"
             android:paddingEnd="8dp"
             android:paddingTop="6dp"
             android:text="@string/unknown_album"
@@ -54,7 +64,7 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:paddingBottom="6dp"
-            android:paddingStart="0dp"
+            android:paddingStart="6dp"
             android:paddingEnd="8dp"
             android:text="@string/unknown_artist"
             android:textAppearance="?android:attr/textAppearanceSmall"

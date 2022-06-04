@@ -10,12 +10,12 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name=".NoadPlayer"
         android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
@@ -54,13 +54,6 @@
             </intent-filter>
         </service>
 
-        <receiver android:name="android.support.v4.media.session.MediaButtonReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
-                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".ui.activities.SearchActivity"
             android:label="@string/title_activity_search"
@@ -76,6 +69,7 @@
             android:name=".ui.activities.SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:theme="@style/AppThemeToolbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -86,40 +80,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <receiver
-            android:name=".ui.widgets.MusicWidget4x1"
-            android:label="Music Player">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widgetprovider4x1" />
-        </receiver>
-        <receiver
-            android:name=".ui.widgets.MusicWidget4x2"
-            android:label="Music Player">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widgetprovider4x2" />
-        </receiver>
-        <receiver
-            android:name=".ui.widgets.MusicWidget4x1v2"
-            android:label="Music Player">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widgetprovider4x1v2" />
-        </receiver>
 
         <activity
             android:name=".ui.activities.IntentPlayActivity"
@@ -160,6 +120,54 @@
             android:name=".ui.activities.GlobalDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeToolBarTranslucent" />
+
+        <receiver
+            android:name="androidx.media.session.MediaButtonReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".ui.widgets.MusicWidget4x1"
+            android:exported="true"
+            android:label="Music Player">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widgetprovider4x1" />
+        </receiver>
+        <receiver
+            android:name=".ui.widgets.MusicWidget4x2"
+            android:exported="true"
+            android:label="Music Player">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widgetprovider4x2" />
+        </receiver>
+        <receiver
+            android:name=".ui.widgets.MusicWidget4x1v2"
+            android:exported="true"
+            android:label="Music Player">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widgetprovider4x1v2" />
+        </receiver>
+
+
     </application>
 
 </manifest>

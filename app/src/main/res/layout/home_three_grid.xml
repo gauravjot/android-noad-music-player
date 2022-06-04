@@ -4,27 +4,40 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:weightSum="3"
-    android:padding="16dp">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="24dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="16dp"
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true">
 
-        <com.droidheat.musicplayer.ui.views.SquareImageView
-            android:maxWidth="200dp"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:id="@+id/home_three_grid_imageView_1"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"/>
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            android:id="@+id/cardView"
+            app:cardBackgroundColor="@color/dialogBackground" >
+
+            <com.droidheat.musicplayer.ui.views.SquareImageView
+                android:maxWidth="200dp"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:id="@+id/home_three_grid_imageView_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"/>
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:layout_width="match_parent"
@@ -34,7 +47,7 @@
             android:textColor="@color/white"
             android:gravity="center"
             android:padding="6dp"
-            android:textSize="16sp"/>
+            android:textSize="14sp"/>
 
     </LinearLayout>
 
@@ -43,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="16dp"
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true">
 
@@ -66,7 +79,7 @@
             android:gravity="center"
             android:textColor="@color/white"
             android:padding="6dp"
-            android:textSize="16sp"/>
+            android:textSize="14sp"/>
 
     </LinearLayout>
 
@@ -97,7 +110,7 @@
             android:gravity="center"
             android:textColor="@color/white"
             android:padding="6dp"
-            android:textSize="16sp"/>
+            android:textSize="14sp"/>
 
     </LinearLayout>
 

@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.droidheat.musicplayer.ui.activities.SearchActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
@@ -27,7 +27,7 @@
             android:layout_gravity="end"
             android:layout_alignParentStart="true"
             android:textCursorDrawable="@drawable/cursor_color"/>
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <ImageView
         android:layout_width="match_parent"

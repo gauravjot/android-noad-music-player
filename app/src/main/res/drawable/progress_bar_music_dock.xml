@@ -5,7 +5,7 @@
         android:gravity="center_vertical">
         <shape android:shape="rectangle">
             <size android:height="5dp"/>
-            <solid android:color="#44ffffff" />
+            <solid android:color="@color/progressBarBackground" />
         </shape>
     </item>
     <item android:id="@android:id/progress"
