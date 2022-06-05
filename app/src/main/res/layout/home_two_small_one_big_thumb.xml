@@ -42,7 +42,7 @@
             android:text="Playlist"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:paddingStart="56dp"
+            android:paddingStart="48dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:paddingEnd="8dp"
@@ -52,8 +52,8 @@
             android:layout_alignBottom="@id/albumArtImageView"/>
 
         <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:src="@drawable/ic_artists_black_24dp"
             android:padding="6dp"
             android:layout_marginStart="12dp"
@@ -113,8 +113,8 @@
                     android:layout_alignBottom="@id/playImageView"/>
 
                 <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
                     android:src="@drawable/app_playlist"
                     android:padding="7dp"
                     android:layout_marginStart="4dp"
@@ -168,14 +168,14 @@
                     android:layout_alignBottom="@id/nextImageView"/>
 
                 <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
                     android:src="@drawable/app_playlist"
-                    android:tint="@color/white"
                     android:padding="7dp"
                     android:layout_marginStart="4dp"
                     android:layout_alignBottom="@+id/nextImageView"
-                    android:id="@+id/imageView6"/>
+                    android:id="@+id/imageView6"
+                    app:tint="@color/white" />
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>

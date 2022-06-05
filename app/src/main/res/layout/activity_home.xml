@@ -49,7 +49,7 @@
         app:itemIconTint="@drawable/navigation_select"
         app:itemTextColor="@drawable/navigation_select"
         app:itemIconSize="20dp"
-        app:labelVisibilityMode="labeled"
+        app:labelVisibilityMode="unlabeled"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,9 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="66dp"
     android:layout_gravity="top"
-    android:background="@color/playerControlsBackground"
+    android:background="?android:attr/selectableItemBackground"
     android:id="@+id/relBody">
-    <!---->
 
     <ImageView
         android:id="@+id/image"
@@ -63,6 +62,7 @@
             android:gravity="start"
             android:paddingEnd="14dp"
             android:maxLines="1"
+            android:textStyle="bold"
             android:layout_marginTop="3dp"
             android:text="@string/no_song_available_"
             android:textColor="#77ffffff"

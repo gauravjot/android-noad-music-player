@@ -104,6 +104,7 @@
                     android:layout_below="@+id/XtextView1"
                     android:fontFamily="sans-serif"
                     android:maxLines="1"
+                    android:textStyle="bold"
                     android:paddingTop="3dp"
                     android:textColor="@color/textColorSubTitle"
                     android:textScaleX="1.05"

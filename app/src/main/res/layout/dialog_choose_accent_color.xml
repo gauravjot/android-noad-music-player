@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:text="Choose Accent Color"
         android:textSize="18sp"
+        android:textStyle="bold"
         android:textColor="@color/white"
         android:padding="16dp"/>
 

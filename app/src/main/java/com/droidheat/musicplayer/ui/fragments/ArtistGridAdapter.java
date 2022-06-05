@@ -16,6 +16,7 @@ import com.droidheat.musicplayer.utils.SongsUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 class ArtistGridAdapter extends BaseAdapter {
     private Context context;
@@ -59,24 +60,12 @@ class ArtistGridAdapter extends BaseAdapter {
         }
 
         if (getCount() >= 1) {
-            // set value into textView
-            holder.text.setText(mobileValues.get(position).get("artist"));
-            int albums = songsUtils.getAlbumIds(mobileValues.get(position).get("albums")).size();
-            if (albums > 1) {
-                holder.subtext.setText(albums + " Albums");
-            } else {
-                holder.subtext.setText(albums + " Album");
-            }
-
-            // set image based on selected text
-            //imageView.setImageResource(R.drawable.windows_logo);
-
             final ArrayList<SongModel> artistSongs = songsUtils.artistSongs(mobileValues.get(position).get("artist")
             );
-//            List<String> list = new ArrayList<>();
-//            for (int i = 0; i < artistSongs.size(); i++) {
-//                list.add(artistSongs.get(i).getAlbumID());
-//            }
+            // set value into textView
+            holder.text.setText(mobileValues.get(position).get("artist"));
+            int albums = songsUtils.getAlbumIds(Objects.requireNonNull(mobileValues.get(position).get("albums"))).size();
+            holder.subtext.setText(String.format("%d album%s • %d song%s", albums, (albums > 1) ? "s" : "", artistSongs.size(), (albums > 1) ? "s" : ""));
 
             final PopupMenu pop = new PopupMenu(context, holder.imageOverflow);
             int[] j = new int[5];
@@ -124,32 +113,6 @@ class ArtistGridAdapter extends BaseAdapter {
 
         return gridView;
     }
-
-//    private void getAlbumCover(final List songsList, final ImageView imageView, final int i, final int max) {
-//        if (i < max) {
-//            Uri sArtworkUri = Uri
-//                    .parse("content://media/external/audio/albumart");
-//            Uri uri = ContentUris.withAppendedId(sArtworkUri, Long.parseLong(songsList.get(i).toString()));
-//            Picasso.with(context).load(uri).placeholder(R.drawable.unknown_artist)
-//                    .into(imageView, new Callback() {
-//                        @Override
-//                        public void onSuccess() {
-//
-//                        }
-//
-//                        @Override
-//                        public void onError() {
-//                            getAlbumCover(songsList, imageView, i + 1, max);
-//                        }
-//                    });
-//        } else if (i == max) {
-//            Uri sArtworkUri = Uri
-//                    .parse("content://media/external/audio/albumart");
-//            Uri uri = ContentUris.withAppendedId(sArtworkUri, Long.parseLong(songsList.get(i).toString()));
-//            Picasso.with(context).load(uri)
-//                    .placeholder(R.drawable.unknown_artist).into(imageView);
-//        }
-//    }
 
     @Override
     public int getCount() {

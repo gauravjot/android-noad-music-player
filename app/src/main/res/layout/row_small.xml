@@ -65,6 +65,7 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/text"
             android:gravity="start"
+            android:textStyle="bold"
             android:maxLines="1"
             android:text="@string/hello_world"
             android:textColor="@color/textColorSubTitle"

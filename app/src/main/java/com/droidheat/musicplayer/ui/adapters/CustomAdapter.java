@@ -120,7 +120,7 @@ public class CustomAdapter extends BaseAdapter implements OnClickListener {
             (new ImageUtils(activity)).setAlbumArt(tempValues.getAlbumID(), holder.image);
 
             holder.text.setText(finalTitle);
-            holder.text1.setText(((artist.length() > 25) ? artist.substring(0,25) : artist) + "; " + duration);
+            holder.text1.setText(String.format("%s • %s", (artist.length() > 25) ? artist.substring(0, 25) +"…" : artist, duration));
 
             vi.setOnClickListener(new OnClickListener() {
                 @Override

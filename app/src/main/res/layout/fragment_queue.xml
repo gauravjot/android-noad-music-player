@@ -3,19 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:card_view="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/transparent">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        card_view:cardBackgroundColor="@color/transparent">
+        app:cardCornerRadius="4dp"
+        app:cardBackgroundColor="@color/primaryColorAlphaBG"
+        card_view:cardBackgroundColor="@color/primaryColorAlphaBG">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="146dp"
-            android:background="@color/playerControlsBackground">
+            android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

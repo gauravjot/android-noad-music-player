@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.droidheat.musicplayer.R;
+import com.droidheat.musicplayer.ui.activities.PlayActivity;
 import com.droidheat.musicplayer.utils.SharedPrefsUtils;
 import com.droidheat.musicplayer.ui.callbacks.SimpleItemTouchHelperCallback;
 import com.droidheat.musicplayer.ui.adapters.QueueCustomAdapter;
@@ -68,13 +69,13 @@ public class QueueFragment extends Fragment implements QueueCustomAdapter.MyFrag
 
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof Activity) {
+        if (context instanceof PlayActivity) {
             callback = (MyFragmentCallbackOne) context;
         }
     }
 
     private void addToViewPager() {
-        callback.viewPagerRefreshOne();
+            callback.viewPagerRefreshOne();
     }
 
     @Override

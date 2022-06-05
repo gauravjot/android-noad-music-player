@@ -8,6 +8,9 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.support.v4.media.session.MediaControllerCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,8 +133,9 @@ public class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         holder.rel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayActivity sct = (PlayActivity) activity;
-                sct.onItemClick(holder.getAdapterPosition());
+                if (holder.getAbsoluteAdapterPosition() >= 0) {
+                    MediaControllerCompat.getMediaController(activity).getTransportControls().skipToQueueItem(holder.getAbsoluteAdapterPosition());
+                }
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -163,7 +167,9 @@ public class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         notifyItemMoved(i,i1);
 
         songsUtils.replaceQueue(arrayList);
-        callback.viewPagerRefresh();
+        if (activity instanceof PlayActivity) {
+            callback.viewPagerRefresh();
+        }
     }
 
     public void onItemDismiss(int adapterPosition) {
@@ -179,7 +185,9 @@ public class QueueCustomAdapter extends RecyclerView.Adapter<ItemViewHolder> {
             if (adapterPosition < sharedPrefsUtils.readSharedPrefsInt("musicID",0)) {
                 sharedPrefsUtils.writeSharedPrefs("musicID", musicID - 1);
             }
-            callback.viewPagerRefresh();
+            if (activity instanceof PlayActivity) {
+                callback.viewPagerRefresh();
+            }
         }
     }
 

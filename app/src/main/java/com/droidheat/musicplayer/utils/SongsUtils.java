@@ -1,5 +1,6 @@
 package com.droidheat.musicplayer.utils;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -324,7 +325,7 @@ public class SongsUtils {
         (new CommonUtils(context)).showTheToast("Playing next: " + song.getTitle());
     }
 
-    public boolean replaceQueue(final ArrayList<SongModel> list) {
+    public void replaceQueue(final ArrayList<SongModel> list) {
         if (list != null && !list.isEmpty()) {
             clearQueue();
             queue.addAll(list);
@@ -337,9 +338,6 @@ public class SongsUtils {
             } catch (Exception e) {
                 e.getStackTrace();
             }
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -616,6 +614,7 @@ public class SongsUtils {
         }
     }
 
+    @SuppressLint("InlinedApi")
     private void grabData() {
 
         boolean excludeShortSounds = sharedPrefsUtils.readSharedPrefsBoolean("excludeShortSounds", false);
@@ -656,9 +655,9 @@ public class SongsUtils {
                         // Adding song to list
                         SongModel songModel = new SongModel();
                         songModel.setFileName(cursor.getString(songNameColumn));
-                        songModel.setTitle(cursor.getString(titleColumn));
-                        songModel.setArtist(cursor.getString(artistColumn));
-                        songModel.setAlbum(cursor.getString(albumColumn));
+                        songModel.setTitle(cursor.getString(titleColumn).trim());
+                        songModel.setArtist(cursor.getString(artistColumn).trim());
+                        songModel.setAlbum(cursor.getString(albumColumn).trim());
                         songModel.setAlbumID(cursor.getString(albumIDColumn));
                         songModel.setPath(cursor.getString(pathColumn));
                         songModel.setDuration(time);
@@ -752,16 +751,12 @@ public class SongsUtils {
                 }
             }
 
+            HashMap<String, String> song = new HashMap<>();
+            song.put("artist", name);
+            song.put("albums", albums);
             if (albumIndex == -1) {
-
-                HashMap<String, String> song = new HashMap<>();
-                song.put("artist", name);
-                song.put("albums", albums);
                 list.add(song);
             } else {
-                HashMap<String, String> song = new HashMap<>();
-                song.put("artist", name);
-                song.put("albums", albums);
                 list.add(albumIndex, song);
             }
         }

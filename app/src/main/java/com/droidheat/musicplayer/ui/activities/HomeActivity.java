@@ -34,6 +34,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        (new SharedPrefsUtils(this)).writeSharedPrefs("homeActivityUp",true);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -84,7 +86,13 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    @Override
+    protected void onStop() {
+        super.onStop();
+        (new SharedPrefsUtils(this)).writeSharedPrefs("homeActivityUp",false);
+    }
+
+    private BottomNavigationView.OnItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override

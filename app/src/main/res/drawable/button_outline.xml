@@ -13,6 +13,8 @@
 
             <corners android:radius="4dp" />
 
+            <solid android:color="@color/blackOpaque"/>
+
             <stroke
                 android:width="1sp"
                 android:color="@color/accentColor" />

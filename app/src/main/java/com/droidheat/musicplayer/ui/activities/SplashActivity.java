@@ -58,50 +58,46 @@ public class SplashActivity extends AppCompatActivity {
         if ((getIntent().getBooleanExtra("sync", false))) {
             SongsUtils songsUtils = new SongsUtils(this);
             songsUtils.sync();
-            ((TextView) findViewById(R.id.textView10)).setText("Syncing..");
+            ((TextView) findViewById(R.id.textView10)).setText(getString(R.string.syncing));
             sync = true;
         } else {
-            ((TextView) findViewById(R.id.textView10)).setText("Initiating..");
+            ((TextView) findViewById(R.id.textView10)).setText("Initiating…");
         }
 
-        if (Build.VERSION.SDK_INT > 22) {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_MEDIA_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
-                // No explanation needed, we can request the permission.
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_MEDIA_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
+            // No explanation needed, we can request the permission.
 
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                alertDialog.setTitle("Request for permissions");
-                alertDialog.setMessage("For music player to work we need your permission to access" +
-                        " files on your device.");
-                alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.Q)
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(SplashActivity.this,
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                                        Manifest.permission.ACCESS_MEDIA_LOCATION},
-                                1);
-                    }
-                });
-                alertDialog.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-                alertDialog.show();
-                Log.d(TAG, "asking permission");
-            } else if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED) {
-                new PerformBackgroundTasks(this, sync).execute("task");
-            } else {
-                (new CommonUtils(this)).showTheToast("Please enable permission from " +
-                        "Settings > Apps > Noad Player > Permissions.");
-            }
-        } else {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle("Request for permissions");
+            alertDialog.setMessage("For music player to work we need your permission to access" +
+                    " files on your device.");
+            alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.Q)
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ActivityCompat.requestPermissions(SplashActivity.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.ACCESS_MEDIA_LOCATION},
+                            1);
+                }
+            });
+            alertDialog.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            alertDialog.show();
+            Log.d(TAG, "asking permission");
+        } else if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED) {
             new PerformBackgroundTasks(this, sync).execute("task");
+        } else {
+            (new CommonUtils(this)).showTheToast("Please enable permission from " +
+                    "Settings > Apps > Noad Player > Permissions.");
         }
 
     }

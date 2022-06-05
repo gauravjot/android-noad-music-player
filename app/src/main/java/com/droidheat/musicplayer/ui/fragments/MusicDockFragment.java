@@ -188,7 +188,7 @@ public class MusicDockFragment extends Fragment {
         albumArt.setImageBitmap(metadata.getBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART));
     }
 
-    private String TAG = "MusicDockConsole";
+    private final String TAG = "MusicDockConsole";
 
     private final MediaBrowserCompat.ConnectionCallback mConnectionCallback =
             new MediaBrowserCompat.ConnectionCallback() {
@@ -328,14 +328,11 @@ public class MusicDockFragment extends Fragment {
                 btnPlay.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.app_pause));
                 break;
             case STATE_PAUSED:
+            case STATE_STOPPED:
                 stopSeekbarUpdate();
                 btnPlay.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.app_play));
                 break;
             case STATE_NONE:
-                btnPlay.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.app_play));
-                break;
-            case STATE_STOPPED:
-                stopSeekbarUpdate();
                 btnPlay.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.app_play));
                 break;
             case STATE_BUFFERING:
@@ -344,17 +341,11 @@ public class MusicDockFragment extends Fragment {
             default:
                 Log.d(TAG, "Unhandled state " + state.getState());
             case STATE_CONNECTING:
-                break;
             case STATE_ERROR:
-                break;
             case STATE_FAST_FORWARDING:
-                break;
             case STATE_REWINDING:
-                break;
             case STATE_SKIPPING_TO_NEXT:
-                break;
             case STATE_SKIPPING_TO_PREVIOUS:
-                break;
             case STATE_SKIPPING_TO_QUEUE_ITEM:
                 break;
         }

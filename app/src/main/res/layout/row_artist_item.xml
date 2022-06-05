@@ -38,10 +38,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="13sp"
         android:text="Small Text"
-        android:paddingTop="3dp"
         android:maxLines="1"
+        android:textStyle="bold"
         android:textColor="@color/textColorSubTitle"
         android:id="@+id/textView14"
         android:layout_below="@+id/textView13"

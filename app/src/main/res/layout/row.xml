@@ -66,6 +66,7 @@
             android:gravity="start"
             android:maxLines="1"
             android:layout_marginTop="1dp"
+            android:textStyle="bold"
             android:text="@string/hello_world"
             android:textColor="@color/textColorSubTitle"
             android:textSize="14sp" />

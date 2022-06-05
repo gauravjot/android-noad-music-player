@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="76dp"
     android:layout_gravity="top"
-    android:background="@color/playerControlsBackground"
+    android:background="?android:attr/selectableItemBackgroundBorderless"
     android:orientation="vertical"
     android:id="@+id/relBody"
     android:paddingStart="16dp">
@@ -61,6 +61,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/text"
             android:maxLines="1"
+            android:textStyle="bold"
             android:paddingEnd="14dp"
             android:layout_marginTop="3dp"
             android:text="@string/no_song_available_"

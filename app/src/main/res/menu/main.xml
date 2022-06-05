@@ -24,11 +24,11 @@
     <item
         android:id="@+id/sync"
         app:showAsAction="never"
-        android:title="Sync Music" />
+        android:title="Sync Library" />
 
     <item android:id="@+id/changeTheme"
         app:showAsAction="never"
-        android:title="Change Theme"/>
+        android:title="Change Accent Color"/>
 
     <item android:id="@+id/equalizer"
         app:showAsAction="never"

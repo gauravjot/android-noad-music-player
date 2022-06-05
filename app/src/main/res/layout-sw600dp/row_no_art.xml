@@ -8,7 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:id="@+id/click"
-        android:paddingRight="40dp"
         android:paddingEnd="40dp"
         android:background="?attr/selectableItemBackground">
 
@@ -23,14 +22,13 @@
             android:gravity="start|center"
             android:textColor="@color/textColorTitle"
             android:textSize="16sp"
-            android:text="1" />
+            android:text="@string/_1" />
 
         <TextView
             android:id="@+id/textTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:padding="10dp"
             android:text="--:--"
@@ -42,21 +40,17 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/trackId"
-            android:layout_toLeftOf="@+id/textTime"
             android:layout_toStartOf="@+id/textTime"
-            android:layout_toRightOf="@+id/trackId"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:paddingRight="14dp"
                 android:paddingEnd="14dp"
+                android:textStyle="bold"
                 android:maxLines="1"
                 android:text="@string/hello_world"
                 android:textColor="@color/textColorTitle"
@@ -66,16 +60,14 @@
                 android:id="@+id/text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/text"
                 android:gravity="start"
-                android:paddingRight="14dp"
+                android:textStyle="bold"
                 android:paddingEnd="14dp"
                 android:maxLines="1"
-                android:text="No Song Found"
+                android:text="@string/hello_world"
                 android:textColor="@color/textColorSubTitle"
                 android:textSize="16sp" />
 

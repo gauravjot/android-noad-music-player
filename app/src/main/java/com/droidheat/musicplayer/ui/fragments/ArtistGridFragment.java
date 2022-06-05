@@ -38,15 +38,6 @@ public class ArtistGridFragment extends Fragment {
 		MergeAdapter mergeAdapter = new MergeAdapter();
 		listView = v.findViewById(R.id.listView);
 		songsUtils = new SongsUtils(getActivity());
-//		android.support.v7.app.ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-//		if (actionBar != null) {
-//			gridView.setPadding(0,actionBar.getHeight() + 10, 0, 0);
-//		}
-		//View Header =  LayoutInflater.from(getActivity()).inflate(R.layout.heading, null);
-		//TextView textView = (TextView) Header.findViewById(R.id.textView1);
-		//textView.setText("ARTISTS");
-		//mergeAdapter.addView(Header);
-        //listView.addHeaderView(View.inflate(getActivity(),R.layout.listview_header,null));
 		mergeAdapter.addAdapter(new ArtistGridAdapter(getActivity(), songsUtils.artists()));
 		listView.setAdapter(mergeAdapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {

@@ -229,12 +229,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                 doItMyFav();
             }
         });
-        findViewById(R.id.addToPlayListImageView).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                songsUtils.addToPlaylist(songsUtils.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID", 0)));
-            }
-        });
         findViewById(R.id.viewQueue).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,26 +245,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
             @Override
             public void onClick(View v) {
                 shuffle();
-            }
-        });
-        findViewById(R.id.equalizer).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(PlayActivity.this, EqualizerActivity.class));
-            }
-        });
-        findViewById(R.id.infoImageView).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                songsUtils.info(
-                        songsUtils.queue().get(sharedPrefsUtils.readSharedPrefsInt("musicID", 0))
-                ).show();
-            }
-        });
-        findViewById(R.id.sleepTimerImageView).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(PlayActivity.this, TimerActivity.class));
             }
         });
 
@@ -593,9 +567,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
                 btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_pause));
                 break;
             case PlaybackStateCompat.STATE_PAUSED:
-                stopSeekbarUpdate();
-                btnPlay.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.app_play));
-                break;
             case PlaybackStateCompat.STATE_NONE:
             case PlaybackStateCompat.STATE_STOPPED:
                 stopSeekbarUpdate();
@@ -607,18 +578,12 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
             default:
                 Log.d(TAG, "Unhandled state " + state.getState());
             case PlaybackStateCompat.STATE_CONNECTING:
-                break;
-            case PlaybackStateCompat.STATE_ERROR:
-                break;
-            case PlaybackStateCompat.STATE_FAST_FORWARDING:
-                break;
-            case PlaybackStateCompat.STATE_REWINDING:
-                break;
-            case PlaybackStateCompat.STATE_SKIPPING_TO_NEXT:
-                break;
-            case PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS:
-                break;
             case PlaybackStateCompat.STATE_SKIPPING_TO_QUEUE_ITEM:
+            case PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS:
+            case PlaybackStateCompat.STATE_REWINDING:
+            case PlaybackStateCompat.STATE_FAST_FORWARDING:
+            case PlaybackStateCompat.STATE_ERROR:
+            case PlaybackStateCompat.STATE_SKIPPING_TO_NEXT:
                 break;
         }
     }
@@ -652,15 +617,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
 
     private void backPressed() {
         finish();
-    }
-
-    /*
-     * Queue Item Click
-     */
-    public void onItemClick(int mPosition) {
-        Log.d(TAG,"Position: " + mPosition);
-        if (mPosition >= 0) {
-            MediaControllerCompat.getMediaController(this).getTransportControls().skipToQueueItem(mPosition);
+        if (!(new SharedPrefsUtils(this)).readSharedPrefsBoolean("homeActivityUp",false)) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -675,6 +634,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener, 
         int id = item.getItemId();
         if (id == android.R.id.home) {
             backPressed();
+        } else if (id == R.id.action_set_sleep_timer) {
+            startActivity(new Intent(PlayActivity.this, TimerActivity.class));
         } else if (id == R.id.action_drive_mode) {
             startActivity(new Intent(PlayActivity.this, DriveModeActivity.class));
         } else if (id == R.id.add_to_playlist) {

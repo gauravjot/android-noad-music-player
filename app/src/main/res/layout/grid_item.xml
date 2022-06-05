@@ -63,6 +63,7 @@
             android:layout_toStartOf="@+id/imageOverflow"
             android:maxLines="1"
             android:ellipsize="end"
+            android:textStyle="bold"
             android:paddingBottom="6dp"
             android:paddingStart="6dp"
             android:paddingEnd="8dp"

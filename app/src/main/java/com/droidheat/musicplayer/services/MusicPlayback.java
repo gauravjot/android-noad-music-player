@@ -16,11 +16,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.Virtualizer;
+import android.media.session.MediaController;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -93,9 +95,9 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     private SharedPrefsUtils sharedPrefsUtils;
     private SongsUtils songsUtils;
 
-    private MediaPlayer mMediaPlayer2;
+    //private MediaPlayer mMediaPlayer2;
     private int currentMediaPlayer = 0; // 0 - mMediaPlayer; 1 - mMediaPlayer2
-    private int crossfadeDuration = 3000; // 3 seconds
+    private final int crossFadeDuration = 3000; // 3 seconds
     private Handler mHandler;
 
     private final int NOTIFICATION_ID = 34213134;
@@ -192,7 +194,8 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
      * Getting and Switching MediaPlayers for Cross-fade
      */
     private MediaPlayer getCurrentMediaPlayer() {
-        return (currentMediaPlayer == 0) ? mMediaPlayer : mMediaPlayer2;
+//        return (currentMediaPlayer == 0) ? mMediaPlayer : mMediaPlayer2;
+        return mMediaPlayer;
     }
 
     private void checkErrorInPrefs() {
@@ -211,82 +214,82 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
         }
     }
 
-    private void crossfade() {
-        mHandler.post(detectCrossFadeRunnable);
-    }
-
-    private void cancelCrossfade() {
-        mHandler.removeCallbacks(detectCrossFadeRunnable);
-    }
+//    private void crossfade() {
+//        mHandler.post(detectCrossFadeRunnable);
+//    }
+//
+//    private void cancelCrossfade() {
+//        mHandler.removeCallbacks(detectCrossFadeRunnable);
+//    }
 
     // Detects and starts cross-fading
-    public Runnable detectCrossFadeRunnable = new Runnable() {
-        @Override
-        public void run() {
-            //Check if we're in the last part of the current song.
-            try {
-                if (getCurrentMediaPlayer().isPlaying()) {
-                    if (getCurrentMediaPlayer().getCurrentPosition() >=
-                            (getCurrentMediaPlayer().getDuration() - crossfadeDuration)) {
-                        // Start cross-fading the songs
-                        switchMediaPlayer();
-                        mHandler.postDelayed(crossFadeRunnable, 100);
-                    } else {
-                        mHandler.postDelayed(detectCrossFadeRunnable, 1000);
-                    }
-                } else {
-                    mHandler.postDelayed(detectCrossFadeRunnable, 1000);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };
+//    public Runnable detectCrossFadeRunnable = new Runnable() {
+//        @Override
+//        public void run() {
+//            //Check if we're in the last part of the current song.
+//            try {
+//                if (getCurrentMediaPlayer().isPlaying()) {
+//                    if (getCurrentMediaPlayer().getCurrentPosition() >=
+//                            (getCurrentMediaPlayer().getDuration() - crossFadeDuration)) {
+//                        // Start cross-fading the songs
+//                        switchMediaPlayer();
+//                        mHandler.postDelayed(crossFadeRunnable, 100);
+//                    } else {
+//                        mHandler.postDelayed(detectCrossFadeRunnable, 1000);
+//                    }
+//                } else {
+//                    mHandler.postDelayed(detectCrossFadeRunnable, 1000);
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    };
 
     // Volume
-    private float mFadeOutVolume = 1.0f;
-    private float mFadeInVolume = 0.0f;
-
-    public Runnable crossFadeRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-            try {
-                int crossfadeStep = 10000; // 10 seconds before finishing and into next song
-
-                if (currentMediaPlayer == 0) {
-                    // mMediaPlayer
-
-                    mMediaPlayer.setVolume(mFadeInVolume, mFadeInVolume);
-                    mMediaPlayer2.setVolume(mFadeOutVolume, mFadeOutVolume);
-
-                    // Start next track and run Crossfade
-                    mMediaPlayer.seekTo(crossfadeStep);
-                    mMediaPlayer.start();
-                } else {
-                    // mMediaPlayer2
-
-                    mMediaPlayer2.setVolume(mFadeInVolume, mFadeInVolume);
-                    mMediaPlayer.setVolume(mFadeOutVolume, mFadeOutVolume);
-
-                    // Start next track and run Crossfade
-                    mMediaPlayer2.seekTo(crossfadeStep);
-                    mMediaPlayer2.start();
-                }
-
-                mFadeInVolume = mFadeInVolume + (1.0f / (((float) crossfadeDuration /1000) * 10.0f));
-                mFadeOutVolume = mFadeOutVolume - (1.0f / (((float) crossfadeDuration/1000) * 10.0f));
-
-                mHandler.postDelayed(crossFadeRunnable, 100);
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    };
+//    private float mFadeOutVolume = 1.0f;
+//    private float mFadeInVolume = 0.0f;
+//
+//    public Runnable crossFadeRunnable = new Runnable() {
+//
+//        @Override
+//        public void run() {
+//            try {
+//                int crossfadeStep = 10000; // 10 seconds before finishing and into next song
+//
+//                if (currentMediaPlayer == 0) {
+//                    // mMediaPlayer
+//
+//                    mMediaPlayer.setVolume(mFadeInVolume, mFadeInVolume);
+//                    mMediaPlayer2.setVolume(mFadeOutVolume, mFadeOutVolume);
+//
+//                    // Start next track and run Crossfade
+//                    mMediaPlayer.seekTo(crossfadeStep);
+//                    mMediaPlayer.start();
+//                } else {
+//                    // mMediaPlayer2
+//
+//                    mMediaPlayer2.setVolume(mFadeInVolume, mFadeInVolume);
+//                    mMediaPlayer.setVolume(mFadeOutVolume, mFadeOutVolume);
+//
+//                    // Start next track and run Crossfade
+//                    mMediaPlayer2.seekTo(crossfadeStep);
+//                    mMediaPlayer2.start();
+//                }
+//
+//                mFadeInVolume = mFadeInVolume + (1.0f / (((float) crossFadeDuration /1000) * 10.0f));
+//                mFadeOutVolume = mFadeOutVolume - (1.0f / (((float) crossFadeDuration /1000) * 10.0f));
+//
+//                mHandler.postDelayed(crossFadeRunnable, 100);
+//
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//
+//    };
 
 
     /*
@@ -344,6 +347,10 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
 
         Log.d(TAG, "Skipping to Next track.");
         setMediaPlayer(songsUtils.queue().get(musicID).getPath());
+    }
+
+    private boolean isMusicPlaying() {
+        return mPlaybackStateBuilder.build().getState() == PlaybackStateCompat.STATE_PLAYING;
     }
 
     private void processPrevRequest() {
@@ -511,7 +518,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     /******* ---------------------------------------------------------------
      MediaSessionCompat Methods
      ----------------------------------------------------------------*******/
-    private MediaSessionCompat.Callback mMediaSessionCallback = new MediaSessionCompat.Callback() {
+    private final MediaSessionCompat.Callback mMediaSessionCallback = new MediaSessionCompat.Callback() {
         @Override
         public void onPlayFromUri(Uri uri, Bundle extras) {
             super.onPlayFromUri(uri, extras);
@@ -706,7 +713,11 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                 (new Intent(this, MusicPlayback.class)).setAction(MusicPlayback.ACTION_TRACK_NEXT), PendingIntent.FLAG_IMMUTABLE);
 
         builder.addAction(new NotificationCompat.Action(R.drawable.app_previous, "Previous", prevIntent));
-        builder.addAction(new NotificationCompat.Action(R.drawable.app_play, "Play", playPauseIntent));
+        if (isMusicPlaying()) {
+            builder.addAction(new NotificationCompat.Action(R.drawable.app_pause, "Pause", playPauseIntent));
+        } else {
+            builder.addAction(new NotificationCompat.Action(R.drawable.app_play, "Play", playPauseIntent));
+        }
         builder.addAction(new NotificationCompat.Action(R.drawable.app_next, "Next", nextIntent));
         builder.setStyle(new MediaStyle().setShowActionsInCompactView(0).setMediaSession(mMediaSessionCompat.getSessionToken()));
         builder.setSmallIcon(R.drawable.ic_music_note_black_24dp);
@@ -772,17 +783,25 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     private void initMediaPlayer() {
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setAudioAttributes(
+                new AudioAttributes
+                        .Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build());
         mMediaPlayer.setVolume(1.0f, 1.0f);
         mMediaPlayer.setOnCompletionListener(this);
         mMediaPlayer.setOnPreparedListener(this);
-        mMediaPlayer2 = new MediaPlayer();
-        mMediaPlayer2.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
-        mMediaPlayer2.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mMediaPlayer2.setVolume(1.0f, 1.0f);
-        mMediaPlayer2.setOnCompletionListener(this);
-        mMediaPlayer2.setOnPreparedListener(this);
-        mMediaPlayer2.setAudioSessionId(mMediaPlayer.getAudioSessionId());
+//        mMediaPlayer2 = new MediaPlayer();
+//        mMediaPlayer2.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+//        mMediaPlayer2.setAudioAttributes(
+//                new AudioAttributes
+//                        .Builder()
+//                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+//                        .build());
+//        mMediaPlayer2.setVolume(1.0f, 1.0f);
+//        mMediaPlayer2.setOnCompletionListener(this);
+//        mMediaPlayer2.setOnPreparedListener(this);
+//        mMediaPlayer2.setAudioSessionId(mMediaPlayer.getAudioSessionId());
         sharedPrefsUtils.writeSharedPrefs("audio_session_id", mMediaPlayer.getAudioSessionId());
 
     }
@@ -818,8 +837,6 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
                 PendingIntent.getActivity(getApplicationContext(), 0, new Intent(),PendingIntent.FLAG_IMMUTABLE));
 
         mMediaSessionCompat.setCallback(mMediaSessionCallback);
-        mMediaSessionCompat.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-
         Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
         mediaButtonIntent.setClass(this, MediaButtonReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, PendingIntent.FLAG_IMMUTABLE);
@@ -846,14 +863,7 @@ public class MusicPlayback extends MediaBrowserServiceCompat implements
     @Override
     public void onAudioFocusChange(int focusChange) {
         switch (focusChange) {
-            case AudioManager.AUDIOFOCUS_LOSS: {
-                if (getCurrentMediaPlayer().isPlaying()) {
-                    processPauseRequest();
-                    autoPaused = true;
-                    Log.d(TAG, "Auto paused enabled");
-                }
-                break;
-            }
+            case AudioManager.AUDIOFOCUS_LOSS:
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT: {
                 if (getCurrentMediaPlayer().isPlaying()) {
                     processPauseRequest();

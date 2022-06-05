@@ -3,10 +3,18 @@
 
     <item
         android:id="@+id/action_drive_mode"
-        android:orderInCategory="103"
+        android:orderInCategory="113"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_drive_eta_black_24dp"
         android:title="@string/drive_mode"/>
+
+    <item
+        android:id="@+id/action_set_sleep_timer"
+        android:orderInCategory="112"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_timer_black_24dp"
+        android:iconTint="@color/white"
+        android:title="@string/put_music_player_on_automatic_sleep_"/>
 
     <item
         android:id="@+id/goto_album"
